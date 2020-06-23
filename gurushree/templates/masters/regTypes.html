@@ -1,0 +1,192 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <form id="registrationTypeForm">
+                    <div class="row">
+                        <input type="hidden" id="regId">
+                        <div class="form-group col-md-3">
+                            <label for="Name">Registration Type</label>
+                            <input type="text" class="form-control" id="rtype" placeholder="Enter Registration Type">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Name">Registration Fee</label>
+                            <input type="number" class="form-control" id="rfee" placeholder="Enter Registration Fee">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Name">Reneval Fee</label>
+                            <input type="number" class="form-control" id="renevalfee" placeholder="Enter Reneval Fee" required>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="Name">is Active?</label>
+                            <label class="check-container">
+                                <input type="checkbox" checked="checked" id="dIsActive">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Regsistration Type">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-header">
+                <i class="fa fa-table"></i> Registration Types Details
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="regtype" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Slno</th>
+                                <th>Registration Type</th>
+                                <th>Registration Fee</th>
+                                <th>Reneval Fee</th>
+                                <th>is Active?</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %} {% block scripts%}
+<script>
+    //Depatrments 
+    $(document).ready(function() {
+        var table = $("#regtype").DataTable({
+            ajax: {
+                url: '/api/masters/registrationType',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'regType'
+            }, {
+                data: 'regFee'
+            }, {
+                data: 'renevalFee'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editregistration" data-regtype=' + row.regType + ' data-regFee=' + row.regFee + ' data-renevalFee=' + row.renevalFee + '  data-isactive=' + row.isActive + ' data-reg-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deleteregistration" data-reg-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+        $("#regtype").on('click', '.editregistration', function() {
+            var button = $(this);
+            $('#rtype').val(button.attr('data-regtype'))
+            $('#rfee').val(button.attr('data-regFee'))
+            $('#renevalfee').val(button.attr('data-renevalFee'))
+            $('#dIsActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#regId').val(button.attr('data-reg-id'))
+            $('#submitBtn').val('Update registration type');
+        })
+
+        $("#regtype").on('click', '.deleteregistration', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/registrationType/' + button.attr('data-reg-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/registrationType/' + button.attr('data-reg-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Registration Type Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Registration Type Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#registrationTypeForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#registrationTypeForm').valid()) {
+                var data = {
+                    regType: $('#rtype').val(),
+                    regFee: $('#rfee').val(),
+                    renevalFee: $('#renevalfee').val(),
+                    priority: $('#priority').val(),
+                    isActive: $('#dIsActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/registrationType/'
+                var succesMessage = 'Registration  Added Successully '
+                if (btnText == 'Update registration type') {
+                    method = 'PUT';
+                    url = `/api/masters/registrationType/${$('#regId').val()}/ `
+                    succesMessage = 'registration Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#registrationTypeForm').trigger('reset')
+                    $('#submitBtn').val('Add registration type');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

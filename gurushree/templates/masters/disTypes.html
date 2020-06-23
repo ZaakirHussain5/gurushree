@@ -1,0 +1,226 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <form id="disForm">
+                    <div class="row">
+                        <input type="hidden" id="disId">
+                        <div class="form-group col-md-2">
+                            <label for="Name">Discount Type</label>
+                            <input type="text" class="form-control" id="discType" placeholder="Select Discount Type">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Username</label>
+                            <input type="text" class="form-control" id="userName" placeholder="Select Username">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Discount</label>
+                            <input type="Number" class="form-control" id="Discount" placeholder="Enter Discount Value" required>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="Name">is Active?</label>
+
+                            <label class="check-container">
+                                <input type="checkbox" checked="checked" id="isActive">
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Discount Type">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="disTypes" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Slno</th>
+                                <th>Discount Type</th>
+                                <th>Username</th>
+                                <th>Discount</th>
+                                <th>is Active?</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %} {% block scripts%}
+<script>
+    //Depatrments 
+    $(document).ready(function() {
+        var table = $("#disTypes").DataTable({
+            ajax: {
+                url: '/api/masters/discountypes',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'discType'
+            }, {
+                data: 'userId'
+            }, {
+                data: 'discount'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editpage" data-discType="' + row.discType + '" data-discount=' + row.discount + ' data-userId="' + row.userId + '"  data-isactive=' + row.isActive + ' data-dis-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deletepage" data-dis-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        map = {}
+        $.getJSON('/api/masters/generalTypes/?gentype=DiscountType', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#discType").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $.getJSON('/api/masters/user/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.userName] = item
+                    departments.push(item.userName)
+                })
+                $("#userName").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $("#disTypes").on('click', '.editpage', function() {
+            var button = $(this);
+            $('#discType').val(button.attr('data-discType'))
+            $('#Discount').val(button.attr('data-discount'))
+            $('#userName').val(button.attr('data-userId'))
+            $('#isActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#disId').val(button.attr('data-dis-id'))
+            $('#submitBtn').val('Update Discount Type');
+        })
+
+        $("#disTypes").on('click', '.deletepage', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/discountypes/' + button.attr('data-dis-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/discountypes/' + button.attr('data-dis-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Discount Type Mapping Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Discount Type Mapping Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#disForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#disForm').valid()) {
+                var data = {
+                    discType: $('#discType').val(),
+                    discount: $('#Discount').val(),
+                    userId: $('#userName').val(),
+                    isActive: $('#isActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/discountypes/'
+                var succesMessage = 'Discount Type Mapping  Added Successully '
+                if (btnText == 'Update Discount Type') {
+                    method = 'PUT';
+                    url = `/api/masters/discountypes/${$('#disId').val()}/ `
+                    succesMessage = 'Discount Type Mapping Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#disForm').trigger('reset')
+                    $('#submitBtn').val('Add Discount Type');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

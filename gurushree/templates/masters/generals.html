@@ -1,0 +1,390 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill nav-pills" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home" data-toggle="tab" href="#genTypes" role="tab" aria-controls="nav-home" aria-selected="true">General Types</a>
+                <a class="nav-item nav-link" id="nav-profile" data-toggle="tab" href="#generals" role="tab" aria-controls="nav-profile" aria-selected="false">Generals</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="genTypes" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <form id="GenTypeForm">
+                                    <div class="row">
+                                        <input type="hidden" id="genId">
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">General Type</label>
+                                            <input type="text" class="form-control" id="gname" placeholder="Enter General Type Name" required>
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label for="Name">is Active?</label>
+                                            <label class="check-container">
+                                                <input type="checkbox" checked="checked" id="isActive">
+                                                <span class="checkmark"></span>
+                                            </label>
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add General Type">
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="GenTypes" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Slno</th>
+                                                <th>General Type</th>
+                                                <th>is Active?</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="generals" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <form id="generaltypeForm">
+                                    <div class="row">
+                                        <input type="hidden" id="genID">
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">General Type</label>
+                                            <input type="text" class="form-control" id="gentype" placeholder="Select General Type">
+                                        </div>
+                                        <div class=" form-group col-md-3">
+                                            <label for="Name">Name</label>
+                                            <input type="text" id="Name" class="form-control" placeholder="Enter General Name">
+                                        </div>
+                                        <div class=" form-group col-md-3">
+                                            <label for="Name">General Value</label>
+                                            <input type="text" id="genvalue" class="form-control" placeholder="Enter General Value">
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label for="Name">is Active?</label>
+                                            <label class="check-container">
+                                                <input type="checkbox" checked="checked" id="dIsActive">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <input type="submit" class="btn btn-danger mt-4" id="ggsubmitBtn" value="Add General">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" style="width:100%" id="generaltype">
+                                        <thead>
+                                            <tr>
+                                                <th>Slno</th>
+                                                <th>General Type</th>
+                                                <th>Name</th>
+                                                <th>General Value</th>
+                                                <th>is Active?</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %} {% block scripts%}
+<script>
+    $(document).ready(function() {
+        var table = $('#generaltype').DataTable({
+            ajax: {
+                url: '/api/masters/generalTypes',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'genType'
+            }, {
+                data: 'name'
+            }, {
+                data: 'genValue'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editGeneraltype" data-genType=" ' + row.genType + '" data-name=" ' + row.name + '" data-genValue=" ' + row.genValue + '" data-isactive="' + row.isActive + '" data-genType-id=" ' + data + '"><i class="fas fa-edit" > </i></button > ' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deleteGeneraltype" data-genType-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        map = {}
+        $.getJSON('/api/masters/gentypes/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#gentype").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+
+
+        $("#generaltype").on('click', '.editGeneraltype', function() {
+            var button = $(this);
+            $('#Name').val(button.attr('data-name'))
+            $('#gentype').val(button.attr('data-genType'))
+            $('#genvalue').val(button.attr('data-genValue'))
+            $('#dIsActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#genID').val(button.attr('data-genType-id'))
+            $('#gsubmitBtn').val('Update General');
+        })
+
+        $("#generaltype").on('click', '.deleteGeneraltype', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/generalTypes/' + button.attr('data-genType-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/generalTypes/' + button.attr('data-genType-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('General Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('General Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#generaltypeForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#generaltypeForm').valid()) {
+                var data = {
+                    name: $('#Name').val(),
+                    genType: $('#gentype').val(),
+                    genValue: $('#genvalue').val(),
+                    isActive: $('#dIsActive').prop('checked') == true
+                }
+                var btnText = $('#gsubmitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/generalTypes/'
+                var succesMessage = 'General Added Successully '
+                if (btnText == 'Update General') {
+                    method = 'PUT';
+                    url = `/api/masters/generalTypes/${$('#genID').val()}/ `
+                    succesMessage = 'General Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#generaltypeForm').trigger('reset')
+                    $('#gsubmitBtn').val('Add General');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                    s
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+<script>
+    //States
+    $(document).ready(function() {
+        var table = $('#GenTypes').DataTable({
+            ajax: {
+                url: '/api/masters/gentypes/',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'name'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm edit" data-type=" ' + row.name + '" data-isactive=' + row.isActive + ' data-gen-id=" ' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 delete" data-gen-id=" ' + data + '"><i class="fas fa-trash"></i></button>'
+
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+
+        $('#GenTypes').on('click', '.edit', function() {
+            var button = $(this);
+            $('#gname').val(button.attr('data-type'))
+            $('#genId').val(button.attr('data-gen-id'))
+            $('#isActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#submitBtn').val('Update General Type')
+        })
+
+
+        $("#GenTypes").on('click', '.delete', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/gentypes/' + button.attr('data-gen-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/gentypes/' + button.attr('data-gen-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('General Type Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('General Type Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+
+
+        $('#GenTypeForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#GenTypeForm').valid()) {
+                var data = {
+                    name: $('#gname').val(),
+                    isActive: $('#isActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/gentypes/'
+                var succesMessage = 'General Type Added Successully '
+                if (btnText == 'Update General Type') {
+                    method = 'PUT';
+                    url = `/api/masters/gentypes/${$('#genId').val()}/ `
+                    succesMessage = 'General Type Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#GenTypeForm').trigger('reset')
+                    $('#submitBtn').val('Add General Type');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

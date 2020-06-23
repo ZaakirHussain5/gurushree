@@ -1,0 +1,406 @@
+{% extends 'admin_layout.html' %} {% load static %}{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill nav-pills" id="nav-tab" role="tablist">\
+                <a class="nav-item nav-link active" id="userTableTab" data-toggle="tab" href="#Table" role="tab" aria-controls="nav-profile" aria-selected="false">Users List</a>
+
+                <a class="nav-item nav-link " id="userFormTab" data-toggle="tab" href="#Form" role="tab" aria-controls="nav-home" aria-selected="true">User Form</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade" id="Form" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <form id="UserForm">
+                                    <input type="hidden" name='id' id="UserId">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card-header">
+                                                <i class="fa fa-user"></i> Primary Details
+                                            </div>
+                                            <div class="p-3">
+                                                <div class="row">
+
+                                                    <div class="col-md-12 ml-5 pl-5">
+                                                        <div class="wrap-custom-file">
+                                                            <input type="file" name="photo" id="image1" accept=".gif, .jpg, .png" />
+                                                            <label for="image1">
+                                       <span>Select Photo</span>
+                                       <i class="fa fa-plus-circle"></i>
+                                     </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Name">Username</label>
+                                                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Enter User Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Fullname</label>
+                                                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter Full Name" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">DOB</label>
+                                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" placeholder="Select Date of birth" required>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">Age</label>
+                                                        <input type="numbers" class="form-control" id="age" name="age" placeholder="" required>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">Gender</label>
+                                                        <select name="gender" id="gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">Marital Status</label>
+                                                        <select name="marital" id="marital" class="form-control">
+                                        <option value="">Select Status</option>
+                                        <option value="Male">Single</option>
+                                        <option value="Female">Married</option>
+                                        <option value="Widow">Widow</option>
+                                    </select>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="card-header">
+                                                <i class="fa fa-plus"></i> Professional Details
+                                            </div>
+                                            <div class="p-3">
+                                                <div class="form-group">
+                                                    <label for="Name">Department</label>
+                                                    <input type="text" class="form-control" placeholder="Select Department" id="DepartmentCombo" name="department">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Employee Code</label>
+                                                    <input type="text" class="form-control" id="empCode" name="empCode" placeholder="Enter Employee Code" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">User Type</label>
+                                                    <input type="text" class="form-control" id="UserType" name='user' placeholder="Select User Type">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Couter</label>
+                                                    <input type="text" class="form-control" id="counter" name="counter" placeholder="Enter Counter" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Relation Type</label>
+                                                    <input type="text" class="form-control" id="RelType" name="relationtype" placeholder="Select Relation Type" required>
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Relation Name</label>
+                                                    <input type="text" class="form-control" id="relationname" name="relationname" placeholder="Enter Relation Name" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="check-container">
+                                                        <input type="checkbox" checked="checked" id="isActive" name="isActive"> is Active?
+                                                        <span class="checkmark"></span>
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="card-header">
+                                                <i class="fa fa-phone"></i> Contact Details
+                                            </div>
+                                            <div class="p-3">
+                                                <div class="form-group">
+                                                    <label for="Name">Mobile Number</label>
+                                                    <input type="text" class="form-control" id="mobileno" name="mobileno" placeholder="Enter State Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Alternate Mobile Number</label>
+                                                    <input type="text" class="form-control" id="alternateContact" name="alternateContact" placeholder="Enter State Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Email</label>
+                                                    <input type="email" class="form-control" id="emailid" name="emailid" placeholder="Enter State Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Address</label>
+                                                    <textarea name="address" id="address" class="form-control"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="mt-5">
+                                                        <button type="reset" class=" btn btn-default float-right">
+                                         Reset
+                                    </button>
+                                                        <button type="submit" class="btn btn-danger float-right mr-2" id="submitUser">
+                                                Add User
+                                            </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                            <div class="card-footer">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade  show active" id="Table" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <table id="usersTable" style="width:100%" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Slno</th>
+                                            <th>
+                                                Photo
+                                            </th>
+                                            <th>EmpCode</th>
+                                            <th>Fullname</th>
+                                            <th>Department</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}{% block scripts %}
+<script>
+    $(document).ready(function() {
+        map = {}
+        $.getJSON('/api/masters/subdepartmentsList/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[`${item.department.name},${item.subDepartment}`] = item
+                    departments.push(`${item.department.name},${item.subDepartment}`)
+                })
+                $("#DepartmentCombo").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $.getJSON('/api/masters/generalTypes/?gentype=RelationType', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#RelType").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $.getJSON('/api/masters/generalTypes/?gentype=UserType', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#UserType").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        var table = $('#usersTable').DataTable({
+            ajax: {
+                url: '/api/masters/user/',
+                dataSrc: ''
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'photo',
+                render: function(data) {
+                    return '<img src="' + data + '" style="height:80px;width:120px">'
+                }
+            }, {
+                data: 'empCode'
+            }, {
+                data: 'userName'
+            }, {
+                data: 'department'
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return "<button type='button' class='btn btn-danger btn-sm edit' data-user='" + JSON.stringify(row).replace('"', '\"') + "'><i class='fas fa-edit'></i></button>" +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 delete" data-user-id="' + data + '"><i class="fas fa-trash"></i></button>'
+
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        $('#usersTable').on('click', '.edit', function() {
+            var button = $(this)
+            var user = JSON.parse(button.attr('data-user'))
+            formDeserialize(document.getElementById('UserForm'), user)
+            $('#submitUser').html('Update User')
+            $('#userFormTab').trigger('click')
+        })
+
+        $("#ProfessionalTable").on('click', '.delete', function() {
+            var button = $(this);
+            $.ajax({
+                data: JSON.stringify({
+                    isActive: false
+                }),
+                method: 'PUT',
+                url: '/api/masters/user/' + button.attr('data-user-id') + '/',
+                success: function(data) {
+                    table.ajax.reload()
+                    toastr.success('User Deactivated Successfully', 'Success', {
+                        positionClass: "toast-top-center "
+                    })
+                },
+                error: function(err) {
+                    toastr.error('User Deactivation failed', 'Error', {
+                        positionClass: "toast-top-center "
+                    })
+                }
+            })
+        })
+
+        function formDeserialize(form, data) {
+            const entries = (new URLSearchParams(data)).entries();
+            for (const [key, val] of entries) {
+                //http://javascript-coder.com/javascript-form/javascript-form-value.phtml
+                const input = form.elements[key];
+                if (input != undefined) {
+                    if (input.type == 'file') {
+                        var $file = $('#' + input.id),
+                            $label = $file.next('label'),
+                            $labelText = $label.find('span'),
+                            labelDefault = $labelText.text();
+                        var filename = val.split('/').pop()
+                        console.log(filename)
+                        if (filename) {
+                            $label
+                                .addClass('file-ok')
+                                .css('background-image', 'url(' + val + ')');
+                            $labelText.text(filename);
+                        } else {
+                            $label.removeClass('file-ok');
+                            $labelText.text(labelDefault);
+                        }
+                    } else {
+
+                        switch (input.type) {
+                            case 'checkbox':
+                                input.checked = !!val;
+                                break;
+                            case 'select-one':
+                                if (val)
+                                    input.value = val;
+                                else
+                                    input.selectedIndex = 0;
+
+                                break;
+                            default:
+                                input.value = val;
+                                break;
+
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        $('#UserForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+
+            var data = new FormData(this)
+            var action = 'POST'
+            var url = '/api/masters/user/'
+            var successMessage = 'User Added Successfully'
+            if ($('#submitUser').html() == 'Update User') {
+                if (document.getElementById('image1').files.length == 0)
+                    data.delete('photo')
+                action = 'PUT'
+                url = `/api/masters/user/${$('#UserId').val()}/`
+                successMessage = 'User Update Successfully'
+            }
+            $.ajax({
+                url: url,
+                data: data,
+                method: action,
+                contentType: false,
+                processData: false,
+                success: function() {
+                    table.ajax.reload()
+                    $('#userTableTab').trigger('click')
+                    toastr.success(successMessage, "Done", {
+                        positionClass: "toast-top-center"
+                    })
+                },
+                error: function(err) {
+                    console.log(err)
+                    $('#UserForm').trigger('reset')
+                    toastr.error("Operation Failed", 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                }
+            })
+        })
+    })
+</script> {% endblock %}

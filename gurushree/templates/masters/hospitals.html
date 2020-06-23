@@ -1,0 +1,206 @@
+{% extends 'admin_layout.html' %} {% load static %}{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <form id="HospitalForm">
+                <div class="card-body">
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card-header">
+                                <i class="fa fa-building"></i> Primary Details
+                            </div>
+                            <input type="hidden" id="id" name="id">
+                            <div class="p-3">
+                                <div class="form-group">
+                                    <label for="Name">Hospital  name</label>
+                                    <input type="text" class="form-control" id="hospitalName" name="hospitalName" placeholder="Enter Hospital Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">Hospital Shortname</label>
+                                    <input type="text" class="form-control" id="shortName" name="shortName" placeholder="Enter Short Name" required>
+                                </div>
+                                <div class="card-header">
+                                    <i class="fa fa-image"></i> Logo (Optional)
+                                </div>
+                                <div class="row">
+
+                                    <div class="form-group col-md-6">
+                                        <div class="wrap-custom-file">
+                                            <input type="file" name="Logo1" id="image1" accept=".gif, .jpg, .png" />
+                                            <label for="image1">
+                                       <span>Select Logo One</span>
+                                       <i class="fa fa-plus-circle"></i>
+                                     </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <div class="wrap-custom-file">
+                                            <input type="file" name="Logo2" id="image2" accept=".gif, .jpg, .png" />
+                                            <label for="image2">
+                                         <span>Select Logo Two</span>
+                                          <i class="fa fa-plus-circle"></i>
+                                         </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="check-container">
+                                        <input type="checkbox" checked="checked" id="isActive" name="isActive"> is Active?
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-header">
+                                <i class="fa fa-phone"></i> Contact Details
+                            </div>
+                            <div class="p-3">
+                                <div class="form-group">
+                                    <label for="Name">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">FAX</label>
+                                    <input type="text" class="form-control" id="FAX" name="FAX" placeholder="Enter FAX Address" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">Address 1</label>
+                                    <textarea name="address1" id="address1" placeholder="Enter Address1" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">Address 2</label>
+                                    <textarea name="address2" id="address2" placeholder="Enter Address2" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Name">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode" required>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-danger btn-lg float-right mr-2">
+                   <i class="fa fa-save"></i> Save Details
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}{% block scripts %}
+<script>
+    $(document).ready(function() {
+        var update = false;
+        $.getJSON('/api/masters/hospital/', {}, function(data) {
+            if (data[0]) {
+                update = true;
+                formDeserialize(document.getElementById('HospitalForm'), data[0])
+            } else {
+                update = xfalse;
+            }
+        })
+
+        function formDeserialize(form, data) {
+            const entries = (new URLSearchParams(data)).entries();
+            for (const [key, val] of entries) {
+                //http://javascript-coder.com/javascript-form/javascript-form-value.phtml
+                const input = form.elements[key];
+                if (input != undefined) {
+                    if (input.type == 'file') {
+                        var $file = $('#' + input.id),
+                            $label = $file.next('label'),
+                            $labelText = $label.find('span'),
+                            labelDefault = $labelText.text();
+                        var filename = val.split('/').pop()
+                        console.log(filename)
+                        if (filename) {
+                            $label
+                                .addClass('file-ok')
+                                .css('background-image', 'url(' + val + ')');
+                            $labelText.text(filename);
+                        } else {
+                            $label.removeClass('file-ok');
+                            $labelText.text(labelDefault);
+                        }
+                    } else {
+
+                        switch (input.type) {
+                            case 'checkbox':
+                                input.checked = !!val;
+                                break;
+                            case 'select-one':
+                                if (val)
+                                    input.value = val;
+                                else
+                                    input.selectedIndex = 0;
+
+                                break;
+                            default:
+                                input.value = val;
+                                break;
+
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        $('#HospitalForm').submit(function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            if ($('#HospitalForm').valid()) {
+                var data = new FormData(this)
+                var url = '/api/masters/hospital/'
+                var action = 'POST'
+                if (update == true) {
+                    if (document.getElementById('image1').files.length == 0)
+                        data.delete('Logo1')
+                    if (document.getElementById('image2').files.length == 0)
+                        data.delete('Logo2')
+                    url = `/api/masters/hospital/${$('#id').val()}/`
+                    action = 'PUT'
+                }
+                $.ajax({
+                    url: url,
+                    method: action,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#id').val(response.id)
+                        update = true;
+                        toastr.success("Hospital Details Saved Successfully", "Success", {
+                            positionClass: 'toast-top-center'
+                        })
+
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error("Hospital Details Saving Failed", "Error", {
+                            positionClass: 'toast-top-center'
+                        })
+                    }
+
+                })
+            }
+        })
+    })
+</script>{% endblock %}

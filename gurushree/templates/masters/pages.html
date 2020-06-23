@@ -1,0 +1,223 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <form id="pageForm">
+                    <div class="row">
+                        <input type="hidden" id="pageId">
+                        <div class="form-group col-md-2">
+                            <label for="Name">Menu</label>
+                            <input type="text" class="form-control" id="menu" placeholder="Select Menu Name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Sub Menu Name</label>
+                            <select name="" id="smenu" class="form-control">
+                                <option value="">Select Sub Menu Name</option>
+                                <option value="Masters">Masters</option>
+                                <option value="Transactions">Transactions</option>
+                                <option value="Reports">Reports</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Name">Page Name</label>
+                            <input type="text" id="pname" class="form-control" id="priority" placeholder="Enter Menu Icon Name" required>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Priority</label>
+                            <input type="Number" class="form-control" id="priority" placeholder="Enter Priority Value" required>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="Name">is Active?</label>
+
+                            <label class="check-container">
+                                <input type="checkbox" checked="checked" id="dIsActive">
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Page">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="page" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Slno</th>
+                                <th>Menu</th>
+                                <th>Submenu</th>
+                                <th>Page</th>
+                                <th>Priority</th>
+                                <th>is Active?</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %} {% block scripts%}
+<script>
+    //Depatrments 
+    $(document).ready(function() {
+        var table = $("#page").DataTable({
+            ajax: {
+                url: '/api/masters/pagemaster',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'pageName'
+            }, {
+                data: 'menuid'
+            }, {
+                data: 'submenuName'
+            }, {
+                data: 'priority'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editpage" data-pageName=' + row.pageName + ' data-submenuName=' + row.submenuName + ' data-menuid=' + row.menuid + ' data-priority=' + row.priority + '  data-isactive=' + row.isActive + ' data-page-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deletepage" data-page-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        map = {}
+        $.getJSON('/api/masters/menu/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.MenuName] = item
+                    departments.push(item.MenuName)
+                })
+                $("#menu").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $("#page").on('click', '.editpage', function() {
+            var button = $(this);
+            $('#pname').val(button.attr('data-pageName'))
+            $('#menu').val(button.attr('data-menuid'))
+            $('#smenu').val(button.attr('data-submenuName'))
+            $('#priority').val(button.attr('data-priority'))
+            $('#dIsActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#pageId').val(button.attr('data-page-id'))
+            $('#submitBtn').val('Update page type');
+        })
+
+        $("#page").on('click', '.deletepage', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/pagemaster/' + button.attr('data-page-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/pagemaster/' + button.attr('data-page-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Page Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Page Type Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#pageForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#pageForm').valid()) {
+                var data = {
+                    pageName: $('#pname').val(),
+                    menuid: $('#menu').val(),
+                    submenuName: $('#smenu').val(),
+                    priority: $('#priority').val(),
+                    isActive: $('#dIsActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/pagemaster/'
+                var succesMessage = 'Page  Added Successully '
+                if (btnText == 'Update page type') {
+                    method = 'PUT';
+                    url = `/api/masters/pagemaster/${$('#pageId').val()}/ `
+                    succesMessage = 'page Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#pageForm').trigger('reset')
+                    $('#submitBtn').val('Add page type');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

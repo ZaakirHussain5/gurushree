@@ -1,0 +1,188 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <form id="menuForm">
+                    <div class="row">
+                        <input type="hidden" id="menuId">
+                        <div class="form-group col-md-3">
+                            <label for="Name">Menu Name</label>
+                            <input type="text" id="mname" class="form-control" placeholder="Enter Menu Name" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Name">Menu Icon</label>
+                            <input type="text" class="form-control" id="micon" placeholder="Enter Menu Icon Name" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Name">Priority</label>
+                            <input type="Number" class="form-control" id="priority" placeholder="Enter Priority Value" required>
+                        </div>
+                        <div class="form-group col-md-1 ">
+                            <label for="Name">is Active?</label>
+                            <label class="check-container">
+                                <input type="checkbox" checked="checked" id="dIsActive">
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Menu">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="menu" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Slno</th>
+                                <th>Menu Name</th>
+                                <th>Icon</th>
+                                <th>Priority</th>
+                                <th>is Active?</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %} {% block scripts%}
+<script>
+    $(document).ready(function() {
+        var table = $("#menu").DataTable({
+            ajax: {
+                url: '/api/masters/menu',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'MenuName'
+            }, {
+                data: 'MenuIcon'
+            }, {
+                data: 'priority'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editmenu" data-MenuName=' + row.MenuName + ' data-MenuIcon=' + row.MenuIcon + ' data-priority=' + row.priority + ' data-isactive=' + row.isActive + ' data-MenuName-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deletemenu" data-MenuName-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+        $("#menu").on('click', '.editmenu', function() {
+            var button = $(this);
+            $('#mname').val(button.attr('data-MenuName'))
+            $('#micon').val(button.attr('data-MenuIcon'))
+            $('#priority').val(button.attr('data-priority'))
+            $('#dIsActive').prop('checked', button.attr('data-isactive'))
+            $('#menuId').val(button.attr('data-MenuName-id'))
+            $('#submitBtn').val('Update menu');
+        })
+        $("#menu").on('click', '.deletemenu', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/menu/' + button.attr('data-MenuName-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/menu/' + button.attr('data-MenuName-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Menu Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Menu Type Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+        $('#menuForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#menuForm').valid()) {
+                var data = {
+                    MenuName: $('#mname').val(),
+                    MenuIcon: $('#micon').val(),
+                    priority: $('#priority').val(),
+                    isActive: $('#dIsActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/menu/'
+                var succesMessage = 'Menu Added Successully '
+                if (btnText == 'Update menu') {
+                    method = 'PUT';
+                    url = `/api/masters/menu/${$('#menuId').val()}/ `
+                    succesMessage = 'Menu Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#menuForm').trigger('reset')
+                    $('#submitBtn').val('Add menu');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                    s
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

@@ -1,0 +1,405 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill nav-pills" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Departments</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Sub-departments</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <form id="departmentForm">
+                                    <div class="row">
+                                        <input type="hidden" id="deptId">
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">Department</label>
+                                            <input type="text" class="form-control" id="deptName" placeholder="Enter Department Name" required>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">Priority</label>
+                                            <input type="number" class="form-control" id="priority" placeholder="Enter Priority Value" required>
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label for="Name">is Active?</label>
+                                            <label class="check-container">
+                                                <input type="checkbox" checked="checked" id="dIsActive"  class="form-control">
+                                                <span class="checkmark"></span>
+                                            </label>
+
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Department">
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="departments" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Slno</th>
+                                                <th>Department</th>
+                                                <th>Priority</th>
+                                                <th>is Active?</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <form id="subdepartmentForm">
+                                    <input type="hidden" id="sdeptId">
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">Department</label>
+                                            <input type="text" class="form-control" id="sDepartment" placeholder="Select Department">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">Sub-Department</label>
+                                            <input type="text" class="form-control" id="sName" placeholder="Enter Sub-Department Name" name="sName" required>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="Name">Priority</label>
+                                            <input type="number" class="form-control" id="sPriority" placeholder="Enter Priority Value" name="sPririty" required>
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label for="Name">is Active?</label>
+                                            <label class="check-container">
+                                                <input type="checkbox" checked="checked" id="sIsActive">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <input type="submit" class="btn btn-danger mt-4" id="submitSub" value="Add Sub Department">
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="subdepartments" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Slno</th>
+                                                <th>Department</th>
+                                                <th>Sub Department</th>
+                                                <th>Priority</th>
+                                                <th>is Active?</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {% block scripts%}
+<script>
+    //Depatrments 
+    $(document).ready(function() {
+        var table = $("#departments").DataTable({
+            ajax: {
+                url: '/api/masters/departments',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'name'
+            }, {
+                data: 'priority'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editDept" data-dept=' + row.name + ' data-priority=' + row.priority + ' data-isactive="' + row.isActive + '" data-dept-id=" ' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deleteDept" data-dept-id=" ' + data + '"><i class="fas fa-trash"></i></button>'
+
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        map = {}
+        $.getJSON('/api/masters/departments/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#sDepartment").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+
+
+        $("#departments").on('click', '.editDept', function() {
+            var button = $(this);
+            $('#deptName').val(button.attr('data-dept'))
+            $('#priority').val(button.attr('data-priority'))
+            $('#dIsActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#deptId').val(button.attr('data-dept-id'))
+            $('#submitBtn').val('Update Department');
+        })
+
+        $("#departments").on('click', '.deleteDept', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/departments/' + button.attr('data-dept-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/departments/' + button.attr('data-dept-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Department Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Department Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#departmentForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#departmentForm').valid()) {
+                var data = {
+                    name: $('#deptName').val(),
+                    priority: $('#priority').val(),
+                    isActive: $('#dIsActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/departments/'
+                var succesMessage = 'Depratment Added Successully '
+                if (btnText == 'Update Department') {
+                    method = 'PUT';
+                    url = `/api/masters/departments/${$('#deptId').val()}/ `
+                    succesMessage = 'Depratment Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#departmentForm').trigger('reset')
+                    $('#submitBtn').val('Add Department');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+<script>
+    //Sub Departments Scripts
+    $(document).ready(function() {
+        var table = $("#subdepartments").DataTable({
+            ajax: {
+                url: '/api/masters/subdepartmentsList',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'department.name'
+            }, {
+                data: 'subDepartment'
+            }, {
+                data: 'priority'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editDept" data-dept=' + row.department.name + ' data-priority=' + row.priority + ' data-name=' + row.subDepartment + ' data-isactive="' + row.isActive + '" data-dept-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deleteDept" data-dept-id=" ' + data + '"><i class="fas fa-trash"></i></button>'
+
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            }
+        })
+
+        $("#subdepartments").on('click', '.editDept', function() {
+            var button = $(this);
+            $('#sDepartment').val(button.attr('data-dept'))
+            $('#sName').val(button.attr('data-name'))
+            $('#sPriority').val(button.attr('data-priority'))
+            $('#sIsActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#sdeptId').val(button.attr('data-dept-id'))
+            $('#submitSub').val('Update Sub Department');
+        })
+
+        $("#subdepartments").on('click', '.deleteDept', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/subdepartments/' + button.attr('data-dept-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/subdepartments/' + button.attr('data-dept-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Sub Department Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Sub Department Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+
+
+        })
+
+        $('#subdepartmentForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#subdepartmentForm').valid()) {
+                var data = {
+                    department: map[$('#sDepartment').val()].id,
+                    subDepartment: $('#sName').val(),
+                    priority: $('#sPriority').val(),
+                    isActive: $('#sIsActive').prop('checked') == true
+                }
+                var btnText = $('#submitSub').val();
+                var method = 'POST';
+                var url = '/api/masters/subdepartments/'
+                var succesMessage = 'Sub Depratment Added Successully '
+                if (btnText == 'Update Sub Department') {
+                    method = 'PUT';
+                    url = `/api/masters/subdepartments/${$('#sdeptId').val()}/ `
+                    succesMessage = 'Sub Depratment Updated Successfully'
+                }
+                console.log(data)
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#subdepartmentForm').trigger('reset')
+                    $('#submitSub').val('Add Sub Department');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Sub Department Adding failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>{% endblock %}
