@@ -185,8 +185,11 @@ class SubdepartmentsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def get_queryset(self):
         queryset = SubDepartment.objects.all()
         flag = self.request.query_params.get('isActive', None)
+        department = self.request.query_params.get('department', None)
         if flag is not None:
             queryset = queryset.filter(isActive=flag)
+        if department is not None:
+            queryset = queryset.filter(department=department)
         return queryset
     
 
@@ -205,13 +208,20 @@ class GenTypeViewSet(viewsets.ModelViewSet):
         return queryset
 
 class serviceViewSet(viewsets.ModelViewSet):
-    queryset = service.objects.all()
     permissions = [
         permissions.AllowAny
     ]
     serializer_class = serviceSerializer
-
-packagemappingSerializer
+    def get_queryset(self):
+        queryset = service.objects.all()
+        serType = self.request.query_params.get('serType', None)
+        if serType is not None:
+            serTypes=serType.split(',')
+            if len(serTypes)==2:
+                queryset = queryset.filter(SerType=serTypes[0]).filter(isActive=True)|queryset.filter(SerType=serTypes[1]).filter(isActive=True)
+            else:
+                queryset = queryset.filter(SerType=serType).filter(isActive=True)
+        return queryset
 
 
 class packagemappingViewSet(viewsets.ModelViewSet):

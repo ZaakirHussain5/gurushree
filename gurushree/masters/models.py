@@ -271,10 +271,10 @@ class service(models.Model):
     IRDAName=models.CharField(max_length=32, null=True)
     Outsource=models.BooleanField(null=True)
     BillingSequence= models.IntegerField(null=True)
-    Isactive=models.BooleanField(null=True)
-    AddedBY=models.CharField(max_length=32, null=True)
-    Addeddate=models.CharField(max_length=32, null=True)
-    editedby=models.CharField(max_length=32, null=True)
+    isActive = models.BooleanField()
+    addedBY = models.CharField(max_length=32, null=True)
+    addeddate = models.DateTimeField(auto_now_add=True)
+    editedby = models.CharField(max_length=32, null=True)
     editeddate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -282,13 +282,18 @@ class service(models.Model):
 
 class packagemapping(models.Model):
     PackCode = models.IntegerField(null=True)
+    PackName=models.CharField(max_length=40)
     PackSerCode = models.IntegerField(null=True)
+    PackSerName=models.CharField(max_length=40)
     PackSerAmt = models.IntegerField(null=True)
     DrCode = models.IntegerField(null=True)
-    Isactive =models.BooleanField(null=True)
+    isActive =models.BooleanField(null=True)
     AddedBY =models.CharField(max_length=32, null=True)
     Addeddate = models.DateTimeField(auto_now_add=True)
     editedby =models.CharField(max_length=32, null=True)
     editeddate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.PackCode
 
     

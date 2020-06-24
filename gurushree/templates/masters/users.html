@@ -113,7 +113,7 @@
 
                                                 <div class="form-group">
                                                     <label class="check-container">
-                                                        <input type="checkbox" checked="checked" id="isActive" name="isActive"> is Active?
+                                                        <input type="checkbox" checked="checked" id="isActive" name="isactive"> is Active?
                                                         <span class="checkmark"></span>
                                                     </label>
 
@@ -184,6 +184,7 @@
                                             <th>EmpCode</th>
                                             <th>Fullname</th>
                                             <th>Department</th>
+                                            <th>is Active</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -271,6 +272,15 @@
             }, {
                 data: 'department'
             }, {
+                data: 'isactive',
+                render: function(data) {
+                    console.log(data)
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
                 data: 'id',
                 render: function(data, type, row) {
                     return "<button type='button' class='btn btn-danger btn-sm edit' data-user='" + JSON.stringify(row).replace('"', '\"') + "'><i class='fas fa-edit'></i></button>" +
@@ -296,11 +306,11 @@
             $('#userFormTab').trigger('click')
         })
 
-        $("#ProfessionalTable").on('click', '.delete', function() {
+        $("#usersTable").on('click', '.delete', function() {
             var button = $(this);
             $.ajax({
                 data: JSON.stringify({
-                    isActive: false
+                    isactive: false
                 }),
                 method: 'PUT',
                 url: '/api/masters/user/' + button.attr('data-user-id') + '/',
@@ -324,6 +334,7 @@
                 //http://javascript-coder.com/javascript-form/javascript-form-value.phtml
                 const input = form.elements[key];
                 if (input != undefined) {
+                    console.log(input.type)
                     if (input.type == 'file') {
                         var $file = $('#' + input.id),
                             $label = $file.next('label'),

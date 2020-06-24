@@ -18,4 +18,6 @@ urlpatterns = [
     path('masters/hospitals', views.hospitals, name='hospitals'),
     path('masters/users', views.users, name='users'),
     path('masters/professionals', views.professionals, name='professionals'),
+    path('masters/services', views.services, name='services'),
+    path('masters/packagemaping', views.packagemap, name='packagemaping'),
 ]

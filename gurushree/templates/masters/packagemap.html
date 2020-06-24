@@ -1,0 +1,249 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <form id="pageForm">
+                    <div class="row">
+                        <input type="hidden" id="pageId">
+                        <div class="form-group col-md-2">
+                            <label for="Name">Package Code</label>
+                            <input type="text" class="form-control" id="pName" placeholder="Select Package Code">
+                            <input type="hidden" id="pCode">
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label for="Name">Package Service Code</label>
+                            <input type="text" class="form-control" id="pSerName" placeholder="Select Package Service Colde">
+                            <input type="hidden" id="pSerCode">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Package Service Amount</label>
+                            <input type="number" id="sAmt" class="form-control" placeholder="Enter Service Amount" required>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Name">Dr Code</label>
+                            <input type="Number" class="form-control" id="drCode" placeholder="Enter Priority Value" required>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="Name">is Active?</label>
+
+                            <label class="check-container">
+                                <input type="checkbox" checked="checked" id="isActive">
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="submit" class="btn btn-danger mt-4" id="submitBtn" value="Add Pacakge">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-12 col-md-12 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="page" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Slno</th>
+                                <th>Package Code</th>
+                                <th>Package Service Code</th>
+                                <th>Service Amount</th>
+                                <th>Dr Code</th>
+                                <th>is Active?</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %} {% block scripts%}
+<script>
+    //Depatrments 
+    $(document).ready(function() {
+        var table = $("#page").DataTable({
+            ajax: {
+                url: '/api/masters/packagemapping',
+                dataSrc: ""
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'PackName'
+            }, {
+                data: 'PackSerName'
+            }, {
+                data: 'PackSerAmt'
+            }, {
+                data: 'DrCode'
+            }, {
+                data: 'isActive',
+                render: function(data) {
+                    if (data == true)
+                        return '<span class="badge badge-success">Active</span>'
+                    else
+                        return '<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return '<button type="button" class="btn btn-primary btn-sm editpage" data-pName=' + row.PackName + ' data-pSerName=' + row.PackSerName + ' data-pCode=' + row.PackCode + ' data-pSerCode=' + row.PackSerCode + ' data-sAmt=' + row.PackSerAmt + ' data-DrCode=' + row.DrCode + '  data-isactive=' + row.isActive + ' data-pack-id="' + data + '"><i class="fas fa-edit"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 deletepage" data-page-id="' + data + '"><i class="fas fa-trash"></i></button>'
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        map = {}
+        $.getJSON('/api/masters/service/?serType=P', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.ServiceName] = item
+                    departments.push(item.ServiceName)
+                })
+                $("#pName").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $.getJSON('/api/masters/service/?serType=S,G', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.ServiceName] = item
+                    departments.push(item.ServiceName)
+                })
+                $("#pSerName").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $("#pName").on("keyup change mousedown", function() {
+            $('#pCode').val(map[$("#pName").val()].id)
+        })
+
+        $("#pSerName").on("keyup change mousedown", function() {
+            $('#pSerCode').val(map[$("#pSerName").val()].id)
+        })
+
+        $("#page").on('click', '.editpage', function() {
+            var button = $(this);
+            $('#pName').val(button.attr('data-pName'))
+            $('#pSerName').val(button.attr('data-pSerName'))
+            $('#pCode').val(button.attr('data-pCode'))
+            $('#pSerCode').val(button.attr('data-pSerCode'))
+            $('#sAmt').val(button.attr('data-sAmt'))
+            $('#drCode').val(button.attr('data-DrCode'))
+            $('#isActive').prop('checked', button.attr('data-isactive') == 'true')
+            $('#pageId').val(button.attr('data-pack-id'))
+            $('#submitBtn').val('Update Pacakge');
+        })
+
+        $("#page").on('click', '.deletepage', function() {
+            var button = $(this);
+            $.getJSON('/api/masters/packagemapping/' + button.attr('data-page-id') + '/', {}, function(data) {
+                var record = data;
+                record.isActive = false;
+
+                $.ajax({
+                    data: JSON.stringify(record),
+                    method: 'PUT',
+                    url: '/api/masters/packagemapping/' + button.attr('data-page-id') + '/',
+                    contentType: 'application/json',
+                    success: function(data) {
+                        table.ajax.reload()
+                        toastr.success('Package Deleted Successfully', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    },
+                    error: function(err) {
+                        console.log(err)
+                        toastr.error('Package Deletion failed', 'Error', {
+                            positionClass: "toast-top-center"
+                        })
+                    }
+                })
+            })
+        })
+
+        $('#pageForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            if ($('#pageForm').valid()) {
+                var data = {
+                    PackName: $('#pName').val(),
+                    PackSerName: $('#pSerName').val(),
+                    PackCode: $('#pCode').val(),
+                    PackSerCode: $('#pSerCode').val(),
+                    PackSerAmt: $('#sAmt').val(),
+                    DrCode: $('#drCode').val(),
+                    isActive: $('#isActive').prop('checked') == true
+                }
+                var btnText = $('#submitBtn').val();
+                var method = 'POST';
+                var url = '/api/masters/packagemapping/'
+                var succesMessage = 'Package  Added Successully '
+                if (btnText == 'Update Pacakge') {
+                    method = 'PUT';
+                    url = ` /api/masters/packagemapping/${$('#pageId').val()}/`
+                    succesMessage = 'Package Updated Successfully'
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    method: method,
+                    contentType: 'application/json'
+                }).done(function(data) {
+                    table.ajax.reload()
+                    $('#pageForm').trigger('reset')
+                    $('#submitBtn').val('Add Pacakge');
+                    toastr.success(succesMessage, 'Success', {
+                        positionClass: "toast-top-center"
+                    })
+                }).fail((err) => {
+                    console.log(err)
+                    toastr.error('Operation failed', 'Error', {
+                        positionClass: "toast-top-center"
+                    })
+                })
+            }
+        })
+    })
+</script>
+{%endblock%}

@@ -58,3 +58,9 @@ def genTypes(request):
 
 def disType(request):
     return render(request,'masters/disTypes.html')
+
+def services(request):
+    return render(request,'masters/services.html')
+
+def packagemap(request):
+    return render(request,'masters/packagemap.html')

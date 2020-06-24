@@ -1,0 +1,423 @@
+{% extends 'admin_layout.html' %} {% load static %}{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"></h1>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill nav-pills" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="ProTab" data-toggle="tab" href="#Table" role="tab" aria-controls="nav-profile" aria-selected="false">Services List</a>
+                <a class="nav-item nav-link" id="ProForm" data-toggle="tab" href="#Form" role="tab" aria-controls="nav-home" aria-selected="true">Service Form</a>
+
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade " id="Form" role="tabpanel" aria-labelledby="ProForm">
+
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <form id="ServicesForm">
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="hidden" id="serId" name="id">
+                                            <div class="p-3">
+                                                <div class="form-group">
+                                                    <label for="Name">Service Type</label><br>
+                                                    <div class="form-check-inline">
+                                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="SerType" checked="" value="S">S
+                                        </label>
+                                                    </div>
+                                                    <div class="form-check-inline">
+                                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="SerType" value="G">G
+                                        </label>
+                                                    </div>
+                                                    <div class="form-check-inline">
+                                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="SerType" value="P">P
+                                        </label>
+                                                    </div>
+                                                    <div class="form-check-inline">
+                                                        <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="SerType" value="C">C
+                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Services Name</label>
+                                                    <input type="text" class="form-control" id="ServiceName" name="ServiceName" placeholder="Enter Services Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Name">Short Name</label>
+                                                    <input type="text" class="form-control" id="ShortName" name="ShortName" placeholder="Enter Services Short Name" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">Department</label>
+                                                        <input type="text" class="form-control" id="DeptName" name="DeptName" placeholder="Select Departmnt" required>
+                                                        <input type="hidden" id="DeptId" name="DeptId">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">Subdepartment</label>
+                                                        <input type="text" class="form-control" id="SubDeptName" name="SubDeptName" placeholder="Select Sub Department" required>
+                                                        <input type="hidden" id="SubDeptId" name="SubDeptId">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Name">Service Amount</label>
+                                                    <input type="number" class="form-control" id="SerAmount" name="SerAmount" placeholder="Enter Services Amount" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">IRDA Code</label>
+                                                        <input type="text" class="form-control" id="IRDACode" name="IRDACode" placeholder="Enter IRDA Code" required>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="Name">IRDA Name</label>
+                                                        <input type="text" class="form-control" id="IRDAName" name="IRDAName" placeholder="Enter IRDA Name" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Name">Billing Sequence</label>
+                                                    <input type="number" class="form-control" id="BillingSequence" name="BillingSequence" placeholder="Enter Services Amount" required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class=" col-md-6">
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPDrNameinBilling" name="OPDrNameinBilling"> OP Dr Name in Billing
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPReferalBilling" name="OPReferalBilling"> OP Referal Billing
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPDiscountApply" name="OPDiscountApply"> OP Discount Apply
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPEditServiceAmt" name="OPEditServiceAmt"> OP Edit Service Amount
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPEditQty" name="OPEditQty"> OP Edit Qty
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="OPToken" name="OPToken"> OP Token
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPDrNameinBilling" name="IPDrNameinBilling"> IP Dr Name in Billing
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPReferalBilling" name="IPReferalBilling"> IP Referal Billing
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPDiscountApply" name="IPDiscountApply"> IP Discount Apply
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPEditServiceAmt" name="IPEditServiceAmt"> IP Edit Service Amount
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPEditQty" name="IPEditQty"> IP Edit Qty
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="IPToken" name="OPToken"> IP Token
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="token" name="token"> Outsource
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="check-container">
+                                                    <input type="checkbox" checked="checked" id="isActive" name="isActive"> is Active?
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+
+                                    <button type="submit" id="SubmitPro" class="btn btn-danger">
+                                                Add Services
+                                            </button>
+                                </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade show active" id="Table" role="tabpanel" aria-labelledby="ProTab">
+
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover" style="width:100%" id="ServicesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Slno</th>
+                                            <th>Service Type</th>
+                                            <th>Services Name</th>
+                                            <th>Department</th>
+                                            <th>Subdepartment</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock %}{% block scripts %}
+<script>
+    $(document).ready(function() {
+
+        map = {}
+        $.getJSON('/api/masters/departments/?isActive=True', {}, function(data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function(i, item) {
+                    map[item.name] = item
+                    departments.push(item.name)
+                })
+                $("#DeptName").autocomplete({
+                    source: departments,
+                    minLength: 0
+                }).focus(function() {
+                    $(this).data("uiAutocomplete").search($(this).val());
+                });;
+            }
+        })
+
+        $("#DeptName").on("keyup change mousedown", function() {
+            $('#DeptId').val(map[$("#DeptName").val()].id)
+            $.getJSON('/api/masters/subdepartmentsList/?isActive=True&department=' + map[$("#DeptName").val()].id, {}, function(data) {
+                if (data) {
+                    var departments = []
+
+                    $.each(data, function(i, item) {
+                        map[`${item.subDepartment},${item.department.name}`] = item
+                        departments.push(item.subDepartment)
+                    })
+                    $("#SubDeptName").autocomplete({
+                        source: departments,
+                        minLength: 0
+                    }).focus(function() {
+                        $(this).data("uiAutocomplete").search($(this).val());
+                    });;
+                }
+            })
+        })
+
+        $("#SubDeptName").on("keyup change mousedown", function() {
+            $('#SubDeptId').val(map[`${$("#SubDeptName").val()},${$("#DeptName").val()}`].id)
+        })
+
+
+        var table = $('#ServicesTable').DataTable({
+            ajax: {
+                url: '/api/masters/service/',
+                dataSrc: ''
+            },
+            columns: [{
+                data: "id"
+            }, {
+                data: 'SerType'
+            }, {
+                data: 'ServiceName'
+            }, {
+                data: 'DeptName'
+            }, {
+                data: 'SubDeptName'
+            }, {
+                data: 'id',
+                render: function(data, type, row) {
+                    return "<button type='button' class='btn btn-primary btn-sm edit' data-user='" + JSON.stringify(row) + "'><i class='fas fa-edit'></i></button>" +
+                        '<button type="button" class="btn btn-danger btn-sm ml-2 delete" data-pro-id="' + data + '"><i class="fas fa-trash"></i></button>'
+
+                }
+            }],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        $('#ServicesTable').on('click', '.edit', function() {
+            var button = $(this)
+            var user = JSON.parse(button.attr('data-user'))
+            formDeserialize(document.getElementById('ServicesForm'), user)
+            $('#SubmitPro').html('Update Service')
+            $('#ProForm').trigger('click')
+        })
+
+        $("#ServicesTable").on('click', '.delete', function() {
+            var button = $(this);
+            $.ajax({
+                data: JSON.stringify({
+                    isActive: false
+                }),
+                method: 'PUT',
+                url: '/api/masters/service/' + button.attr('data-pro-id') + '/',
+                success: function(data) {
+                    table.ajax.reload()
+                    toastr.success('Services Deactivated Successfully', 'Success', {
+                        positionClass: "toast-top-center "
+                    })
+                },
+                error: function(err) {
+                    toastr.error('Services Deactivation failed', 'Error', {
+                        positionClass: "toast-top-center "
+                    })
+                }
+            })
+        })
+
+        function formDeserialize(form, data) {
+            const entries = (new URLSearchParams(data)).entries();
+            for (const [key, val] of entries) {
+                //http://javascript-coder.com/javascript-form/javascript-form-value.phtml
+                const input = form.elements[key];
+                if (input != undefined) {
+                    if (input.type == 'file') {
+                        var $file = $('#' + input.id),
+                            $label = $file.next('label'),
+                            $labelText = $label.find('span'),
+                            labelDefault = $labelText.text();
+                        var filename = val.split('/').pop()
+                        console.log(filename)
+                        if (filename) {
+                            $label
+                                .addClass('file-ok')
+                                .css('background-image', 'url(' + val + ')');
+                            $labelText.text(filename);
+                        } else {
+                            $label.removeClass('file-ok');
+                            $labelText.text(labelDefault);
+                        }
+                    } else {
+
+                        switch (input.type) {
+                            case 'checkbox':
+                                input.checked = !!val;
+                                break;
+                            case 'select-one':
+                                if (val)
+                                    input.value = val;
+                                else
+                                    input.selectedIndex = 0;
+
+                                break;
+                            default:
+                                input.value = val;
+                                break;
+
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        $('#ServicesForm').submit(function(e) {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+
+            var data = new FormData(this)
+            var action = 'POST'
+            var url = '/api/masters/service/'
+            var successMessage = "Services Added Successfully"
+            if ($('#SubmitPro').html() == 'Update Service') {
+
+                action = 'PUT'
+                url = `/api/masters/service/${$('#serId').val()}/`
+                successMessage = "Services Updated Successfully"
+            }
+            $.ajax({
+                url: url,
+                data: data,
+                method: action,
+                contentType: false,
+                processData: false,
+                success: function() {
+                    $('#ServicesForm').trigger('reset')
+                    $('#ProTab').trigger('click')
+                    table.ajax.reload();
+                    toastr.success(successMessage, "Success", {
+                        positionClass: 'toast-top-center'
+                    })
+                },
+                error: function(err) {
+                    console.log(err)
+
+                    toastr.error("Services Adding Failed", "Error", {
+                        positionClass: 'toast-top-center'
+                    })
+                }
+            })
+        })
+
+
+    })
+</script>
+
+{% endblock %}

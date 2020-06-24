@@ -319,6 +319,10 @@
             language: {
                 lengthMenu: "_MENU_",
                 search: "",
+            },
+            fnRowCallback: function(nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
             }
         })
 
