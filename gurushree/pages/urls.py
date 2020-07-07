@@ -20,4 +20,5 @@ urlpatterns = [
     path('masters/professionals', views.professionals, name='professionals'),
     path('masters/services', views.services, name='services'),
     path('masters/packagemaping', views.packagemap, name='packagemaping'),
+    path('trans/patientReg', views.patientReg, name='patientReg'),
 ]

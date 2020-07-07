@@ -5,8 +5,7 @@ router = routers.DefaultRouter()
 router.register('departments', DepartmentViewSet, 'departments')
 router.register('subdepartments', SubDepartmentViewSet, 'subdepartments')
 router.register('generalTypes', GeneralTypeViewSet, 'generalTypes')
-router.register('registrationType',
-                registrationTypeViewSet, 'registrationType')
+router.register('registrationType', registrationTypeViewSet, 'registrationType')
 router.register('user', userViewSet, 'user')
 router.register('income_expenses', income_expensesViewSet, 'income_expenses')
 router.register('hospital', hospitalViewSet, 'hospital')
@@ -22,6 +21,5 @@ router.register('gentypes', GenTypeViewSet, 'gentypes')
 router.register('discountypes', discounTypeViewSet, 'discountypes')
 router.register('service', serviceViewSet, 'service')
 router.register('packagemapping', packagemappingViewSet, 'packagemapping')
-
 
 urlpatterns = router.urls

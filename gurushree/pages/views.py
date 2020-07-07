@@ -64,3 +64,6 @@ def services(request):
 
 def packagemap(request):
     return render(request,'masters/packagemap.html')
+
+def patientReg(request):
+    return render(request,'transactions/patientReg.html')

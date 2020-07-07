@@ -24,11 +24,11 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasters" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-database"></i>
             <span>Masters</span>
         </a>
-        <div id="collapseTwo" class="collapse show  " aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseMasters" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{% url 'pages:generals'%}">Generals</a>
                 <a class="collapse-item" href="{% url 'pages:departments'%}">Departments</a>
@@ -42,6 +42,18 @@
                 <a class="collapse-item" href="{% url 'pages:professionals' %}">Professionals</a>
                 <a class="collapse-item" href="{% url 'pages:services' %}">Services</a>
                 <a class="collapse-item" href="{% url 'pages:packagemaping' %}">Package Maping</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTrans" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Transactions</span>
+        </a>
+        <div id="collapseTrans" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item spl-item" href="{% url 'pages:patientReg' %}">Patient Registration</a>
             </div>
         </div>
     </li>
