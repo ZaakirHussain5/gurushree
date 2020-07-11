@@ -215,7 +215,7 @@
                     minLength: 0
                 }).focus(function() {
                     $(this).data("uiAutocomplete").search($(this).val());
-                });;
+                });
             }
         })
 
@@ -283,7 +283,7 @@
             }, {
                 data: 'id',
                 render: function(data, type, row) {
-                    return "<button type='button' class='btn btn-danger btn-sm edit' data-user='" + JSON.stringify(row).replace('"', '\"') + "'><i class='fas fa-edit'></i></button>" +
+                    return "<button type='button' class='btn btn-primary btn-sm edit' data-user='" + JSON.stringify(row) + "'><i class='fas fa-edit'></i></button>" +
                         '<button type="button" class="btn btn-danger btn-sm ml-2 delete" data-user-id="' + data + '"><i class="fas fa-trash"></i></button>'
 
                 }

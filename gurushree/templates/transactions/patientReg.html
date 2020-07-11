@@ -6,194 +6,482 @@
     <div class="col-md-12">
         <nav>
             <div class="nav nav-tabs nav-fill nav-pills" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Patient Registration</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Patients List</a>
+                <a class="nav-item nav-link active" id="userFormTab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Patient Registration</a>
+                <a class="nav-item nav-link" id="userTableTab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Patients List</a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 offset-md-1 p-2">
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Registration Type</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="reg_type" name="reg_type" placeholder="Select Registration Type">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Title</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="title" name="title" placeholder="Select Title">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Gender</label>
-                                    <div class="col-sm-8 mt-2">
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input input-lg" name="gender" checked="" value="Male"><i class="fas fa-male"></i> Male
-                                </label>
-                                        </div>
-                                        <div class="form-check-inline">
-                                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input input-lg" name="gender" value="Female"><i class="fas fa-female"></i> Female
-                                </label>
+                        <form id="PatientForm">
+                            <input type="hidden" id="UserId" name="id">
+                            <input type="hidden" name="isActive" value="true">
+                            <div class=" row">
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Registration Type</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="reg_type" name="reg_type" placeholder="Select Registration Type">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Patient Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="p_name" name="p_name" placeholder="Enter Patient Name">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Title</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Select Title">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Year-Month-Day</label>
-                                    <div class="col-sm-8">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" id="year" name="year" placeholder="Year">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Gender</label>
+                                        <div class="col-sm-8 mt-2">
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="gender" checked="" value="Male"><i class="fas fa-male text-lg" style="font-size:1.5rem"></i> Male
+                                    </label>
                                             </div>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" id="month" name="month" placeholder="Month">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control" id="day" name="day" placeholder="Day">
+                                            <div class="form-check-inline">
+                                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="gender" value="Female"><i class="fas fa-female text-lg" style="font-size:1.5rem"></i> Female
+                                    </label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Mobile No.</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter Mobile No.">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Patient Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="p_name" name="p_name" placeholder="Enter Patient Name">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Address</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Year-Month-Day</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" id="year" name="year" placeholder="Year">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" id="month" name="month" placeholder="Month">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" id="day" name="day" placeholder="Day">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-4 col-form-label">Email ID</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Enter Email ID">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Mobile No.</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter Mobile No.">
+                                        </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-4 col-form-label">Address</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address">
+                                        </div>
+                                    </div>
+
+
                                 </div>
-                                <div class="form-group row">
-                                    <button type="submit" class="btn btn-danger offset-md-4 col-md-4">
-                                            Appointment
-                                        </button>
-                                    <button type="submit" class="btn btn-info ml-1 col-md-3">
-                                            Register
-                                        </button>
+
+                                <div class="col-md-5">
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label">Address2</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter Address2">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Location</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Pincode</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Alternamte Contact</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="alternateContact" name="alternateContact" placeholder="Enter Alternamte Contact">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Marital Status</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="marital" name="marital" placeholder="Enter Maital Status">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Father's/Spouse Name</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="father_name" name="father_name" placeholder="Enter Father's/Spouse Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Ocupation</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Enter Ocupation">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Blood Group</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="blood_group" name="blood_group" placeholder="Enter Blood Group">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Religion</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="religion" name="religion" placeholder="Enter Religion">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label for="inputPassword" class="col-sm-6 col-form-label">Nationality</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter Nationality">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row">
+
+                                        <div class="col-md-12 ml-5 pl-5">
+                                            <div class="wrap-custom-file">
+                                                <input type="file" name="p_photo" id="image1" accept=".gif, .jpg, .png" />
+                                                <label for="image1">
+                           <span>Select Patient Photo</span>
+                           <i class="fa fa-plus-circle"></i>
+                         </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-12 ml-5 pl-5">
+                                            <div class="wrap-custom-file">
+                                                <input type="file" name="a_photo" id="image2" accept=".gif, .jpg, .png" />
+                                                <label for="image2">
+                           <span>Select Attendant Photo</span>
+                           <i class="fa fa-plus-circle"></i>
+                         </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6 offset-md-1 p-2">
-                                <div class="form-group row">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label">Address2</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter Address2">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Location</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Pincode</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Alternamte Contact</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="alternateContact" name="alternateContact" placeholder="Enter Alternamte Contact">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Marital Status</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="marital" name="marital" placeholder="Enter Maital Status">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Father's/Spouse Name</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="father_name" name="father_name" placeholder="Enter Father's/Spouse Name">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Ocupation</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="occupation" name="occupation" placeholder="Enter Ocupation">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Blood Group</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="blood_group" name="blood_group" placeholder="Enter Blood Group">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Religion</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="religion" name="religion" placeholder="Enter Religion">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-6 col-form-label">Nationality</label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter Nationality">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
+                            <div class="form-group">
+                                <button type="button" class="btn btn-info ml-2 float-right">
+                                        Appointment
+                                    </button>
+                                <button type="submit" id="submitUser" class="btn btn-danger float-right">
+                                        Register
+                                    </button>
                             </div>
-                        </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover" id="patientsList" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Slno</th>
+                                    <th>Patient Name</th>
+                                    <th>Gender</th>
+                                    <th>Mobile No.</th>
+                                    <th>Email ID</th>
+                                    <th>is Active?</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="PatientDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Patient Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th>Registration Type </th>
+                                <td>Normal</td>
+                            </tr>
+                            <tr>
+                                <th>Name </th>
+                                <td>Mr. Kushal</td>
+                            </tr>
+                            <tr>
+                                <th>Gender</th>
+                                <td>Male</td>
+                            </tr>
+                            <tr>
+                                <th>Age</th>
+                                <td>20 Years,11 Months</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>Mysuru</td>
+                            </tr>
+                            <tr>
+                                <th>Marital Status</th>
+                                <td>Single</td>
+                            </tr><tr>
+                                <th>Father's/Spouse Name</th>
+                                <td>Muthuraja</td>
+                            </tr><tr>
+                                <th>Religion</th>
+                                <td>Hindu</td>
+                            </tr><tr>
+                                <th>Nationality</th>
+                                <td>Indian</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-success btn-block">OP Billing</button>
+                    <button type="button" class="btn btn-success btn-block">IP Admin</button>
+                    <button type="button" class="btn btn-success btn-block">Laboratory</button>
+                    <button type="button" class="btn btn-success btn-block">Radi0</button>
+                    <button type="button" class="btn btn-success btn-block">Excel</button>
+                    <button type="button" class="btn btn-success btn-block">Registration</button>
+                    <button type="button" class="btn btn-success btn-block">Bill History</button>
+                    <button type="button" class="btn btn-success btn-block">Case Sheet</button>
+                    <button type="button" class="btn btn-success btn-block">Consolidate</button>
+                    <button type="button" class="btn btn-success btn-block">Sticker</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        
 
-{% endblock %} {% block scripts %} {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+<!-- Scripts -->
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#sidebarToggle').trigger('click');
+        $("#reg_type").autocomplete({
+            source: ['Normal'],
+            minLength: 0
+        }).focus(function () {
+            $(this).data("uiAutocomplete").search($(this).val());
+        });
+
+        $("#title").autocomplete({
+            source: ['Mr','Ms','Master'],
+            minLength: 0
+        }).focus(function () {
+            $(this).data("uiAutocomplete").search($(this).val());
+        });
+
+        var table = $('#patientsList').DataTable({
+            ajax: {
+                url:'/api/trans/patient_registration',
+                dataSrc:"",
+            },
+            columns: [{
+                data:'id'
+            }, {
+                data:'p_name'
+            }, {
+                data:'gender'
+            }, {
+                data:'mobile_number'
+            }, {
+                data:'email_id'
+            }, {
+                data:'isActive',
+                render: function (data) {
+                    if (data == true)
+                        return'<span class="badge badge-success">Active</span>'
+                    else return'<span class="badge badge-danger">Inactive</span>'
+                }
+            }, {
+                data:'id',
+                render: function (data, type, row) {
+                    return'<button type="button" data-toggle="modal" data-target="#PatientDetails" class ="btn btn-info btn-sm view" > <i class ="fas fa-tasks"></i></button >' +
+                       "<button type ='button' class ='btn btn-primary btn-sm edit' data-patient ='" + JSON.stringify(row) +"' > <i class ='fas fa-edit' > </i></button >" +
+                       '<button type ="button" class ="btn btn-danger btn-sm delete" data-patient-id ="' + data +'" > <i class ="fas fa-trash" > </i></button >'
+                }
+            }],
+            language: {
+                lengthMenu:"_MENU_",
+                search:"",
+            }, fnRowCallback: function (nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        $('#patientsList').on('click','.view', function () { }) 
+        
+        $('#patientsList').on('click','.edit', function () {
+            var button = $(this)
+            var user = JSON.parse(button.attr('data-patient'))
+            formDeserialize(document.getElementById('PatientForm'), user)
+            $('#submitUser').html('Update Patient')
+            $('#userFormTab').trigger('click')
+        })
+
+        $('#patientsList').on('click','.delete', function () {
+            var button = $(this);
+            $.getJSON('/api/trans/patient_registration/' +
+                button.attr('data-patient-id') +'/', {},
+                function (data) {
+                    var record = data;
+                    record.isActive = false;
+                    $.ajax({
+                        data: JSON.stringify(record),
+                        method:'PUT',
+                        url:'/api/trans/patient_registration/' + button.attr('data-patient-id') +'/',
+                        contentType:'application/json',
+                        success: function (data) {
+                            table.ajax.reload()
+                            toastr.success('Patient Deleted Successfully','Success', {
+                                positionClass:"toast-top-center"
+                            })
+                        },
+                        error: function (err) {
+                            console.log(err)
+                            toastr.error('Patient Deletion failed','Error', {
+                                positionClass:"toast-top-center"
+                            })
+                        }
+                    })
+                })
+        })
+
+        $('#PatientForm').submit(function (e) {
+            e.preventDefault() 
+            e.stopImmediatePropagation() 
+            var data = new FormData(this)
+             var action ='POST'
+            var url ='/api/trans/patient_registration/'
+            var successMessage ='User Added Successfully'
+            if ($('#submitUser').html() =='Update Patient') {
+                if (document.getElementById('image1').files.length == 0)
+                    data.delete('photo')
+                action ='PUT'
+                url = `/api/trans/patient_registration/${$('#UserId').val()}/`
+                successMessage ='User Updated Successfully'
+            }
+            $.ajax({
+                url: url,
+                data: data,
+                method: action,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    table.ajax.reload() 
+                    $('#PatientForm').trigger('reset')
+                    $('#userTableTab').trigger('click')
+                    toastr.success(successMessage,"Done", {
+                        positionClass:"toast-top-center"
+                    })
+                },
+                error: function (err) {
+                    console.log(err) 
+                    $('#PatientForm').trigger('reset')
+                    toastr.error("Operation Failed",'Error', {
+                        positionClass:"toast-top-center"
+                    })
+                }
+            })
+        })
+
+        function formDeserialize(form, data) {
+            const entries = (new URLSearchParams(data)).entries();
+            for (const [key, val] of entries) { //http://javascript-coder.com/javascript-form/javascript-form-value.phtml
+                const input = form.elements[key];
+                if (input != undefined) {
+                    console.log(input.type) 
+                    if (input.type =='file') {
+                        var $file = $('#' + input.id),
+                            $label = $file.next('label'),
+                            $labelText = $label.find('span'),
+                            labelDefault = $labelText.text();
+                        var filename = val.split('/').pop() 
+                        console.log(filename) 
+                        if (filename) {
+                            $label.addClass('file-ok').css('background-image','url(' + val +')');
+                            $labelText.text(filename);
+                        } else {
+                            $label.removeClass('file-ok');
+                            $labelText.text(labelDefault);
+                        }
+                    } else {
+                        switch (input.type) {
+                            case'checkbox':
+                                input.checked = !!val;
+                                break;
+                            case'select-one':
+                                if (val) input.value = val;
+                                else input.selectedIndex = 0;
+                                break;
+                            default:
+                                input.value = val;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    })
+</script>
+{% endblock %}

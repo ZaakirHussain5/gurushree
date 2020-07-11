@@ -23,6 +23,8 @@ class patient_registration(models.Model):
     nationality=models.CharField(max_length=32, null=True)
     id_type=models.CharField(max_length=32, null=True)
     id_number=models.CharField(max_length=32, null=True)
+    p_photo = models.FileField(max_length=355, null=True)
+    a_photo = models.FileField(max_length=355, null=True)
     isActive=models.BooleanField(default=True)
     AddedBY =models.CharField(max_length=32, null=True)
     Addeddate = models.DateTimeField(auto_now_add=True)
