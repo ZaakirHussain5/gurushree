@@ -323,6 +323,28 @@
             $(this).data("uiAutocomplete").search($(this).val());
         });
 
+        $("#marital").autocomplete({
+            source: ['Married','Single','Widow'],
+            minLength: 0
+        }).focus(function () {
+            $(this).data("uiAutocomplete").search($(this).val());
+        });
+
+        $("#religion").autocomplete({
+            source: ['Hindu','Muslim','Cristian','Sikh','Buddhist','Jain','Other'],
+            minLength: 0
+        }).focus(function () {
+            $(this).data("uiAutocomplete").search($(this).val());
+        });
+        
+
+        $("#blood_group").autocomplete({
+            source: ['A+','B+','O+','AB*','A-','B-','O-','AB-'],
+            minLength: 0
+        }).focus(function () {
+            $(this).data("uiAutocomplete").search($(this).val());
+        });
+
         $("#title").autocomplete({
             source: ['Mr','Ms','Master'],
             minLength: 0
