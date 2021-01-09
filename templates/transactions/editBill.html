@@ -1,0 +1,1302 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<style>
+</style>
+<div class="card">
+    <div class="card-header bg-info text-white mt-3 mb-0 ">
+        <div class="row">
+            <div class="col">
+                <strong>MRD No. : </strong>
+            </div>
+            <div class="col">
+                <strong>Name : <span id="patName"></span></strong>
+            </div>
+            <div class="col">
+                <strong>Age : <span id="ageGender"></span></strong>
+            </div>
+            <div class="col">
+                <strong>Total Bills : 2</strong>
+            </div>
+            <div class="col">
+                <strong>Dues : 4</strong>
+            </div>
+        </div>
+    </div>
+    <div class="card-body h-100 pl-0 pr-0">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <select class="btn btn-info form-control" id="ConsultantList">
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <input type="text" id="services" class="form-control" placeholder="Enter Service type">
+            </div>
+            <div class="form-group col-md-2">
+                <!-- <button type="button" class="btn btn-secondary btn-block"></button> -->
+                <a class="nav-link collapsed btn btn-secondary btn-block" href="#" data-toggle="collapse"
+                    data-target="#formOfDiscountee" aria-expanded="false" aria-controls="collapseTwo">
+
+                    <span>Discount</span>
+                </a>
+            </div>
+            <div class="form-group col-md-2">
+                <!-- <button type="button" class="btn btn-secondary btn-block">Patient History</button> -->
+                <a class="nav-link collapsed btn btn-secondary btn-block" href="#" data-toggle="collapse"
+                    data-target="#patient_history" aria-expanded="false" aria-controls="collapseTwo">
+
+                    <span>Patient History</span>
+                </a>
+            </div>
+            <div class="form-group col-md-2">
+                <select required id="registration__type" class="btn btn-info form-control">
+                    <option value="">-Registration Type-</option>
+                </select>
+            </div>
+        </div>
+        <div id="formOfDiscountee" class="collapse active col-12 p-3">
+            <form>
+                <div class="row">
+                    <div class="form-froup col-md-6">
+                        <select class="form-control">
+                            <option>Select Discountee</option>
+                            <option>admin</option>
+                            <option>patient</option>
+                            <option>doctor</option>
+                        </select>
+                    </div>
+                    <div class="form-froup col-md-6">
+                        <select class="form-control">
+                            <option>Select Discountee</option>
+                            <option>admin</option>
+                            <option>patient</option>
+                            <option>doctor</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="textarea">Refferal Notes</label>
+                        <textarea class="form-control" placeholder="Write somethig" id="textarea" rows='5'
+                            cols='50'></textarea>
+
+                    </div>
+                    <div class="row col-md-6 ml-1 mt-2">
+                        <input type="password" class="form-control" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <button class="btn btn-active btn-secondary" type="submit">Authorise</button>
+                    <button class="btn btn-active btn-secondary ml-2" type="button">Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="patient_history" class="collapse active col-12">
+            <table id="" class="table table-striped table-bordered table-hover p-0">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th>SL No.</th>
+                        <th style="width: 200px;">Bill No.</th>
+                        <th style="width: 192px;">Bill Date</th>
+                        <th>Service Name</th>
+                        <th>Total Amount</th>
+                        <th>Discount</th>
+                        <th style="width: 220px;">
+                            Net Amount
+                        <th>User name</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive">
+            <table id="billDetails" class="table  table-bordered table-hover p-0">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="width: 200px;">Service</th>
+                        <th scope="col" style="width: 192px;">Sub Service</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Ser_Amt</th>
+                        <th scope="col">Tot_amt</th>
+                        <th scope="col" style="width: 220px;">
+                            <select class="btn btn-info btn-sm tableHeadConultant">
+                            </select> <input type="checkbox">
+                        </th>
+                        <th scope="col"> Dr_share</th>
+                        <th scope="col">Dr_Disc</th>
+                        <th scope="col" style="width: 220px;">
+                            <select class="btn btn-info btn-sm tableHeadRefferals">
+                                <option value="">-Select Refferal-</option>
+                                {% for consultant in Refferals %}
+                                <option value=""></option>
+                                {% endfor %}
+                            </select> <input type="checkbox">
+                        </th>
+                        <th scope="col">Ref_share</th>
+                        <th scope="col">Ref_disc</th>
+                        <th scope="col">Tot_amt</th>
+                        <th scope="col">Hosp_disc</th>
+                        <th scope="col">Net_amt</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="summary fixed-bottom-fluid">
+            <table class="table table-striped table-hover">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th colspan="2">Summary</th>
+                        <th colspan="2">Discount</th>
+                        <th colspan="2">Mode of Payment</th>
+                        <th colspan="2">Cash Status</th>
+                        <th colspan="2">Insurance Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Ins Cover</th>
+                        <td class="summarys">0</td>
+                        <th>Consulting Dr.</th>
+                        <td>0</td>
+                        <th>To be Paid</th>
+                        <td class="netamountVal"></td>
+                        <th>Paid</th>
+                        <td id="paidAmounts" class="netamountVal"></td>
+                        <th>Paid</th>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th>Discount N/A</th>
+                        <td class="summarys">0</td>
+                        <th>Refferal Dr.</th>
+                        <td>0</td>
+                        <th>Cash</th>
+                        <td><input type="number" id="cashPayment" value=""></td>
+                        <th>Balance</th>
+                        <td id="balance" class="balances"></td>
+                        <th>Balance</th>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <th>Discount App</th>
+                        <td class="netamountVal summarys">0</td>
+                        <th>Hospital</th>
+                        <td>0</td>
+                        <th>Card</th>
+                        <td><span id="card_amount_payable">0</span> <a href="#" class="btn btn-link" data-toggle="modal"
+                                data-target="#cardModal">Add Card</a></td>
+                        <th>Refund</th>
+                        <td>0</td>
+                        <th>Discount</th>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="text-lg text-dark"><b>Total Amount</b></td>
+                        <td id="totalAmount"></td>
+                        <td class="text-lg text-dark"><b>Net Discount @ 0%</b></td>
+                        <td>0</td>
+                        <th>Others</th>
+                        <td><span id="other_pay_balance"> 0</span><a href="#" class="btn btn-link" data-toggle="modal"
+                                data-target="#otherModal">Add other</a></td>
+                        <td>
+                            <button type="button" id="saveBill" class="btn btn-lg btn-info btn-block">
+                                <i class="fa fa-edit"></i> Update Bill
+                            </button>
+                        </td>
+                        <td></td>
+                        <td class="bg-dark text-center text-white">
+                            <h4 class="mt-3">Bill Amount: INR <span id="total_payable_amount">00.00</span></h4>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white" style="display: block;">
+                <i class="fa fa-money-check fa-3x float-right"></i>
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <strong>Payment Details</strong>
+                </h5>
+                <div class="row mt-2">
+                    <div class="col">
+                        <strong>Total Bill : <span class="totalBill"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Cash : <span class="cashpayment"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Card : <span class="cardpayments"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Balance : <span class="balances"></span></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body cardpayment">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>Card Type</label>
+                        <select name="" id="cardType" class="form-control">
+                            <option value="Credit">Credit</option>
+                            <option value="Debit">Debit</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Bank</label>
+                        <select name="bankName" id="Bank" class="form-control">
+                            <option value="">Select Bank</option>
+                            <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                            <option value="Allahabad Bank">Allahabad Bank</option>
+                            <option value="Allahabad UP Gramin Bank">Allahabad UP Gramin Bank</option>
+                            <option value="Andhra Bank">Andhra Bank</option>
+                            <option value="Andhra Pradesh Grameena Vikas Bank">Andhra Pradesh Grameena Vikas Bank
+                            </option>
+                            <option value="Andhra Pragathi Grameena Bank">Andhra Pragathi Grameena Bank</option>
+                            <option value="Arunachal Pradesh Rural Bank">Arunachal Pradesh Rural Bank</option>
+                            <option value="Aryavart Gramin Bank">Aryavart Gramin Bank</option>
+                            <option value="Assam Gramin Vikash Bank">Assam Gramin Vikash Bank</option>
+                            <option value="Australia and New Zealand Bank">Australia and New Zealand Bank</option>
+                            <option value="Axis Bank">Axis Bank</option>
+                            <option value="Baitarani Gramya Bank">Baitarani Gramya Bank</option>
+                            <option value="Ballia Etawah Gramin Bank">Ballia Etawah Gramin Bank</option>
+                            <option value="Bangiya Gramin Vikash Bank">Bangiya Gramin Vikash Bank</option>
+                            <option value="Bank Internasional Indonesia">Bank Internasional Indonesia</option>
+                            <option value="Bank of America NA">Bank of America NA</option>
+                            <option value="Bank of Bahrain and Kuwait">Bank of Bahrain and Kuwait</option>
+                            <option value="Bank of Baroda">Bank of Baroda</option>
+                            <option value="Bank of Ceylon">Bank of Ceylon</option>
+                            <option value="Bank of India">Bank of India</option>
+                            <option value="Bank of Maharashtra">Bank of Maharashtra</option>
+                            <option value="Bank of Nova Scotia&nbsp;(Scotia Bank)">Bank of Nova Scotia&nbsp;(Scotia
+                                Bank)</option>
+                            <option value="Bank of Tokyo Mitsubishi UFJ">Bank of Tokyo Mitsubishi UFJ</option>
+                            <option value="Barclays Bank PLC">Barclays Bank PLC</option>
+                            <option value="Baroda Gujarat Gramin Bank">Baroda Gujarat Gramin Bank</option>
+                            <option value="Baroda Rajasthan Gramin Bank">Baroda Rajasthan Gramin Bank</option>
+                            <option value="Baroda Uttar Pradesh Gramin Bank">Baroda Uttar Pradesh Gramin Bank</option>
+                            <option value="Bhartiya Mahila Bank">Bhartiya Mahila Bank</option>
+                            <option value="Bihar Kshetriya Gramin Bank">Bihar Kshetriya Gramin Bank</option>
+                            <option value="BNP Paribas">BNP Paribas</option>
+                            <option value="Calyon Bank">Calyon Bank</option>
+                            <option value="Canara Bank">Canara Bank</option>
+                            <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
+                            <option value="Cauvery Kalpatharu Grameena Bank">Cauvery Kalpatharu Grameena Bank</option>
+                            <option value="Central Bank of India">Central Bank of India</option>
+                            <option value="Chaitanya Godavari Grameena Bank">Chaitanya Godavari Grameena Bank</option>
+                            <option value="Chhattisgarh Gramin Bank">Chhattisgarh Gramin Bank</option>
+                            <option value="Chikmagalur-Kodagu Grameena Bank">Chikmagalur-Kodagu Grameena Bank</option>
+                            <option value="Chinatrust Commercial Bank">Chinatrust Commercial Bank</option>
+                            <option value="Citibank">Citibank</option>
+                            <option value="City Union Bank">City Union Bank</option>
+                            <option value="Commonwealth Bank&nbsp;of Australia">Commonwealth Bank&nbsp;of Australia
+                            </option>
+                            <option value="Corporation Bank">Corporation Bank</option>
+                            <option value="Credit Suisse">Credit Suisse</option>
+                            <option value="DBS Bank">DBS Bank</option>
+                            <option value="DCB Bank&nbsp;now&nbsp;RHB Bank">DCB Bank&nbsp;now&nbsp;RHB Bank</option>
+                            <option value="Deccan Grameena Bank">Deccan Grameena Bank</option>
+                            <option value="Dena Bank">Dena Bank</option>
+                            <option value="Dena Gujarat Gramin Bank">Dena Gujarat Gramin Bank</option>
+                            <option value="Deutsche Bank AG">Deutsche Bank AG</option>
+                            <option value="Development Credit Bank">Development Credit Bank</option>
+                            <option value="Dhanlaxmi Bank">Dhanlaxmi Bank</option>
+                            <option value="Durg-Rajnandgaon Gramin Bank">Durg-Rajnandgaon Gramin Bank</option>
+                            <option value="Ellaquai Dehati Bank">Ellaquai Dehati Bank</option>
+                            <option value="Federal Bank">Federal Bank</option>
+                            <option value="FirstRand Bank">FirstRand Bank</option>
+                            <option value="Gurgaon Gramin Bank">Gurgaon Gramin Bank</option>
+                            <option value="Hadoti Kshetriya Gramin Bank">Hadoti Kshetriya Gramin Bank</option>
+                            <option value="Haryana Gramin Bank">Haryana Gramin Bank</option>
+                            <option value="HDFC Bank">HDFC Bank</option>
+                            <option value="Himachal Gramin Bank">Himachal Gramin Bank</option>
+                            <option value="HSBC">HSBC</option>
+                            <option value="ICICI Bank">ICICI Bank</option>
+                            <option value="Indian Bank">Indian Bank</option>
+                            <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                            <option value="IndusInd Bank">IndusInd Bank</option>
+                            <option value="ING Vysya Bank">ING Vysya Bank</option>
+                            <option value="Jaipur Thar Gramin Bank">Jaipur Thar Gramin Bank</option>
+                            <option value="Jhabua Dhar Kshetriya Gramin Bank">Jhabua Dhar Kshetriya Gramin Bank</option>
+                            <option value="Jharkhand Gramin Bank">Jharkhand Gramin Bank</option>
+                            <option value="JPMorgan Chase Bank">JPMorgan Chase Bank</option>
+                            <option value="Kalinga Gramya Bank">Kalinga Gramya Bank</option>
+                            <option value="Karnataka Bank">Karnataka Bank</option>
+                            <option value="Karnataka Vikas Grameena Bank">Karnataka Vikas Grameena Bank</option>
+                            <option value="Karur Vysya Bank">Karur Vysya Bank</option>
+                            <option value="Kashi Gomti Samyut Gramin Bank">Kashi Gomti Samyut Gramin Bank</option>
+                            <option value="Kerala Gramin Bank">Kerala Gramin Bank</option>
+                            <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                            <option value="Krishna Grameena Bank">Krishna Grameena Bank</option>
+                            <option value="Krung Thai Bank">Krung Thai Bank</option>
+                            <option value="Kshetriya Kisan Gramin Bank">Kshetriya Kisan Gramin Bank</option>
+                            <option value="Lakshmi Vilas Bank">Lakshmi Vilas Bank</option>
+                            <option value="Langpi Dehangi Rural Bank">Langpi Dehangi Rural Bank</option>
+                            <option value="Madhumalti Building Gupte Marg">Madhumalti Building Gupte Marg</option>
+                            <option value="Madhya Bharat Gramin Bank">Madhya Bharat Gramin Bank</option>
+                            <option value="Madhya Bihar Gramin Bank">Madhya Bihar Gramin Bank</option>
+                            <option value="Mahakaushal Kshetriya Gramin Bank">Mahakaushal Kshetriya Gramin Bank</option>
+                            <option value="Maharashtra Gramin Bank">Maharashtra Gramin Bank</option>
+                            <option value="Malwa Gramin Bank">Malwa Gramin Bank</option>
+                            <option value="Manipur Rural Bank">Manipur Rural Bank</option>
+                            <option value="Marwar Ganganagar Bikaner Gramin Bank">Marwar Ganganagar Bikaner Gramin Bank
+                            </option>
+                            <option value="Mashreq Bank psc">Mashreq Bank psc</option>
+                            <option value="Meghalaya Rural Bank">Meghalaya Rural Bank</option>
+                            <option value="Mewar Anchalik Gramin Bank">Mewar Anchalik Gramin Bank</option>
+                            <option value="Mizoram Rural Bank">Mizoram Rural Bank</option>
+                            <option value="Mizuho Corporate Bank">Mizuho Corporate Bank</option>
+                            <option value="Nagaland Rural Bank">Nagaland Rural Bank</option>
+                            <option value="Nainital Bank">Nainital Bank</option>
+                            <option value="Narmada Malwa Gramin Bank">Narmada Malwa Gramin Bank</option>
+                            <option value="Neelachal Gramya Bank">Neelachal Gramya Bank</option>
+                            <option value="Oriental Bank of Commerce">Oriental Bank of Commerce</option>
+                            <option value="Pallavan Grama Bank">Pallavan Grama Bank</option>
+                            <option value="Pandyan Grama Bank">Pandyan Grama Bank</option>
+                            <option value="Parvatiya Gramin Bank">Parvatiya Gramin Bank</option>
+                            <option value="Paschim Banga Gramin Bank">Paschim Banga Gramin Bank</option>
+                            <option value="Pragathi Gramin Bank">Pragathi Gramin Bank</option>
+                            <option value="Prathama Bank">Prathama Bank</option>
+                            <option value="Puduvai Bharathiar Grama Bank">Puduvai Bharathiar Grama Bank</option>
+                            <option value="Pune District Central Co-op Bank">Pune District Central Co-op Bank</option>
+                            <option value="Punjab &amp; Sind Bank">Punjab &amp; Sind Bank</option>
+                            <option value="Punjab Gramin Bank">Punjab Gramin Bank</option>
+                            <option value="Punjab National Bank">Punjab National Bank</option>
+                            <option value="Purvanchal Gramin Bank">Purvanchal Gramin Bank</option>
+                            <option value="Rajasthan Gramin Bank">Rajasthan Gramin Bank</option>
+                            <option value="Rewa-Sidhi Gramin Bank">Rewa-Sidhi Gramin Bank</option>
+                            <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                            <option value="Rushikulya Gramya Bank">Rushikulya Gramya Bank</option>
+                            <option value="Samastipur Kshetriya Gramin Bank">Samastipur Kshetriya Gramin Bank</option>
+                            <option value="Saptagiri Grameena Bank">Saptagiri Grameena Bank</option>
+                            <option value="Sarva UP Gramin Bank">Sarva UP Gramin Bank</option>
+                            <option value="Satpura Narmada Kshetriya">Satpura Narmada Kshetriya</option>
+                            <option value="Saurashtra Gramin Bank">Saurashtra Gramin Bank</option>
+                            <option value="Sharda Gramin Bank">Sharda Gramin Bank</option>
+                            <option value="Shinhan Bank">Shinhan Bank</option>
+                            <option value="Shreyas Gramin Bank">Shreyas Gramin Bank</option>
+                            <option value="Sonali Bank">Sonali Bank</option>
+                            <option value="South Indian Bank">South Indian Bank</option>
+                            <option value="Sri.M.Visweshwaraya co-op bank">Sri.M.Visweshwaraya co-op bank</option>
+                            <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                            <option value="State Bank of Bikaner &amp; Jaipur">State Bank of Bikaner &amp; Jaipur
+                            </option>
+                            <option value="State Bank of Hyderabad">State Bank of Hyderabad</option>
+                            <option value="State Bank of India">State Bank of India</option>
+                            <option value="State bank of Indore&nbsp;">State bank of Indore&nbsp;</option>
+                            <option value="State Bank of Mauritius">State Bank of Mauritius</option>
+                            <option value="State Bank of Mysore">State Bank of Mysore</option>
+                            <option value="State Bank of Patiala">State Bank of Patiala</option>
+                            <option value="State Bank of Saurashtra&nbsp;">State Bank of Saurashtra&nbsp;</option>
+                            <option value="State Bank of Travancore">State Bank of Travancore</option>
+                            <option value="Surguja Kshetriya Gramin Bank">Surguja Kshetriya Gramin Bank</option>
+                            <option value="Sutlej Kshetriya Gramin Bank">Sutlej Kshetriya Gramin Bank</option>
+                            <option value="Syndicate Bank">Syndicate Bank</option>
+                            <option value="Tamilnadu Mercantile Bank">Tamilnadu Mercantile Bank</option>
+                            <option value="THE JANATHA CO-OP BANK">THE JANATHA CO-OP BANK</option>
+                            <option value="Tripura Gramin Bank">Tripura Gramin Bank</option>
+                            <option value="UBS">UBS</option>
+                            <option value="UCO Bank">UCO Bank</option>
+                            <option value="Union Bank of India">Union Bank of India</option>
+                            <option value="United Bank of India">United Bank of India</option>
+                            <option value="UP Agro Corporation Bank">UP Agro Corporation Bank</option>
+                            <option value="Utkal Gramya Bank">Utkal Gramya Bank</option>
+                            <option value="Uttar Banga Kshetriya Gramin Bank">Uttar Banga Kshetriya Gramin Bank</option>
+                            <option value="Uttar Bihar Gramin Bank">Uttar Bihar Gramin Bank</option>
+                            <option value="Uttrakhand Gramin Bank">Uttrakhand Gramin Bank</option>
+                            <option value="Vananchal Gramin Bank">Vananchal Gramin Bank</option>
+                            <option value="Vidharbha Kshetriya Gramin Bank">Vidharbha Kshetriya Gramin Bank</option>
+                            <option value="vijaya bank">vijaya bank</option>
+                            <option value="Visveshvaraya Grameena Bank">Visveshvaraya Grameena Bank</option>
+                            <option value="Wainganga Krishna Gramin Bank">Wainganga Krishna Gramin Bank</option>
+                            <option value="Woori Bank">Woori Bank</option>
+                            <option value="YES Bank">YES Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-8">
+                        <label>Card Number</label>
+                        <input type="text" name="" class="form-control" id="card_number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label>Amount</label>
+                        <input type="text" name="" class="form-control" id="amounts">
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Transaction Fee</label>
+                        <input type="text" name="" class="form-control" id="transaction_fee">
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Total Amount</label>
+                        <input type="text" name="" class="form-control" id="total_card_amount" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="save_card_payment" class="btn btn-info">Save Transaction</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="otherModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white" style="display: block;">
+                <i class="fa fa-money-check fa-3x float-right"></i>
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <strong>Payment Details</strong>
+                </h5>
+                <div class="row mt-2">
+                    <div class="col">
+                        <strong>Total Bill : <span class="totalBill"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Cash : <span class="cashpayment"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Card : <span class="cardpayments"></span></strong>
+                    </div>
+                    <div class="col">
+                        <strong>Balance : <span class="balances"></span></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body otherpayment">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>Cheque/DD/Voucher/Coupon</label>
+                        <select name="" id="otherpayment_type" class="form-control">
+                            <option value="Debit" selected>Debit</option>
+                            <option value="Credit">Credit</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Select Bank</label>
+                        <select name="bankName" id="otherbank" class="form-control">
+                            <option value="">Select Bank</option>
+                            <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                            <option value="Allahabad Bank">Allahabad Bank</option>
+                            <option value="Allahabad UP Gramin Bank">Allahabad UP Gramin Bank</option>
+                            <option value="Andhra Bank">Andhra Bank</option>
+                            <option value="Andhra Pradesh Grameena Vikas Bank">Andhra Pradesh Grameena Vikas Bank
+                            </option>
+                            <option value="Andhra Pragathi Grameena Bank">Andhra Pragathi Grameena Bank</option>
+                            <option value="Arunachal Pradesh Rural Bank">Arunachal Pradesh Rural Bank</option>
+                            <option value="Aryavart Gramin Bank">Aryavart Gramin Bank</option>
+                            <option value="Assam Gramin Vikash Bank">Assam Gramin Vikash Bank</option>
+                            <option value="Australia and New Zealand Bank">Australia and New Zealand Bank</option>
+                            <option value="Axis Bank">Axis Bank</option>
+                            <option value="Baitarani Gramya Bank">Baitarani Gramya Bank</option>
+                            <option value="Ballia Etawah Gramin Bank">Ballia Etawah Gramin Bank</option>
+                            <option value="Bangiya Gramin Vikash Bank">Bangiya Gramin Vikash Bank</option>
+                            <option value="Bank Internasional Indonesia">Bank Internasional Indonesia</option>
+                            <option value="Bank of America NA">Bank of America NA</option>
+                            <option value="Bank of Bahrain and Kuwait">Bank of Bahrain and Kuwait</option>
+                            <option value="Bank of Baroda">Bank of Baroda</option>
+                            <option value="Bank of Ceylon">Bank of Ceylon</option>
+                            <option value="Bank of India">Bank of India</option>
+                            <option value="Bank of Maharashtra">Bank of Maharashtra</option>
+                            <option value="Bank of Nova Scotia&nbsp;(Scotia Bank)">Bank of Nova Scotia&nbsp;(Scotia
+                                Bank)</option>
+                            <option value="Bank of Tokyo Mitsubishi UFJ">Bank of Tokyo Mitsubishi UFJ</option>
+                            <option value="Barclays Bank PLC">Barclays Bank PLC</option>
+                            <option value="Baroda Gujarat Gramin Bank">Baroda Gujarat Gramin Bank</option>
+                            <option value="Baroda Rajasthan Gramin Bank">Baroda Rajasthan Gramin Bank</option>
+                            <option value="Baroda Uttar Pradesh Gramin Bank">Baroda Uttar Pradesh Gramin Bank</option>
+                            <option value="Bhartiya Mahila Bank">Bhartiya Mahila Bank</option>
+                            <option value="Bihar Kshetriya Gramin Bank">Bihar Kshetriya Gramin Bank</option>
+                            <option value="BNP Paribas">BNP Paribas</option>
+                            <option value="Calyon Bank">Calyon Bank</option>
+                            <option value="Canara Bank">Canara Bank</option>
+                            <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
+                            <option value="Cauvery Kalpatharu Grameena Bank">Cauvery Kalpatharu Grameena Bank</option>
+                            <option value="Central Bank of India">Central Bank of India</option>
+                            <option value="Chaitanya Godavari Grameena Bank">Chaitanya Godavari Grameena Bank</option>
+                            <option value="Chhattisgarh Gramin Bank">Chhattisgarh Gramin Bank</option>
+                            <option value="Chikmagalur-Kodagu Grameena Bank">Chikmagalur-Kodagu Grameena Bank</option>
+                            <option value="Chinatrust Commercial Bank">Chinatrust Commercial Bank</option>
+                            <option value="Citibank">Citibank</option>
+                            <option value="City Union Bank">City Union Bank</option>
+                            <option value="Commonwealth Bank&nbsp;of Australia">Commonwealth Bank&nbsp;of Australia
+                            </option>
+                            <option value="Corporation Bank">Corporation Bank</option>
+                            <option value="Credit Suisse">Credit Suisse</option>
+                            <option value="DBS Bank">DBS Bank</option>
+                            <option value="DCB Bank&nbsp;now&nbsp;RHB Bank">DCB Bank&nbsp;now&nbsp;RHB Bank</option>
+                            <option value="Deccan Grameena Bank">Deccan Grameena Bank</option>
+                            <option value="Dena Bank">Dena Bank</option>
+                            <option value="Dena Gujarat Gramin Bank">Dena Gujarat Gramin Bank</option>
+                            <option value="Deutsche Bank AG">Deutsche Bank AG</option>
+                            <option value="Development Credit Bank">Development Credit Bank</option>
+                            <option value="Dhanlaxmi Bank">Dhanlaxmi Bank</option>
+                            <option value="Durg-Rajnandgaon Gramin Bank">Durg-Rajnandgaon Gramin Bank</option>
+                            <option value="Ellaquai Dehati Bank">Ellaquai Dehati Bank</option>
+                            <option value="Federal Bank">Federal Bank</option>
+                            <option value="FirstRand Bank">FirstRand Bank</option>
+                            <option value="Gurgaon Gramin Bank">Gurgaon Gramin Bank</option>
+                            <option value="Hadoti Kshetriya Gramin Bank">Hadoti Kshetriya Gramin Bank</option>
+                            <option value="Haryana Gramin Bank">Haryana Gramin Bank</option>
+                            <option value="HDFC Bank">HDFC Bank</option>
+                            <option value="Himachal Gramin Bank">Himachal Gramin Bank</option>
+                            <option value="HSBC">HSBC</option>
+                            <option value="ICICI Bank">ICICI Bank</option>
+                            <option value="Indian Bank">Indian Bank</option>
+                            <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                            <option value="IndusInd Bank">IndusInd Bank</option>
+                            <option value="ING Vysya Bank">ING Vysya Bank</option>
+                            <option value="Jaipur Thar Gramin Bank">Jaipur Thar Gramin Bank</option>
+                            <option value="Jhabua Dhar Kshetriya Gramin Bank">Jhabua Dhar Kshetriya Gramin Bank</option>
+                            <option value="Jharkhand Gramin Bank">Jharkhand Gramin Bank</option>
+                            <option value="JPMorgan Chase Bank">JPMorgan Chase Bank</option>
+                            <option value="Kalinga Gramya Bank">Kalinga Gramya Bank</option>
+                            <option value="Karnataka Bank">Karnataka Bank</option>
+                            <option value="Karnataka Vikas Grameena Bank">Karnataka Vikas Grameena Bank</option>
+                            <option value="Karur Vysya Bank">Karur Vysya Bank</option>
+                            <option value="Kashi Gomti Samyut Gramin Bank">Kashi Gomti Samyut Gramin Bank</option>
+                            <option value="Kerala Gramin Bank">Kerala Gramin Bank</option>
+                            <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                            <option value="Krishna Grameena Bank">Krishna Grameena Bank</option>
+                            <option value="Krung Thai Bank">Krung Thai Bank</option>
+                            <option value="Kshetriya Kisan Gramin Bank">Kshetriya Kisan Gramin Bank</option>
+                            <option value="Lakshmi Vilas Bank">Lakshmi Vilas Bank</option>
+                            <option value="Langpi Dehangi Rural Bank">Langpi Dehangi Rural Bank</option>
+                            <option value="Madhumalti Building Gupte Marg">Madhumalti Building Gupte Marg</option>
+                            <option value="Madhya Bharat Gramin Bank">Madhya Bharat Gramin Bank</option>
+                            <option value="Madhya Bihar Gramin Bank">Madhya Bihar Gramin Bank</option>
+                            <option value="Mahakaushal Kshetriya Gramin Bank">Mahakaushal Kshetriya Gramin Bank</option>
+                            <option value="Maharashtra Gramin Bank">Maharashtra Gramin Bank</option>
+                            <option value="Malwa Gramin Bank">Malwa Gramin Bank</option>
+                            <option value="Manipur Rural Bank">Manipur Rural Bank</option>
+                            <option value="Marwar Ganganagar Bikaner Gramin Bank">Marwar Ganganagar Bikaner Gramin Bank
+                            </option>
+                            <option value="Mashreq Bank psc">Mashreq Bank psc</option>
+                            <option value="Meghalaya Rural Bank">Meghalaya Rural Bank</option>
+                            <option value="Mewar Anchalik Gramin Bank">Mewar Anchalik Gramin Bank</option>
+                            <option value="Mizoram Rural Bank">Mizoram Rural Bank</option>
+                            <option value="Mizuho Corporate Bank">Mizuho Corporate Bank</option>
+                            <option value="Nagaland Rural Bank">Nagaland Rural Bank</option>
+                            <option value="Nainital Bank">Nainital Bank</option>
+                            <option value="Narmada Malwa Gramin Bank">Narmada Malwa Gramin Bank</option>
+                            <option value="Neelachal Gramya Bank">Neelachal Gramya Bank</option>
+                            <option value="Oriental Bank of Commerce">Oriental Bank of Commerce</option>
+                            <option value="Pallavan Grama Bank">Pallavan Grama Bank</option>
+                            <option value="Pandyan Grama Bank">Pandyan Grama Bank</option>
+                            <option value="Parvatiya Gramin Bank">Parvatiya Gramin Bank</option>
+                            <option value="Paschim Banga Gramin Bank">Paschim Banga Gramin Bank</option>
+                            <option value="Pragathi Gramin Bank">Pragathi Gramin Bank</option>
+                            <option value="Prathama Bank">Prathama Bank</option>
+                            <option value="Puduvai Bharathiar Grama Bank">Puduvai Bharathiar Grama Bank</option>
+                            <option value="Pune District Central Co-op Bank">Pune District Central Co-op Bank</option>
+                            <option value="Punjab &amp; Sind Bank">Punjab &amp; Sind Bank</option>
+                            <option value="Punjab Gramin Bank">Punjab Gramin Bank</option>
+                            <option value="Punjab National Bank">Punjab National Bank</option>
+                            <option value="Purvanchal Gramin Bank">Purvanchal Gramin Bank</option>
+                            <option value="Rajasthan Gramin Bank">Rajasthan Gramin Bank</option>
+                            <option value="Rewa-Sidhi Gramin Bank">Rewa-Sidhi Gramin Bank</option>
+                            <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                            <option value="Rushikulya Gramya Bank">Rushikulya Gramya Bank</option>
+                            <option value="Samastipur Kshetriya Gramin Bank">Samastipur Kshetriya Gramin Bank</option>
+                            <option value="Saptagiri Grameena Bank">Saptagiri Grameena Bank</option>
+                            <option value="Sarva UP Gramin Bank">Sarva UP Gramin Bank</option>
+                            <option value="Satpura Narmada Kshetriya">Satpura Narmada Kshetriya</option>
+                            <option value="Saurashtra Gramin Bank">Saurashtra Gramin Bank</option>
+                            <option value="Sharda Gramin Bank">Sharda Gramin Bank</option>
+                            <option value="Shinhan Bank">Shinhan Bank</option>
+                            <option value="Shreyas Gramin Bank">Shreyas Gramin Bank</option>
+                            <option value="Sonali Bank">Sonali Bank</option>
+                            <option value="South Indian Bank">South Indian Bank</option>
+                            <option value="Sri.M.Visweshwaraya co-op bank">Sri.M.Visweshwaraya co-op bank</option>
+                            <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                            <option value="State Bank of Bikaner &amp; Jaipur">State Bank of Bikaner &amp; Jaipur
+                            </option>
+                            <option value="State Bank of Hyderabad">State Bank of Hyderabad</option>
+                            <option value="State Bank of India">State Bank of India</option>
+                            <option value="State bank of Indore&nbsp;">State bank of Indore&nbsp;</option>
+                            <option value="State Bank of Mauritius">State Bank of Mauritius</option>
+                            <option value="State Bank of Mysore">State Bank of Mysore</option>
+                            <option value="State Bank of Patiala">State Bank of Patiala</option>
+                            <option value="State Bank of Saurashtra&nbsp;">State Bank of Saurashtra&nbsp;</option>
+                            <option value="State Bank of Travancore">State Bank of Travancore</option>
+                            <option value="Surguja Kshetriya Gramin Bank">Surguja Kshetriya Gramin Bank</option>
+                            <option value="Sutlej Kshetriya Gramin Bank">Sutlej Kshetriya Gramin Bank</option>
+                            <option value="Syndicate Bank">Syndicate Bank</option>
+                            <option value="Tamilnadu Mercantile Bank">Tamilnadu Mercantile Bank</option>
+                            <option value="THE JANATHA CO-OP BANK">THE JANATHA CO-OP BANK</option>
+                            <option value="Tripura Gramin Bank">Tripura Gramin Bank</option>
+                            <option value="UBS">UBS</option>
+                            <option value="UCO Bank">UCO Bank</option>
+                            <option value="Union Bank of India">Union Bank of India</option>
+                            <option value="United Bank of India">United Bank of India</option>
+                            <option value="UP Agro Corporation Bank">UP Agro Corporation Bank</option>
+                            <option value="Utkal Gramya Bank">Utkal Gramya Bank</option>
+                            <option value="Uttar Banga Kshetriya Gramin Bank">Uttar Banga Kshetriya Gramin Bank</option>
+                            <option value="Uttar Bihar Gramin Bank">Uttar Bihar Gramin Bank</option>
+                            <option value="Uttrakhand Gramin Bank">Uttrakhand Gramin Bank</option>
+                            <option value="Vananchal Gramin Bank">Vananchal Gramin Bank</option>
+                            <option value="Vidharbha Kshetriya Gramin Bank">Vidharbha Kshetriya Gramin Bank</option>
+                            <option value="vijaya bank">vijaya bank</option>
+                            <option value="Visveshvaraya Grameena Bank">Visveshvaraya Grameena Bank</option>
+                            <option value="Wainganga Krishna Gramin Bank">Wainganga Krishna Gramin Bank</option>
+                            <option value="Woori Bank">Woori Bank</option>
+                            <option value="YES Bank">YES Bank</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Select Payment Mode</label>
+                        <select name="" id="payment_mode" class="form-control">
+                            <option value="Credit" selected>Google Pay</option>
+                            <option value="Debit">PhonePe</option>
+                            <option value="Debit">PayTM</option>
+                            <option value="Debit">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Cheque/DD/Voucher/Coupon Date</label>
+                        <input type="Date" name="date" class="form-control" id="date">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>Amount</label>
+                        <input type="text" name="amount" class="form-control" id="amount">
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Total Amount</label>
+                        <input type="text" name="total_amount" class="form-control" id="total_other_amount" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="otherPayment" class="btn btn-info">Save Transaction</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- Scripts -->
+{% block scripts %}
+<script>
+    function loadRefferals(selector) {
+        $.getJSON('/api/masters/professional?isActive=True&category=R', {}, function (data) {
+            var options = '<option value="">-Select Refferal-</option>'
+            $.each(data, function (i, item) {
+                options += `<option value='${JSON.stringify(data)}'>${data.professionalName}</option>`
+            })
+            $(selector).html(options)
+        })
+    }
+
+    $(document).ready(function () {
+        /////////   CARD AMOUNT EVENT ////////
+        $('#amounts').on('change keyup', function(){
+            $('#total_card_amount').val($(this).val())
+        })
+        ///////// OTHER PAYMETN  EVENT ////////
+        $('#amount').on('keyup change', function(){
+            $('#total_other_amount').val($(this).val())
+        })
+        
+        var billData = {
+            billDetails: []
+        };
+        var billHistory = []
+
+        //////////  DELETE BUTTON WORKING CONCEPT //////////    
+        $('#billDetails tbody').on('click', '.deleteRow', function(){
+            const this_td = $(this);
+            const row = this_td.closest('tr');
+            var siblings = row.siblings();   
+            let type = $(this).data('type');
+            console.log(type)                   // *chan
+            // $(this).parent().parent().remove()
+            const deleted_amount = $(row).find('.netamount').val()
+            total_net_amount = parseFloat(total_net_amount)  - parseFloat(deleted_amount)
+            updateTables() 
+            const lineNos = ($(row).index()+1);
+            consultant_service_list = consultant_service_list.filter(function (el){
+                return el.LineNo !== lineNos
+            }).map(function(el, index){
+                el.LineNo = (index + 1)
+                return el
+            })
+            if(type=='consultant'){
+                const cons_arr = billData.billDetails
+                const new_arr = cons_arr.filter(function (el){
+                    const professionName = $(this).attr('data-professionName')
+                    return el.professionalName != professionName
+                }, this_td)
+                billData.billDetails = new_arr
+                console.log(billData)
+            }
+            row.remove()
+            console.log(consultant_service_list)                                    
+            siblings.each(function(index) {                     // *
+                $(this).children('td').first().text(index + 1); // *
+            });     
+        })
+
+
+        function  changesValueToBottomTable(obj){
+            $('#paidAmounts').html(obj.paidAmount)
+            $('#balance').html(obj.balance)
+            $('#card_amount_payable').html(obj.card)
+            $('#other_pay_balance').html(obj.other)
+            $('#cashPayment').val(obj.cash)
+        }
+
+        function updateBottomTable(url, obj){
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: 'application/json'
+            })
+            .done(function(response){
+                let cash = 0, card=0, other=0;
+                
+                response.map(index=>{
+                    cash += index.Cash == null ? 0 : parseFloat(index.Cash);
+                    card += index.CardTotal == null ? 0 : parseFloat(index.CardTotal);
+                    other += index.OtherPaid == null ? 0 : parseFloat(index.OtherPaid);
+                    
+                })
+                obj['cash'] = cash
+                obj['card'] = card
+                obj['other'] = other
+                changesValueToBottomTable(obj)
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        } 
+
+
+        function getHistoryBillDetails(billCode){
+            $.ajax({
+                url: '/api/trans/billdetails?bill_code='+billCode,
+                method: 'GET',
+                contentType: 'application/json'
+            })
+            .done(response=>{
+                response.map(data=>{
+                    if(data.DrCode){
+                        $.ajax({
+                            url: '/api/masters/professional/'+data.DrCode +'/',
+                            method: 'GET',
+                            contentType: 'application/json'
+                        }).done(res=>{
+                            addConsultant(res)
+                        })
+                    }
+                    if(data.SerCode){
+                        $.ajax({
+                            url: '/api/masters/service/'+data.SerCode+'/',
+                            method: 'GET',
+                            contentType: 'application/json'
+                        }).done(res=>{
+                            addService(res.ServiceName)
+                            var table = document.getElementById('billDetails').getElementsByTagName('tbody')[0]
+                            let otyText = $('#billDetails tr:last .qty');
+                            otyText.val(data.Qty);
+                            let row = otyText.attr('data-row');
+                            let serAmount = otyText.attr('data-serAmount')
+                            let quentity = otyText.val();
+                            handleQuentity(row, serAmount, quentity)
+                            
+                            
+
+                        })
+                    }
+                })
+            })
+            .fail(err=>{
+                console.log(err)
+            })
+        }
+
+
+        function historyBill(){
+            $.ajax({
+                url: '/api/trans/billheader?id={{id}}',
+                method: 'GET',
+                contentType: 'application/json'
+            })
+            .done(response=>{
+                getHistoryBillDetails(response[0].id)
+                $('#patName').html(response[0].patient.p_name)
+                $('#ageGender').html(response[0].patient.year + '/' + response[0].patient.gender)
+                obj ={
+                    balance : response[0].Balance,
+                    paidAmount: response[0].PaidAmount
+                }
+                setTimeout(function(){updateBottomTable('/api/trans/billreceipt?BillCode={{id}}', obj)}, 700)
+                
+            })
+            .fail(err=>{
+                console.log(err)
+            })
+        }
+        historyBill();
+
+
+        $('#sidebarToggle').trigger('click');
+
+        $.getJSON('/api/masters/professional?isActive=True&category=C', {}, function (data) {
+            var options = '<option value="">-Select Consultant-</option>'
+            $.each(data, function (i, item) {
+                options += `<option value='${JSON.stringify(item)}'>${item.professionalName}</option>`
+            })
+            $('#ConsultantList').html(options)
+            $('#billDetails .tableHeadConultant').html(options)
+        })
+
+        map = {}
+
+        $.getJSON('/api/masters/service/?isActive=True', {}, function (data) {
+            if (data) {
+                var departments = []
+
+                $.each(data, function (i, item) {
+                    map[item.ServiceName] = item
+                    departments.push(item.ServiceName)
+                })
+                $("#services").autocomplete({
+                    source: departments,
+                    minLength: 1,
+                    select: function (event, ui) {
+                        this.value = '';
+                        addService(ui.item.value)
+                        return false;
+                    }
+                })
+            }
+        })
+
+
+
+        loadRefferals('#billDetails .tableHeadRefferals')
+
+        function checkConsultation(name) {
+            return true;
+        }
+
+
+        $('#ConsultantList').change(function () {
+            addConsultant(JSON.parse($(this).val()))
+        })
+
+        let total_net_amount = 0;
+        let consultant_service_list = [];
+
+        function addConsultant(consultant) {
+            var consData = consultant
+            var contains = billData.billDetails.some(function (elem) {
+                return consData.professionalName === elem.professionalName;
+            });
+            if (!contains && consData) {
+                billData.billDetails.push(consData);
+                var table = document.getElementById('billDetails').getElementsByTagName('tbody')[0]
+                var row = table.insertRow(table.rows.length)
+                var cells = []
+                for (var i = 0; i < 16; i++) {
+                    cells[i] = row.insertCell(i)
+                }
+                const obj = {
+                    LineNo: table.rows.length,
+                    Qty: 1,
+                    Amount: billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup,
+                    TotalAmount: billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup,
+                    DrCode: 1,
+                    DrShare: 0,
+                    DrDisc: 0,
+                    NetAmount: billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup,
+                    PaidAmount: billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup,
+                    balance: 0
+                }
+
+
+                consultant_service_list.push(obj)
+
+                cells[0].innerHTML = table.rows.length
+                cells[1].innerHTML = consData.title + ' ' + consData.professionalName
+                cells[2].innerHTML = ""
+                cells[3].innerHTML = "<input type='text' class='form-control form-control-sm' value='1'  disabled='disabled'>"
+                cells[4].innerHTML = `<input type='text' class='form-control form-control-sm' disabled value=
+                                 '${billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup}'>`
+                cells[5].innerHTML = `<input type='text' class='form-control form-control-sm' disabled value=
+                                 '${billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup}'>`
+                cells[6].innerHTML = `<select class="form-control btn-sm text-info text-bold tableConsultant" disabled="disabled" >
+                                  ${$('#ConsultantList').html()}
+                                  </select>`
+                cells[7].innerHTML = "<input type='text' class='form-control form-control-sm' disabled value='0'>"
+                cells[8].innerHTML = "<input type='text' class='form-control form-control-sm' disabled value='0'>"
+                cells[9].innerHTML = `<select class="form-control btn-sm tableRefferals" disabled>
+                                  ${$('#billDetails .tableHeadRefferals').html()}
+                                  </select>`
+                cells[10].innerHTML = "<input type='text' class='form-control form-control-sm' disabled value='0'>"
+                cells[11].innerHTML = "<input type='text' class='form-control form-control-sm' disabled value='0'>"
+                cells[12].innerHTML = `<input type='text' class='form-control form-control-sm' disabled value=
+                                 '${billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup}'>`
+                cells[13].innerHTML = "<input type='text' class='form-control form-control-sm' disabled value='0'>"
+                cells[14].innerHTML = `<input type='text' class='form-control form-control-sm netamount' disabled value=
+                                 '${billHistory.length == 0 ? consData.OPNewVisit :
+                        checkConsultation(consData.professionalName) ? consData.OPRevisit :
+                            consData.OPFollowup}'>`
+                cells[15].innerHTML = `<button type='button' data-type='consultant' data-professionName='${consData.professionalName}' class='btn deleteRow btn-circle btn-danger'><i class='fa fa-trash'></i></button>`
+
+                // update down tables..(summary , discount etc)
+                total_net_amount += parseFloat(jQuery(cells[14]).children().first().val())
+                updateTables()
+
+                $('#billDetails .tableConsultant:last-child').val($('#ConsultantList').val())
+                $('#ConsultantList').val('')
+            }
+        }
+
+
+
+        function addService(serName) {
+            var serData = map[serName]
+            let checkingData = consultant_service_list.some(function (elem) {
+                return serData.id === elem.SerCode;
+            })
+            if(checkingData) return
+            total_net_amount += serData.SerAmount;
+            var table = document.getElementById('billDetails').getElementsByTagName('tbody')[0]
+            var row = table.insertRow(table.rows.length)
+            var cells = []
+            for (var i = 0; i < 16; i++) {
+                cells[i] = row.insertCell(i)
+            }
+            const obj = {
+                LineNo: table.rows.length,
+                Qty: 1,
+                Amount: serData.SerAmount,
+                TotalAmount: serData.SerAmount,
+                SerDept: serData.DeptId,
+                // SerCode:serData.IRDACode,
+                SerCode: serData.id,
+                NetAmount: serData.SerAmount,
+                PaidAmount: serData.SerAmount,
+                balance: 0
+            }
+
+            consultant_service_list.push(obj)
+
+            cells[0].innerHTML = table.rows.length
+            cells[1].innerHTML = serData.ServiceName
+            cells[2].innerHTML = ""
+            cells[3].innerHTML = `<input type='text' data-row = '${table.rows.length - 1}' data-serAmount = '${serData.SerAmount}' ${serData.OPEditQty == true ? '': 'disabled'} class='form-control qty form-control-sm' value='1'>`
+            cells[4].innerHTML = `<input type='text' class='form-control  form-control-sm' ${serData.OPEditServiceAmt != true ? 'disabled': ''} value=
+                                 '${serData.SerAmount}'>`
+            cells[5].innerHTML = `<input type='text'  class='form-control total${table.rows.length - 1} form-control-sm' value=
+                                 '${serData.SerAmount}'>`
+            cells[6].innerHTML = `<select class="form-control btn-sm tableConsultant" ${serData.OP} ${serData.OPDrNameinBilling !== true ? 'disabled': ''} >
+                                  ${$('#ConsultantList').html()}
+                                  </select>`
+            cells[7].innerHTML = "<input type='text' class='form-control form-control-sm' value='0'>"
+            cells[8].innerHTML = "<input type='text' class='form-control form-control-sm' value='0'>"
+            cells[9].innerHTML = `<select class="form-control btn-sm tableRefferals" ${serData.OPReferalBilling !== true ? 'disabled': ''}>
+                                  ${$('#billDetails .tableHeadRefferals').html()}
+                                  </select>`
+            cells[10].innerHTML = "<input type='text' class='form-control form-control-sm' value='0'>"
+            cells[11].innerHTML = "<input type='text' class='form-control form-control-sm' value='0'>"
+            cells[12].innerHTML = `<input type='text'  class='total_amount form-control form-control-sm' value=
+                                 '${serData.SerAmount}'>`
+            cells[13].innerHTML = "<input type='text' class='form-control form-control-sm' value='0'>"
+            cells[14].innerHTML = `<input type='text' class='netamount total${table.rows.length - 1} form-control form-control-sm' value=
+                                 '${serData.SerAmount}'>`
+            cells[15].innerHTML = "<button type='button' data-type='service' class='btn deleteRow btn-circle btn-danger'><i class='fa fa-trash'></i></button>"
+
+            // update down tables..(summary , discount etc)
+            updateTables()
+
+        }
+
+        function displaySummary() {
+
+        }
+        //update down tables..(summary , discount etc)
+        let cash_card_total_data = {
+            TotalAmount: 0,
+            cash: 0,
+            card: 0,
+            balance: 0,
+            other: 0
+        }
+
+
+        function updateTables() {
+            let netamounts = $('.netamountVal');
+            $('#cashPayment').val(total_net_amount)
+            for (let i = 0; i < netamounts.length; i++) {
+                $(netamounts).html(total_net_amount)
+            }
+            let summarys = $('.summarys');
+            let total = 0;
+            for (let i = 0; i < summarys.length; i++) {
+                const amounts = parseFloat($(summarys[i]).html())
+                total += amounts;
+            }
+            $('#totalAmount').html(total)
+            $('#total_payable_amount').html(total_net_amount)
+            cash_card_total_data['TotalAmount'] = total;
+            cash_card_total_data['cash'] = total;
+            cash_card_total_data['card'] = 0;
+            cash_card_total_data['other'] = 0;
+            cash_card_total_data['balance'] = 0;
+            updatemodal(cash_card_total_data)
+        }
+        updatemodal(cash_card_total_data)
+
+        function updatemodal(obj) {
+            // obj will be totalAmount, cash, card, others, balance
+
+
+            $('.totalBill').html(obj.TotalAmount)
+            $('.cashpayment').html(obj.cash)
+            $('.cardpayments').html(obj.card)
+            $('.balances').html(obj.balance)
+            $('#cashPayment').val(obj.cash)
+            $('#paidAmounts').html(parseFloat(obj.cash) + parseFloat(obj.card))
+            $('#card_amount_payable').html(obj.card)
+            $('#other_pay_balance').html(obj.other)
+        }
+
+        ////////// REGISTRATION TYPE ////////// 
+        function registration_type() {
+            $.get('/api/masters/registrationType')
+                .done(resp => {
+                    resp.map((registrationType, index) => {
+                        if (index == 0) {
+                            $('#registration__type').append(`<option selected value="${registrationType.regType}">${registrationType.regType}</option>`)
+                            return
+                        }
+                        $('#registration__type').append(`<option value="${registrationType.regType}">${registrationType.regType}</option>`)
+
+                    })
+                })
+                .fail(err => {
+                    console.log(err)
+                })
+        }
+
+        registration_type()
+
+
+        //////////  Saving  Bill ////////// 
+        let response_data = {}
+        $('#save_card_payment').click(function () {
+            response_data['CardType'] = $('#cardType').val();
+            response_data['CardBank'] = $('#Bank').val();
+            response_data['CardNo'] = $('#card_number').val();
+            response_data['Card'] = $('#amounts').val();
+            response_data['Transfee'] = $('#transaction_fee').val();
+            response_data['CardTotal'] = $('#total_card_amount').val();
+            $('#cardModal').modal('hide')
+            $('#card_amount_payable').html($('#amounts').val())
+            cash_card_total_data['card'] = parseFloat($('#amounts').val());
+            cash_card_total_data['balance'] = (cash_card_total_data['TotalAmount'] - (parseFloat(cash_card_total_data['card']) + parseFloat(cash_card_total_data['cash'])))
+            updatemodal(cash_card_total_data)
+            // let previous = $('#cashPayment').val()
+            // $('#cashPayment').val(previous-$('#amounts').val())
+        }
+        )
+
+        $('#otherPayment').click(function () {
+            response_data['OtherPayType'] = $('#otherpayment_type').val()
+            response_data['OtherPayNo'] = $('#payment_mode').val()
+            response_data['OtherBank'] = $('#otherbank').val()
+            response_data['OtherPaid'] = $('#amount').val()
+            response_data['OtherDate'] = $('#date').val()
+            $('#other_pay_balance').html($('#amount').val())
+            let previous = $('#cashPayment').val()
+
+            cash_card_total_data['card'] = (parseFloat(cash_card_total_data['card']) + parseFloat($('#amount').val()));
+            cash_card_total_data['balance'] = (cash_card_total_data['TotalAmount'] - (parseFloat(cash_card_total_data['card']) + parseFloat(cash_card_total_data['cash'])))
+            updatemodal(cash_card_total_data)
+            // $('#cashPayment').val(previous-$('#amount').val());
+            $('#otherModal').modal('hide')
+        })
+        
+        function save_bill() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const patient_id = urlParams.get('patient_id')
+            let data = {
+                patient: patient_id,
+                RegNo: patient_id,
+                RegType: $('#registration__type').val(),
+                PayType: 'self',
+                DiscType: 'admin',
+                TotalAmount: $('#totalAmount').text(),
+                NetAmount: $('#totalAmount').text(),
+                Payable: $('#paidAmounts').text(),
+                Balance: cash_card_total_data.balance,
+                PaidAmount: $('#paidAmounts').text(),
+            }
+            var table = document.getElementById('billDetails').getElementsByTagName('tbody')[0]
+            var row = table.rows.length;
+
+
+            bootbox.alert({
+                centerVertical: true,
+                message: `${row}- Services Added, Total Bill Amount - ${cash_card_total_data.TotalAmount}`,
+                callback: function () {
+                    bootbox.confirm({
+                        centerVertical: true,
+                        message: "Are You sure about Bill Save?",
+                        buttons: {
+                           
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Yes',
+                                className: 'btn-success'
+                            },
+                             cancel: {
+                                label: '<i class="fa fa-times"></i> No',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result == false) return;
+
+                            $.ajax({
+                                url: '/api/trans/billheader/',
+                                method: 'POST',
+                                data: JSON.stringify(data),
+                                contentType: 'application/json',
+                                beforeSend: function(xhr){
+                                    xhr.setRequestHeader("Authorization", 'Token ' + jQuery.cookie('Token'));
+                                }
+                            })
+                                .done(res => {
+                                    response_data['BillCode'] = res.id;
+                                    response_data['RecAmount'] = res.PaidAmount
+                                    response_data['Cash'] = $('#cashPayment').val()
+                                    $.ajax({
+                                        url: '/api/trans/billreceipt/',
+                                        method: 'POST',
+                                        data: JSON.stringify(response_data),
+                                        contentType: 'application/json'
+                                    })
+                                        .done(response => {
+                                            console.log('Responses from bill receipts', response)
+                                        })
+                                        .fail(err => {
+                                            console.log(err)
+                                        })
+
+                                    for (var i = 0; i < consultant_service_list.length; i++) {
+                                        const obj = consultant_service_list[i]
+                                        obj['BillCode'] = res.id;
+                                        $.ajax({
+                                            url: '/api/trans/billdetails/',
+                                            method: 'POST',
+                                            data: JSON.stringify(obj),
+                                            contentType: 'application/json'
+                                        })
+                                            .done(responses => {
+                                                console.log('Table data added ', responses)
+                                            })
+                                            .fail(err => {
+                                                console.log(err);
+                                            })
+                                    }
+                                    window.location.href = '/trans/invoice?bilhead_id=' + res.id;
+                                })
+                                .fail(err => {
+                                    console.log(err)
+                                })
+                        }
+                    })
+                }
+            })
+
+
+
+
+
+        }
+
+
+        $('#saveBill').click(function () {
+            save_bill()
+        })
+
+        function handleCashPayments() {
+            const cashAmounts = $('#cashPayment').val()
+            if (total_net_amount - cashAmounts >= 0) {
+                let balance = total_net_amount - cashAmounts;
+                cash_card_total_data['balance'] = balance;
+                cash_card_total_data['cash'] = cashAmounts;
+                updatemodal(cash_card_total_data)
+                // $('#balance').text(balance);
+                // $('#paidAmounts').text(cashAmounts);
+            }
+            else {
+                alert('you should pay maximum ' + total_net_amount + '.')
+                $('#cashPayment').val(total_net_amount);
+                $('#balance').text(0);
+                $('#paidAmounts').text(total_net_amount);
+            }
+        }
+        $('#cashPayment').bind("keypress mousedown change", handleCashPayments);
+
+        function handleQuentity(row, serAmount, quentity){
+            let obj = consultant_service_list[row]
+            total_net_amount = ((total_net_amount - obj['Amount']) + serAmount * quentity)
+
+            obj['Amount'] = (serAmount * quentity)
+            obj['NetAmount'] = (serAmount * quentity)
+            obj['PaidAmount'] = (serAmount * quentity)
+            obj['Qty'] = quentity
+            $(`.total${row}`).val(serAmount * quentity)
+            updateTables()
+        }
+
+        $('#billDetails').on('keypress mousedown change', '.qty', function () {
+            let row = $(this).attr('data-row');
+            let serAmount = $(this).attr('data-serAmount')
+            let quentity = $(this).val();
+            handleQuentity(row, serAmount, quentity)
+        })
+        
+
+    })
+
+
+
+</script>
+{% endblock %}

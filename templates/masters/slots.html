@@ -1,0 +1,305 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<style>
+    .card {
+        border-radius: 15px !important;
+    }
+</style>
+<div>
+    <div class="card mx-auto m-3">
+        <div class="card-body container">
+            <form id="ConsultantSlutMaster">
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label for="masters">Professional:</label>
+                        <input class="form-control" type="text" id="masters" name="master"
+                            placeholder="Enter your professional name">
+                        <input type="hidden" name="consultant_id" id="consultant_id">
+                        <input type="hidden" name="id">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="day">Day:</label>
+                        <select name='day' class="custom-select">
+                            <option value="Sunday">Sun</option>
+                            <option value="Monday">Mon</option>
+                            <option value="Tuesday">Tue</option>
+                            <option value="Wednesday">Wed</option>
+                            <option value="Thusday">Thu</option>
+                            <option value="Friday">Fri</option>
+                            <option value="Satday">Sat</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="slot_duration">Duration</label>
+                        <input class="form-control" type="number" id="slot_duration" name="slot_duration"
+                            placeholder="Enter Duration time">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="time_from">From Time:</label>
+                        <input class="form-control" type="time" id="time_from" name="time_from"
+                            placeholder="Enter From Time">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="time_to">To Time</label>
+                        <input class="form-control" type="time" id="time_to" name="time_to" placeholder="Enter to time">
+                    </div>
+                    <div class="form-group col-md-4 mt-auto">
+                        <button type="submit" class="btn btn-active save btn-info btn-block">Save</button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+<div class="mt-5 card mx-auto">
+    <div class="card-body">
+        <table id="slotsTable" class="table col-md-10" style="width: 100%;">
+            <thead>
+                <tr>
+                    <td>Sl No</td>
+                    <td>consultant Name</td>
+                    <td>Day</td>
+                    <td>From Time</td>
+                    <td>To Time</td>
+                    <td>Duration</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
+<!-- Scripts -->
+{% block scripts %}
+<script>
+    // TODO: auto complete 
+    let map = {}
+    $.getJSON('/api/masters/professional?category=c', {}, function (data) {
+        if (data) {
+            var departments = []
+
+            $.each(data, function (i, item) {
+                map[item.professionalName + '-' + item.contactNo] = item
+                departments.push(item)
+
+            })
+            $("#masters").autocomplete({
+                source: departments.map(index => index.professionalName + '-' + index.contactNo),
+                minLength: 1,
+                select: function (event, ui) {
+
+                    this.value = ui.item.value;
+                    const data = map[ui.item.value]
+                    $('#consultant_id').val(data.id)
+                    return false;
+                }
+            })
+        }
+    })
+
+
+
+    // TODO: datatable
+
+    let table = $('#slotsTable').DataTable(
+        {
+            ajax: {
+                url: '/api/masters/ConsultantSlutMaster',
+                dataSrc: "",
+            },
+            columns: [
+                {
+                    data: 'id'
+                },
+                {
+                    data: 'get_name'
+                },
+                {
+                    data: 'day'
+                },
+                {
+                    data: 'time_from'
+                },
+                {
+                    data: 'time_to'
+                },
+                {
+                    data: 'slot_duration'
+                },
+                {
+                    data: 'id',
+                    render: function (data, pos, row) {
+                        return `
+                        <button type='button' data-info='${JSON.stringify(row)}' class="btn edit btn-active"><i class="fa fa-pencil text-info"></i></button>
+                        <button type='button' data-id="${row.id}" class="btn btn-active  delete"><i class="fa fa-trash text-danger"></i></button>
+                        
+                        `
+                    }
+                }
+
+            ],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        }
+    )
+    // TODO: Form Submitting..
+    $('#ConsultantSlutMaster').submit(function (e) {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        const data = new FormData(document.getElementById('ConsultantSlutMaster'));
+        let is_for_save = $(this).find('.save').html()
+        if (is_for_save == 'Save') {
+            $.ajax({
+                url: '/api/masters/ConsultantSlutMaster/',
+                method: 'POST',
+                data: data,
+                contentType: false,
+                processData: false
+            }).done(response => {
+                table.ajax.reload()
+                toastr.success('Slot added successfull', 'Success', {
+                    positionClass: "toast-top-center"
+                })
+            }).fail(err => {
+                console.log(err)
+            })
+        }
+        else {
+            const ids = $('input[name="id"]').val();
+            console.log(ids);
+            $.ajax({
+                url: '/api/masters/ConsultantSlutMaster/' + ids + '/',
+                method: 'PUT',
+                data: data,
+                contentType: false,
+                processData: false
+            }).done(response => {
+                table.ajax.reload()
+                toastr.success('Slot Updated successfull', 'Success', {
+                    positionClass: "toast-top-center"
+                })
+            }).fail(err => {
+                console.log(err)
+            })
+        }
+
+    })
+
+    // TODO: delete functionality is here ..
+    $('tbody').on('click', '.delete', function () {
+        const id = $(this).data('id')
+        bootbox.confirm({
+            centerVertical: true,
+            message: "Are You sure to delete the data?",
+            buttons: {
+
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        url: '/api/masters/ConsultantSlutMaster/' + id + '/',
+                        method: 'DELETE',
+                        contentType: 'application/json'
+                    }).done(res => {
+                        table.ajax.reload()
+                        toastr.success('Deleted Successfull.', 'Success', {
+                            positionClass: "toast-top-center"
+                        })
+                    })
+                }
+
+            }
+        })
+    })
+
+
+    // TODO: EDIT FUNCTIONALITY IS HERE .....
+    $('tbody').on('click', '.edit', function () {
+        let data = $(this).data('info');
+        const form = document.getElementById('ConsultantSlutMaster')
+        formDeserialize(form, data)
+        let tbody = $('#ConsultantSlutMaster').find('.save').html('Update');
+        console.log(tbody)
+        $('#masters').val(data.get_name)
+
+    })
+
+
+    function formDeserialize(form, data) {
+        const entries = (new URLSearchParams(data)).entries();
+        for (const [key, val] of entries) {
+            const input = form.elements[key];
+            if (input != undefined) {
+                if (input.type == 'file') {
+                    if (val) {
+                        var $file = jQuery('#' + input.id),
+                            $label = $file.next('label'),
+                            $labelText = $label.find('span'),
+                            labelDefault = $labelText.text();
+                        var filename = val.split('/').pop()
+                        console.log(filename)
+                        if (filename) {
+                            $label
+                                .addClass('file-ok')
+                                .css('background-image', 'url(' + val + ')');
+                            $labelText.text(filename);
+                        } else {
+                            $label.removeClass('file-ok');
+                            $labelText.text(labelDefault);
+                        }
+                    }
+
+                } else {
+
+                    switch (input.type) {
+                        case 'checkbox':
+                            input.checked = !!val;
+                            break;
+                        case 'select-one':
+                            if (val)
+                                input.value = val;
+                            else
+                                input.selectedIndex = 0;
+
+                            break;
+                        default:
+                            input.value = val;
+                            break;
+
+                    }
+
+                }
+            }
+
+        }
+    }
+
+
+
+</script>
+{% endblock %}

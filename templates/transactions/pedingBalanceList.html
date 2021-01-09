@@ -1,0 +1,699 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<style>
+    #pendingBalance > tbody{
+        cursor: pointer;
+    }
+</style>
+<div>
+    <h3>OP Due Collection</h3>
+    <div class="">
+        <table id="pendingBalance" class="table table-striped table-hover">
+            <thead class="bg-info text-light">
+                <tr>
+                    <td>SNo</td>
+                    <td>Patient Name</td>
+                    <td>RegNo</td>
+                    <td>BillNo</td>
+                    <td>BillDate</td>
+                    <td>Bill Amt</td>
+                    <td>Disc</td>
+                    <td>Net Amt</td>
+                    <td>Paid Amt</td>
+                    <td>Balance</td>
+                    <td>MobileNo</td>
+                    <td>Refund</td>
+                    <td>User</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<div class="modal" id="DueRecieveModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Recieve Dues</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <p>Patient Name: <span id="patientName">Samiran Sarkar</span></p>
+                </div>
+                <div class="col">
+                    <p class="text-center">Bill No: #<span id="BillNo"></span></p>
+                </div>
+                <div class="col">
+                    <p class="text-right">Balance: <span id="recivableBalance">0</span></p>
+                </div>
+            </div>
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Cash</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Card</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Other</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="form-group">
+                                <label for="CardAmount">Amount</label>
+                                <input type="text" class="form-control" id="cashamounts" name="Cash" placeholder="Enter the Cash Amount">
+                                <input type="hidden" id="bill_id">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Card Type</label>
+                            <select name="CardType" id="cardType" class="form-control">
+                                <option value="Credit">Credit</option>
+                                <option value="Debit">Debit</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Bank</label>
+                            <select name="CardBank" id="Bank" class="form-control">
+                                <option value="">Select Bank</option>
+                                <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                                <option value="Allahabad Bank">Allahabad Bank</option>
+                                <option value="Allahabad UP Gramin Bank">Allahabad UP Gramin Bank</option>
+                                <option value="Andhra Bank">Andhra Bank</option>
+                                <option value="Andhra Pradesh Grameena Vikas Bank">Andhra Pradesh Grameena Vikas Bank</option>
+                                <option value="Andhra Pragathi Grameena Bank">Andhra Pragathi Grameena Bank</option>
+                                <option value="Arunachal Pradesh Rural Bank">Arunachal Pradesh Rural Bank</option>
+                                <option value="Aryavart Gramin Bank">Aryavart Gramin Bank</option>
+                                <option value="Assam Gramin Vikash Bank">Assam Gramin Vikash Bank</option>
+                                <option value="Australia and New Zealand Bank">Australia and New Zealand Bank</option>
+                                <option value="Axis Bank">Axis Bank</option>
+                                <option value="Baitarani Gramya Bank">Baitarani Gramya Bank</option>
+                                <option value="Ballia Etawah Gramin Bank">Ballia Etawah Gramin Bank</option>
+                                <option value="Bangiya Gramin Vikash Bank">Bangiya Gramin Vikash Bank</option>
+                                <option value="Bank Internasional Indonesia">Bank Internasional Indonesia</option>
+                                <option value="Bank of America NA">Bank of America NA</option>
+                                <option value="Bank of Bahrain and Kuwait">Bank of Bahrain and Kuwait</option>
+                                <option value="Bank of Baroda">Bank of Baroda</option>
+                                <option value="Bank of Ceylon">Bank of Ceylon</option>
+                                <option value="Bank of India">Bank of India</option>
+                                <option value="Bank of Maharashtra">Bank of Maharashtra</option>
+                                <option value="Bank of Nova Scotia&nbsp;(Scotia Bank)">Bank of Nova Scotia&nbsp;(Scotia Bank)</option>
+                                <option value="Bank of Tokyo Mitsubishi UFJ">Bank of Tokyo Mitsubishi UFJ</option>
+                                <option value="Barclays Bank PLC">Barclays Bank PLC</option>
+                                <option value="Baroda Gujarat Gramin Bank">Baroda Gujarat Gramin Bank</option>
+                                <option value="Baroda Rajasthan Gramin Bank">Baroda Rajasthan Gramin Bank</option>
+                                <option value="Baroda Uttar Pradesh Gramin Bank">Baroda Uttar Pradesh Gramin Bank</option>
+                                <option value="Bhartiya Mahila Bank">Bhartiya Mahila Bank</option>
+                                <option value="Bihar Kshetriya Gramin Bank">Bihar Kshetriya Gramin Bank</option>
+                                <option value="BNP Paribas">BNP Paribas</option>
+                                <option value="Calyon Bank">Calyon Bank</option>
+                                <option value="Canara Bank">Canara Bank</option>
+                                <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
+                                <option value="Cauvery Kalpatharu Grameena Bank">Cauvery Kalpatharu Grameena Bank</option>
+                                <option value="Central Bank of India">Central Bank of India</option>
+                                <option value="Chaitanya Godavari Grameena Bank">Chaitanya Godavari Grameena Bank</option>
+                                <option value="Chhattisgarh Gramin Bank">Chhattisgarh Gramin Bank</option>
+                                <option value="Chikmagalur-Kodagu Grameena Bank">Chikmagalur-Kodagu Grameena Bank</option>
+                                <option value="Chinatrust Commercial Bank">Chinatrust Commercial Bank</option>
+                                <option value="Citibank">Citibank</option>
+                                <option value="City Union Bank">City Union Bank</option>
+                                <option value="Commonwealth Bank&nbsp;of Australia">Commonwealth Bank&nbsp;of Australia </option>
+                                <option value="Corporation Bank">Corporation Bank</option>
+                                <option value="Credit Suisse">Credit Suisse</option>
+                                <option value="DBS Bank">DBS Bank</option>
+                                <option value="DCB Bank&nbsp;now&nbsp;RHB Bank">DCB Bank&nbsp;now&nbsp;RHB Bank</option>
+                                <option value="Deccan Grameena Bank">Deccan Grameena Bank</option>
+                                <option value="Dena Bank">Dena Bank</option>
+                                <option value="Dena Gujarat Gramin Bank">Dena Gujarat Gramin Bank</option>
+                                <option value="Deutsche Bank AG">Deutsche Bank AG</option>
+                                <option value="Development Credit Bank">Development Credit Bank</option>
+                                <option value="Dhanlaxmi Bank">Dhanlaxmi Bank</option>
+                                <option value="Durg-Rajnandgaon Gramin Bank">Durg-Rajnandgaon Gramin Bank</option>
+                                <option value="Ellaquai Dehati Bank">Ellaquai Dehati Bank</option>
+                                <option value="Federal Bank">Federal Bank</option>
+                                <option value="FirstRand Bank">FirstRand Bank</option>
+                                <option value="Gurgaon Gramin Bank">Gurgaon Gramin Bank</option>
+                                <option value="Hadoti Kshetriya Gramin Bank">Hadoti Kshetriya Gramin Bank</option>
+                                <option value="Haryana Gramin Bank">Haryana Gramin Bank</option>
+                                <option value="HDFC Bank">HDFC Bank</option>
+                                <option value="Himachal Gramin Bank">Himachal Gramin Bank</option>
+                                <option value="HSBC">HSBC</option>
+                                <option value="ICICI Bank">ICICI Bank</option>
+                                <option value="Indian Bank">Indian Bank</option>
+                                <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                                <option value="IndusInd Bank">IndusInd Bank</option>
+                                <option value="ING Vysya Bank">ING Vysya Bank</option>
+                                <option value="Jaipur Thar Gramin Bank">Jaipur Thar Gramin Bank</option>
+                                <option value="Jhabua Dhar Kshetriya Gramin Bank">Jhabua Dhar Kshetriya Gramin Bank</option>
+                                <option value="Jharkhand Gramin Bank">Jharkhand Gramin Bank</option>
+                                <option value="JPMorgan Chase Bank">JPMorgan Chase Bank</option>
+                                <option value="Kalinga Gramya Bank">Kalinga Gramya Bank</option>
+                                <option value="Karnataka Bank">Karnataka Bank</option>
+                                <option value="Karnataka Vikas Grameena Bank">Karnataka Vikas Grameena Bank</option>
+                                <option value="Karur Vysya Bank">Karur Vysya Bank</option>
+                                <option value="Kashi Gomti Samyut Gramin Bank">Kashi Gomti Samyut Gramin Bank</option>
+                                <option value="Kerala Gramin Bank">Kerala Gramin Bank</option>
+                                <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                                <option value="Krishna Grameena Bank">Krishna Grameena Bank</option>
+                                <option value="Krung Thai Bank">Krung Thai Bank</option>
+                                <option value="Kshetriya Kisan Gramin Bank">Kshetriya Kisan Gramin Bank</option>
+                                <option value="Lakshmi Vilas Bank">Lakshmi Vilas Bank</option>
+                                <option value="Langpi Dehangi Rural Bank">Langpi Dehangi Rural Bank</option>
+                                <option value="Madhumalti Building Gupte Marg">Madhumalti Building Gupte Marg</option>
+                                <option value="Madhya Bharat Gramin Bank">Madhya Bharat Gramin Bank</option>
+                                <option value="Madhya Bihar Gramin Bank">Madhya Bihar Gramin Bank</option>
+                                <option value="Mahakaushal Kshetriya Gramin Bank">Mahakaushal Kshetriya Gramin Bank</option>
+                                <option value="Maharashtra Gramin Bank">Maharashtra Gramin Bank</option>
+                                <option value="Malwa Gramin Bank">Malwa Gramin Bank</option>
+                                <option value="Manipur Rural Bank">Manipur Rural Bank</option>
+                                <option value="Marwar Ganganagar Bikaner Gramin Bank">Marwar Ganganagar Bikaner Gramin Bank</option>
+                                <option value="Mashreq Bank psc">Mashreq Bank psc</option>
+                                <option value="Meghalaya Rural Bank">Meghalaya Rural Bank</option>
+                                <option value="Mewar Anchalik Gramin Bank">Mewar Anchalik Gramin Bank</option>
+                                <option value="Mizoram Rural Bank">Mizoram Rural Bank</option>
+                                <option value="Mizuho Corporate Bank">Mizuho Corporate Bank</option>
+                                <option value="Nagaland Rural Bank">Nagaland Rural Bank</option>
+                                <option value="Nainital Bank">Nainital Bank</option>
+                                <option value="Narmada Malwa Gramin Bank">Narmada Malwa Gramin Bank</option>
+                                <option value="Neelachal Gramya Bank">Neelachal Gramya Bank</option>
+                                <option value="Oriental Bank of Commerce">Oriental Bank of Commerce</option>
+                                <option value="Pallavan Grama Bank">Pallavan Grama Bank</option>
+                                <option value="Pandyan Grama Bank">Pandyan Grama Bank</option>
+                                <option value="Parvatiya Gramin Bank">Parvatiya Gramin Bank</option>
+                                <option value="Paschim Banga Gramin Bank">Paschim Banga Gramin Bank</option>
+                                <option value="Pragathi Gramin Bank">Pragathi Gramin Bank</option>
+                                <option value="Prathama Bank">Prathama Bank</option>
+                                <option value="Puduvai Bharathiar Grama Bank">Puduvai Bharathiar Grama Bank</option>
+                                <option value="Pune District Central Co-op Bank">Pune District Central Co-op Bank</option>
+                                <option value="Punjab &amp; Sind Bank">Punjab &amp; Sind Bank</option>
+                                <option value="Punjab Gramin Bank">Punjab Gramin Bank</option>
+                                <option value="Punjab National Bank">Punjab National Bank</option>
+                                <option value="Purvanchal Gramin Bank">Purvanchal Gramin Bank</option>
+                                <option value="Rajasthan Gramin Bank">Rajasthan Gramin Bank</option>
+                                <option value="Rewa-Sidhi Gramin Bank">Rewa-Sidhi Gramin Bank</option>
+                                <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                                <option value="Rushikulya Gramya Bank">Rushikulya Gramya Bank</option>
+                                <option value="Samastipur Kshetriya Gramin Bank">Samastipur Kshetriya Gramin Bank</option>
+                                <option value="Saptagiri Grameena Bank">Saptagiri Grameena Bank</option>
+                                <option value="Sarva UP Gramin Bank">Sarva UP Gramin Bank</option>
+                                <option value="Satpura Narmada Kshetriya">Satpura Narmada Kshetriya</option>
+                                <option value="Saurashtra Gramin Bank">Saurashtra Gramin Bank</option>
+                                <option value="Sharda Gramin Bank">Sharda Gramin Bank</option>
+                                <option value="Shinhan Bank">Shinhan Bank</option>
+                                <option value="Shreyas Gramin Bank">Shreyas Gramin Bank</option>
+                                <option value="Sonali Bank">Sonali Bank</option>
+                                <option value="South Indian Bank">South Indian Bank</option>
+                                <option value="Sri.M.Visweshwaraya co-op bank">Sri.M.Visweshwaraya co-op bank</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                                <option value="State Bank of Bikaner &amp; Jaipur">State Bank of Bikaner &amp; Jaipur</option>
+                                <option value="State Bank of Hyderabad">State Bank of Hyderabad</option>
+                                <option value="State Bank of India">State Bank of India</option>
+                                <option value="State bank of Indore&nbsp;">State bank of Indore&nbsp;</option>
+                                <option value="State Bank of Mauritius">State Bank of Mauritius</option>
+                                <option value="State Bank of Mysore">State Bank of Mysore</option>
+                                <option value="State Bank of Patiala">State Bank of Patiala</option>
+                                <option value="State Bank of Saurashtra&nbsp;">State Bank of Saurashtra&nbsp;</option>
+                                <option value="State Bank of Travancore">State Bank of Travancore</option>
+                                <option value="Surguja Kshetriya Gramin Bank">Surguja Kshetriya Gramin Bank</option>
+                                <option value="Sutlej Kshetriya Gramin Bank">Sutlej Kshetriya Gramin Bank</option>
+                                <option value="Syndicate Bank">Syndicate Bank</option>
+                                <option value="Tamilnadu Mercantile Bank">Tamilnadu Mercantile Bank</option>
+                                <option value="THE JANATHA CO-OP BANK">THE JANATHA CO-OP BANK</option>
+                                <option value="Tripura Gramin Bank">Tripura Gramin Bank</option>
+                                <option value="UBS">UBS</option>
+                                <option value="UCO Bank">UCO Bank</option>
+                                <option value="Union Bank of India">Union Bank of India</option>
+                                <option value="United Bank of India">United Bank of India</option>
+                                <option value="UP Agro Corporation Bank">UP Agro Corporation Bank</option>
+                                <option value="Utkal Gramya Bank">Utkal Gramya Bank</option>
+                                <option value="Uttar Banga Kshetriya Gramin Bank">Uttar Banga Kshetriya Gramin Bank</option>
+                                <option value="Uttar Bihar Gramin Bank">Uttar Bihar Gramin Bank</option>
+                                <option value="Uttrakhand Gramin Bank">Uttrakhand Gramin Bank</option>
+                                <option value="Vananchal Gramin Bank">Vananchal Gramin Bank</option>
+                                <option value="Vidharbha Kshetriya Gramin Bank">Vidharbha Kshetriya Gramin Bank</option>
+                                <option value="vijaya bank">vijaya bank</option>
+                                <option value="Visveshvaraya Grameena Bank">Visveshvaraya Grameena Bank</option>
+                                <option value="Wainganga Krishna Gramin Bank">Wainganga Krishna Gramin Bank</option>
+                                <option value="Woori Bank">Woori Bank</option>
+                                <option value="YES Bank">YES Bank</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-8">
+                            <label>Card Number</label>
+                            <input type="text" name="CardNo" class="form-control" id="card_number">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Amount</label>
+                            <input type="text" name="Card" class="form-control" id="cardamounts">
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Transaction Fee</label>
+                            <input type="text" name="Transfee" class="form-control" id="transaction_fee" value="0.00">
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Total Amount</label>
+                            <input type="text" name="CardTotal" class="form-control" id="total_amountss">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Cheque/DD/Voucher/Coupon</label>
+                            <input type='text' id="otherPayNo" class="form-control" placeholder="Enter Cheque/DD/Voucher/Coupon">
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Select Bank</label>
+                            <select name="OtherBank" id="otherbank" class="form-control">
+                                <option value="">Select Bank</option>
+                                <option value="Abu Dhabi Commercial Bank">Abu Dhabi Commercial Bank</option>
+                                <option value="Allahabad Bank">Allahabad Bank</option>
+                                <option value="Allahabad UP Gramin Bank">Allahabad UP Gramin Bank</option>
+                                <option value="Andhra Bank">Andhra Bank</option>
+                                <option value="Andhra Pradesh Grameena Vikas Bank">Andhra Pradesh Grameena Vikas Bank</option>
+                                <option value="Andhra Pragathi Grameena Bank">Andhra Pragathi Grameena Bank</option>
+                                <option value="Arunachal Pradesh Rural Bank">Arunachal Pradesh Rural Bank</option>
+                                <option value="Aryavart Gramin Bank">Aryavart Gramin Bank</option>
+                                <option value="Assam Gramin Vikash Bank">Assam Gramin Vikash Bank</option>
+                                <option value="Australia and New Zealand Bank">Australia and New Zealand Bank</option>
+                                <option value="Axis Bank">Axis Bank</option>
+                                <option value="Baitarani Gramya Bank">Baitarani Gramya Bank</option>
+                                <option value="Ballia Etawah Gramin Bank">Ballia Etawah Gramin Bank</option>
+                                <option value="Bangiya Gramin Vikash Bank">Bangiya Gramin Vikash Bank</option>
+                                <option value="Bank Internasional Indonesia">Bank Internasional Indonesia</option>
+                                <option value="Bank of America NA">Bank of America NA</option>
+                                <option value="Bank of Bahrain and Kuwait">Bank of Bahrain and Kuwait</option>
+                                <option value="Bank of Baroda">Bank of Baroda</option>
+                                <option value="Bank of Ceylon">Bank of Ceylon</option>
+                                <option value="Bank of India">Bank of India</option>
+                                <option value="Bank of Maharashtra">Bank of Maharashtra</option>
+                                <option value="Bank of Nova Scotia&nbsp;(Scotia Bank)">Bank of Nova Scotia&nbsp;(Scotia Bank)</option>
+                                <option value="Bank of Tokyo Mitsubishi UFJ">Bank of Tokyo Mitsubishi UFJ</option>
+                                <option value="Barclays Bank PLC">Barclays Bank PLC</option>
+                                <option value="Baroda Gujarat Gramin Bank">Baroda Gujarat Gramin Bank</option>
+                                <option value="Baroda Rajasthan Gramin Bank">Baroda Rajasthan Gramin Bank</option>
+                                <option value="Baroda Uttar Pradesh Gramin Bank">Baroda Uttar Pradesh Gramin Bank</option>
+                                <option value="Bhartiya Mahila Bank">Bhartiya Mahila Bank</option>
+                                <option value="Bihar Kshetriya Gramin Bank">Bihar Kshetriya Gramin Bank</option>
+                                <option value="BNP Paribas">BNP Paribas</option>
+                                <option value="Calyon Bank">Calyon Bank</option>
+                                <option value="Canara Bank">Canara Bank</option>
+                                <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
+                                <option value="Cauvery Kalpatharu Grameena Bank">Cauvery Kalpatharu Grameena Bank</option>
+                                <option value="Central Bank of India">Central Bank of India</option>
+                                <option value="Chaitanya Godavari Grameena Bank">Chaitanya Godavari Grameena Bank</option>
+                                <option value="Chhattisgarh Gramin Bank">Chhattisgarh Gramin Bank</option>
+                                <option value="Chikmagalur-Kodagu Grameena Bank">Chikmagalur-Kodagu Grameena Bank</option>
+                                <option value="Chinatrust Commercial Bank">Chinatrust Commercial Bank</option>
+                                <option value="Citibank">Citibank</option>
+                                <option value="City Union Bank">City Union Bank</option>
+                                <option value="Commonwealth Bank&nbsp;of Australia">Commonwealth Bank&nbsp;of Australia </option>
+                                <option value="Corporation Bank">Corporation Bank</option>
+                                <option value="Credit Suisse">Credit Suisse</option>
+                                <option value="DBS Bank">DBS Bank</option>
+                                <option value="DCB Bank&nbsp;now&nbsp;RHB Bank">DCB Bank&nbsp;now&nbsp;RHB Bank</option>
+                                <option value="Deccan Grameena Bank">Deccan Grameena Bank</option>
+                                <option value="Dena Bank">Dena Bank</option>
+                                <option value="Dena Gujarat Gramin Bank">Dena Gujarat Gramin Bank</option>
+                                <option value="Deutsche Bank AG">Deutsche Bank AG</option>
+                                <option value="Development Credit Bank">Development Credit Bank</option>
+                                <option value="Dhanlaxmi Bank">Dhanlaxmi Bank</option>
+                                <option value="Durg-Rajnandgaon Gramin Bank">Durg-Rajnandgaon Gramin Bank</option>
+                                <option value="Ellaquai Dehati Bank">Ellaquai Dehati Bank</option>
+                                <option value="Federal Bank">Federal Bank</option>
+                                <option value="FirstRand Bank">FirstRand Bank</option>
+                                <option value="Gurgaon Gramin Bank">Gurgaon Gramin Bank</option>
+                                <option value="Hadoti Kshetriya Gramin Bank">Hadoti Kshetriya Gramin Bank</option>
+                                <option value="Haryana Gramin Bank">Haryana Gramin Bank</option>
+                                <option value="HDFC Bank">HDFC Bank</option>
+                                <option value="Himachal Gramin Bank">Himachal Gramin Bank</option>
+                                <option value="HSBC">HSBC</option>
+                                <option value="ICICI Bank">ICICI Bank</option>
+                                <option value="Indian Bank">Indian Bank</option>
+                                <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                                <option value="IndusInd Bank">IndusInd Bank</option>
+                                <option value="ING Vysya Bank">ING Vysya Bank</option>
+                                <option value="Jaipur Thar Gramin Bank">Jaipur Thar Gramin Bank</option>
+                                <option value="Jhabua Dhar Kshetriya Gramin Bank">Jhabua Dhar Kshetriya Gramin Bank</option>
+                                <option value="Jharkhand Gramin Bank">Jharkhand Gramin Bank</option>
+                                <option value="JPMorgan Chase Bank">JPMorgan Chase Bank</option>
+                                <option value="Kalinga Gramya Bank">Kalinga Gramya Bank</option>
+                                <option value="Karnataka Bank">Karnataka Bank</option>
+                                <option value="Karnataka Vikas Grameena Bank">Karnataka Vikas Grameena Bank</option>
+                                <option value="Karur Vysya Bank">Karur Vysya Bank</option>
+                                <option value="Kashi Gomti Samyut Gramin Bank">Kashi Gomti Samyut Gramin Bank</option>
+                                <option value="Kerala Gramin Bank">Kerala Gramin Bank</option>
+                                <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                                <option value="Krishna Grameena Bank">Krishna Grameena Bank</option>
+                                <option value="Krung Thai Bank">Krung Thai Bank</option>
+                                <option value="Kshetriya Kisan Gramin Bank">Kshetriya Kisan Gramin Bank</option>
+                                <option value="Lakshmi Vilas Bank">Lakshmi Vilas Bank</option>
+                                <option value="Langpi Dehangi Rural Bank">Langpi Dehangi Rural Bank</option>
+                                <option value="Madhumalti Building Gupte Marg">Madhumalti Building Gupte Marg</option>
+                                <option value="Madhya Bharat Gramin Bank">Madhya Bharat Gramin Bank</option>
+                                <option value="Madhya Bihar Gramin Bank">Madhya Bihar Gramin Bank</option>
+                                <option value="Mahakaushal Kshetriya Gramin Bank">Mahakaushal Kshetriya Gramin Bank</option>
+                                <option value="Maharashtra Gramin Bank">Maharashtra Gramin Bank</option>
+                                <option value="Malwa Gramin Bank">Malwa Gramin Bank</option>
+                                <option value="Manipur Rural Bank">Manipur Rural Bank</option>
+                                <option value="Marwar Ganganagar Bikaner Gramin Bank">Marwar Ganganagar Bikaner Gramin Bank</option>
+                                <option value="Mashreq Bank psc">Mashreq Bank psc</option>
+                                <option value="Meghalaya Rural Bank">Meghalaya Rural Bank</option>
+                                <option value="Mewar Anchalik Gramin Bank">Mewar Anchalik Gramin Bank</option>
+                                <option value="Mizoram Rural Bank">Mizoram Rural Bank</option>
+                                <option value="Mizuho Corporate Bank">Mizuho Corporate Bank</option>
+                                <option value="Nagaland Rural Bank">Nagaland Rural Bank</option>
+                                <option value="Nainital Bank">Nainital Bank</option>
+                                <option value="Narmada Malwa Gramin Bank">Narmada Malwa Gramin Bank</option>
+                                <option value="Neelachal Gramya Bank">Neelachal Gramya Bank</option>
+                                <option value="Oriental Bank of Commerce">Oriental Bank of Commerce</option>
+                                <option value="Pallavan Grama Bank">Pallavan Grama Bank</option>
+                                <option value="Pandyan Grama Bank">Pandyan Grama Bank</option>
+                                <option value="Parvatiya Gramin Bank">Parvatiya Gramin Bank</option>
+                                <option value="Paschim Banga Gramin Bank">Paschim Banga Gramin Bank</option>
+                                <option value="Pragathi Gramin Bank">Pragathi Gramin Bank</option>
+                                <option value="Prathama Bank">Prathama Bank</option>
+                                <option value="Puduvai Bharathiar Grama Bank">Puduvai Bharathiar Grama Bank</option>
+                                <option value="Pune District Central Co-op Bank">Pune District Central Co-op Bank</option>
+                                <option value="Punjab &amp; Sind Bank">Punjab &amp; Sind Bank</option>
+                                <option value="Punjab Gramin Bank">Punjab Gramin Bank</option>
+                                <option value="Punjab National Bank">Punjab National Bank</option>
+                                <option value="Purvanchal Gramin Bank">Purvanchal Gramin Bank</option>
+                                <option value="Rajasthan Gramin Bank">Rajasthan Gramin Bank</option>
+                                <option value="Rewa-Sidhi Gramin Bank">Rewa-Sidhi Gramin Bank</option>
+                                <option value="Royal Bank of Scotland">Royal Bank of Scotland</option>
+                                <option value="Rushikulya Gramya Bank">Rushikulya Gramya Bank</option>
+                                <option value="Samastipur Kshetriya Gramin Bank">Samastipur Kshetriya Gramin Bank</option>
+                                <option value="Saptagiri Grameena Bank">Saptagiri Grameena Bank</option>
+                                <option value="Sarva UP Gramin Bank">Sarva UP Gramin Bank</option>
+                                <option value="Satpura Narmada Kshetriya">Satpura Narmada Kshetriya</option>
+                                <option value="Saurashtra Gramin Bank">Saurashtra Gramin Bank</option>
+                                <option value="Sharda Gramin Bank">Sharda Gramin Bank</option>
+                                <option value="Shinhan Bank">Shinhan Bank</option>
+                                <option value="Shreyas Gramin Bank">Shreyas Gramin Bank</option>
+                                <option value="Sonali Bank">Sonali Bank</option>
+                                <option value="South Indian Bank">South Indian Bank</option>
+                                <option value="Sri.M.Visweshwaraya co-op bank">Sri.M.Visweshwaraya co-op bank</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                                <option value="State Bank of Bikaner &amp; Jaipur">State Bank of Bikaner &amp; Jaipur</option>
+                                <option value="State Bank of Hyderabad">State Bank of Hyderabad</option>
+                                <option value="State Bank of India">State Bank of India</option>
+                                <option value="State bank of Indore&nbsp;">State bank of Indore&nbsp;</option>
+                                <option value="State Bank of Mauritius">State Bank of Mauritius</option>
+                                <option value="State Bank of Mysore">State Bank of Mysore</option>
+                                <option value="State Bank of Patiala">State Bank of Patiala</option>
+                                <option value="State Bank of Saurashtra&nbsp;">State Bank of Saurashtra&nbsp;</option>
+                                <option value="State Bank of Travancore">State Bank of Travancore</option>
+                                <option value="Surguja Kshetriya Gramin Bank">Surguja Kshetriya Gramin Bank</option>
+                                <option value="Sutlej Kshetriya Gramin Bank">Sutlej Kshetriya Gramin Bank</option>
+                                <option value="Syndicate Bank">Syndicate Bank</option>
+                                <option value="Tamilnadu Mercantile Bank">Tamilnadu Mercantile Bank</option>
+                                <option value="THE JANATHA CO-OP BANK">THE JANATHA CO-OP BANK</option>
+                                <option value="Tripura Gramin Bank">Tripura Gramin Bank</option>
+                                <option value="UBS">UBS</option>
+                                <option value="UCO Bank">UCO Bank</option>
+                                <option value="Union Bank of India">Union Bank of India</option>
+                                <option value="United Bank of India">United Bank of India</option>
+                                <option value="UP Agro Corporation Bank">UP Agro Corporation Bank</option>
+                                <option value="Utkal Gramya Bank">Utkal Gramya Bank</option>
+                                <option value="Uttar Banga Kshetriya Gramin Bank">Uttar Banga Kshetriya Gramin Bank</option>
+                                <option value="Uttar Bihar Gramin Bank">Uttar Bihar Gramin Bank</option>
+                                <option value="Uttrakhand Gramin Bank">Uttrakhand Gramin Bank</option>
+                                <option value="Vananchal Gramin Bank">Vananchal Gramin Bank</option>
+                                <option value="Vidharbha Kshetriya Gramin Bank">Vidharbha Kshetriya Gramin Bank</option>
+                                <option value="vijaya bank">vijaya bank</option>
+                                <option value="Visveshvaraya Grameena Bank">Visveshvaraya Grameena Bank</option>
+                                <option value="Wainganga Krishna Gramin Bank">Wainganga Krishna Gramin Bank</option>
+                                <option value="Woori Bank">Woori Bank</option>
+                                <option value="YES Bank">YES Bank</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Select Payment Mode</label>
+                            <select name="" id="payment_mode" class="form-control">
+                                <option value="Credit" selected>Google Pay</option>
+                                <option value="Debit">PhonePe</option>
+                                <option value="Debit">PayTM</option>
+                                <option value="Debit">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Cheque/DD/Voucher/Coupon Date</label>
+                            <input type="Date" name="date" class="form-control" id="date">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Amount</label>
+                            <input type="text" name="amount" class="form-control" id="otheramount">
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Total Amount</label>
+                            <input type="text" name="total_amount" class="form-control" id="total_amount">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-5">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Cash Amount</label>
+                        <input type="text" class="form-control" placeholder="Entered Cash Amount" id="enteredCashAmount" value="0">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Card Amount</label>
+                        <input type="text" class="form-control" placeholder="Entered card Amount" id="enteredCardAmount" value="0">
+                    </div>
+                </div>  
+                <div class="col">
+                      <div class="form-group">
+                          <label for="">Other Amount</label>
+                          <input type="text" class="form-control" placeholder="Entered other Amount" id="enteredOtherAmount" value="0">
+                      </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                        <label for="">Total Amount</label>
+                        <input type="text" class="form-control" placeholder="Entered total Amount" id="enteredTotalAmount" value="0">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Balance Amount</label>
+                        <input type="text" class="form-control" placeholder="balance" id="afterPaidBalance" value="0">
+                    </div>
+                </div>
+              </div>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" id="saveTransaction">Save Transaction</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+{% endblock %}
+<!-- Scripts -->
+{% block scripts %}
+<script>
+    jQuery(document).ready(function ($) {
+        $('#sidebarToggle').trigger('click');
+        
+
+        var table = $('#pendingBalance').DataTable({
+            ajax: {
+                url: '/api/trans/pendingBalanceView',
+                dataSrc: "",
+            },
+            columns: [
+                {
+                    data: 'id'
+                },
+                {
+                    data: 'patient.p_name'
+                },
+                {
+                    data: 'RegNo'
+                },
+                {
+                    data: 'BillNo'
+                },
+                {
+                    data: 'BillDate'
+                },
+                {
+                    data: 'TotalAmount'
+                },
+                {
+                    data: 'DiscPerc', 
+                    render: function(data, type, row){
+                        if(data == null){
+                            return 0
+                        }
+                        else{
+                            return data
+                        }
+                    }
+                },
+                {
+                    data: 'TotalAmount'
+                },
+                {
+                    data: 'PaidAmount'
+                },
+                {
+                    data: 'Balance'
+                },
+                {
+                    data: 'patient.mobile_number'
+                },
+                {
+                    data: 'Refunded',
+                    render: function(data){
+                        if(data == null){
+                            return 0
+                        }
+                        else{
+                            return data
+                        }
+                    }
+                },
+                {
+                    data: 'EditedBy',
+                    render: function(data){
+                        if(data == null){
+                            return 'Admin'
+                        }
+                        else{
+                            return data
+                        }
+                    }
+                }
+
+            ],
+            language: {
+                lengthMenu: "_MENU_",
+                search: "",
+                searchPlaceholder: "Search..."
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html(iDisplayIndex + 1);
+                return nRow;
+            }
+        })
+
+        let initialData = {
+            cash: 0,
+            card: 0,
+            other: 0,
+            total: 0,
+            balance: 0
+        }
+
+        function arrengedModal(obj){
+            $('#enteredCashAmount').val(obj.cash)
+            $('#enteredCardAmount').val(obj.card)
+            $('#enteredOtherAmount').val(obj.other)
+            $('#enteredTotalAmount').val(obj.total)
+            $('#afterPaidBalance').val(obj.balance)
+
+        }
+        arrengedModal(initialData)
+
+        $('#pendingBalance tbody').on('dblclick', 'tr', function () {
+            var data = table.row(this).data();
+            $('#DueRecieveModal').modal('show')
+            $('#patientName').html(data.patient.p_name);
+            $('#BillNo').html(data.BillNo);
+            $('#recivableBalance').html(data.Balance);
+            $('#bill_id').val(data.id);
+            initialData['balance'] = data.Balance;
+            arrengedModal(initialData)
+        });
+
+        $('#cashamounts').on('keyup change', function(){
+            let cash_val = $(this).val()
+            initialData['cash'] = parseFloat(cash_val)
+            initialData['balance'] =  (parseFloat($('#recivableBalance').html()) - (parseFloat(cash_val) + parseFloat(initialData.card) + parseFloat(initialData.other)))
+            initialData['total'] =  (parseFloat(cash_val) + parseFloat(initialData.card) + parseFloat(initialData.other))
+            arrengedModal(initialData)
+        })
+        $('#cardamounts').on('keyup change', function(){
+            let cash_val = $(this).val()
+            initialData['card'] = parseFloat(cash_val)
+            initialData['balance'] = (parseFloat($('#recivableBalance').html()) - (parseFloat(cash_val) + parseFloat(initialData.cash) + parseFloat(initialData.other)))
+            initialData['total'] =  (parseFloat(cash_val) + parseFloat(initialData.cash) + parseFloat(initialData.other))
+            arrengedModal(initialData)
+        })
+        $('#otheramount').on('keyup change', function(){
+            let cash_val = $(this).val()
+            initialData['other'] = parseFloat(cash_val)
+            initialData['balance'] = (parseFloat($('#recivableBalance').html()) - (parseFloat(cash_val) + parseFloat(initialData.cash) + parseFloat(initialData.card)))
+            initialData['total'] =  (parseFloat(cash_val) + parseFloat(initialData.card) + parseFloat(initialData.cash))
+            arrengedModal(initialData)
+        })
+        
+        $('#saveTransaction').click(function(){
+            let data = {
+                Cash: initialData.cash,
+                Card: initialData.card,
+                OtherPaid: initialData.other,
+                CardTotal: (parseFloat(initialData.card) + parseFloat(initialData.other)),
+                RecAmount: initialData.total,
+                RecMode: 'Balance',
+                BillCode: $('#bill_id').val(),
+                CardType: $('#cardType').val(),
+                CardBank: $('#Bank').val(),
+                CardNo: $('#card_number').val(),
+                Transfee: $('#transaction_fee').val(),
+                OtherPayType: $('#payment_mode').val(),
+                OtherPayNo: $('#otherPayNo').val(),
+                availableBalance : initialData.balance
+
+            }
+            if(initialData.balance <0){
+                toastr.warning('Received amount should not be grater than balance.', 'Error', {positionClass: 'toast-top-center'})
+
+                return
+            }
+            $.ajax({
+                url: '/api/trans/billreceipt/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                beforeSend: function(xhr){
+                    return xhr.setRequestHeader("Authorization", 'Token ' + jQuery.cookie('Token'));
+                }
+            }).done(response=>{
+                toastr.success('Bill received', 'Successful', {positionClass: 'toast-top-center'} )
+                $('#DueRecieveModal').modal('hide')
+                table.ajax.reload();
+                window.location.href = '/trans/invoice?bilhead_id=' + data.BillCode;
+            }).fail(err=>{
+                console.log(err)
+            })
+        })
+
+    })
+</script>
+{% endblock %}

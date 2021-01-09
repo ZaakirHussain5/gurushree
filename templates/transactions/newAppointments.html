@@ -1,0 +1,412 @@
+{% extends 'admin_layout.html' %} {% block content %}
+<style>
+    
+
+    .nextbutton {
+        width: 20% !important;
+        font-size: 1.5rem !important;
+        font-weight: 900 !important;
+    }
+
+    .times:hover {
+        color: rgba(216, 150, 51, 0.89);
+        cursor: pointer;
+    }
+</style>
+<div>
+    <h1 class="h2">Book Appointment</h1>
+    <div class="row pt-3 pd-3">
+        <h5 class="col">Patient Name: {{patient.p_name}}</h5>
+        <h5 class="col" >Mobile No: {{patient.mobile_number}} </h5>
+        <h5 class="col" >MRN No: {{patient.id_number}}</h5>
+    </div>
+    <ul class="nav nav-tabs nav-justified nav-pills" id="myTab" role="tablist">
+        <li class="nav-item col">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">1. Doctor</a>
+        </li>
+        <li class="nav-item col ">
+            <a class="nav-link disabled" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                aria-controls="profile" aria-selected="false">2. Time</a>
+        </li>
+        <li class="nav-item col ">
+            <a class="nav-link disabled" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                aria-controls="contact" aria-selected="false">3. Summary</a>
+        </li>
+        <li class="nav-item col ">
+            <a class="nav-link disabled" id="contact-tab" data-toggle="tab" href="#status" role="tab"
+                aria-controls="contact" aria-selected="false">4. Status</a>
+        </li>
+    </ul>
+    <div class="tab-content mt-5" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <form id="doctors">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="department">department</label>
+                            <select id="department" class="bg-info text-light custom-select" required>
+                                <option>Select Department</option>
+                                {% for department in departmetns %}
+                                <option value="{{department.name}}">{{ department.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="doctor">Doctor</label>
+                            <select id="doctor" class="bg-info text-light custom-select" required disabled>
+                                <option>Consulting Doctor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6 text-right">
+                        <button type="button" id="nextTime"
+                            class="btn btn-active btn-info btn-lg nextbutton">NEXT</button>
+                    </div>
+                </div>
+            </fomr>
+
+
+
+        </div>
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" style="border-radius: 2px solid gray;">
+                        <div class="col-md-4">
+                            <h5 class="h5"><span class="text-info ">Department: </span><span class="DepartmentName">
+                                </span>
+                            </h5>
+
+                            <div class="mt-4">
+                                <h5 class="text-info">Reason For Visit</h5>
+                                <input name='reason' class="form-control" id="reasons" placeholder="Enter reson for visite" >
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="text-info">Name</h5>
+                                <input type="text" class="form-control" name="name" id="pat_name" value="{{patient.p_name}}"
+                                    required>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="text-info">Phone</h5>
+                                <input type="text" class="form-control" name="mobile" id="mobile"
+                                    value="{{patinet.mobile_number}}" required>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="text-info">Email</h5>
+                                <input type="email" class="form-control emails" id="email" placeholder="enter your email" required
+                                    value="{{patient.email_id}}">
+                            </div>
+                            
+
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="h5"><span class="text-info ">Doctor: </span><span
+                                    class="Selected_doctor_name"></span></h5>
+
+                            <div class="mt-4 col-md-6">
+                                <input type="date" id="selected-date" class="form-control">
+                            </div>
+                            <div class="mt-4 timeSlots">
+                                <!-- HERE WILL BE TIME SLOTS.. -->
+                            </div>
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6 text-left">
+                            <button class="btn btn-active btn-info gohome nextbutton btn-lg">BACK</button>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn btn-active btn-info gosummary nextbutton btn-lg">NEXT</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h3 class="h3 col-6"><span class="text-info">Department:</span> <span
+                                class="DepartmentName"></span></h3>
+                        <h3 class="h3 col-6"><span class="text-info">Doctor:</span> <span
+                                class="Selected_doctor_name"></span></h3>
+                    </div>
+                    <table class="table">
+                        <thead class="bg-info text-light">
+                            <tr>
+                                <td>Appointment Date</td>
+                                <td>Appointment Time</td>
+                                <td>Patient Details</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody class="" style="border-bottom: 2px solid gray;">
+                            <tr>
+                                <td class="selected-date"></td>
+                                <td class="selected-time"></td>
+                                <td>
+                                    <p>{{patient.p_name}}</p>
+                                    <p class="mobile"></p>
+                                    <p class="email"></p>
+                                    <p >Reason for visit: <span class="reasonForVisit"></span></p>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <button type="button" class="btn btn-active gotoprofile nextbutton btn-info">BACK</button>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button type="button" class="btn btn-active gotostatus nextbutton btn-info">NEXT</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h3 class="h3 col-6"><span class="text-info">Department:</span> <span
+                                class="DepartmentName"></span>
+                        </h3>
+                        <h3 class="h3 col-6"><span class="text-info">Doctor:</span> <span
+                                class="Selected_doctor_name"></span></h3>
+                    </div>
+                    <table class="table">
+                        <thead class="bg-info text-light">
+                            <tr>
+                                <td>Appointment Date</td>
+                                <td>Appointment Time</td>
+                                <td>Patient Details</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody class="" style="border-bottom: 2px solid gray;">
+                            <tr>
+                                <td class="selected-date">Dec 28, 2020</td>
+                                <td class="selected-time">12:30 AM</td>
+                                <td>
+                                    <p>{{patient.p_name}}</p>
+                                    <p class="mobile"></p>
+                                    <p class="email"></p>
+                                    <p>Reason for visit: <span class="reasonForVisit"></span></p>
+                                </td>
+                                <td class="LatestStatus"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="row">
+                        <div class="col-6 text-left">
+                            <button type="button" class="btn btn-active gotosummarys nextbutton btn-info">BACK</button>
+                        </div>
+                    </div> -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- Scripts -->
+{% block scripts %}
+<script>
+    let dataObj = {
+        'department': '',
+        doctor: {}
+    }, doctors = [];
+    $('#department').change(function () {
+        let val = $(this).val()
+        $.ajax({
+            url: '/api/masters/professional?department=' + val,
+            method: 'GET',
+            contentType: 'application/json'
+        }).done(response => {
+            dataObj.department = val;
+            let options = '<option >Consulting Doctor</option>';
+            doctors = response
+            response.map(index => {
+                options += `<option data-info='${JSON.stringify(index)}' value=${index.id}>${index.professionalName}</option>`
+            })
+            $('#doctor').html(options)
+            $('#doctor').removeAttr('disabled')
+        }).fail(err => {
+            console.log(err)
+        })
+    })
+    $('#doctor').change(function () {
+        const data_id = $(this).val()
+        doctors.filter(data => {
+            if (data.id == data_id) {
+                dataObj.doctor = data;
+            }
+        })
+
+        console.log(dataObj)
+        $('.DepartmentName').html(dataObj.department)
+        $('.Selected_doctor_name').html(dataObj.doctor.professionalName)
+    })
+
+    // TODO: mobile number event
+    $('#mobile').on('keyup change', function () {
+        dataObj['mobile_no'] = $(this).val()
+        console.log(dataObj)
+    })
+
+    $('#nextTime').on('click', function (e) {
+        e.preventDefault();
+        // $('#doctors').submit(function(e){e.preventDefault(); e.stopImmediatePropagation()})
+        $('#myTab li a[href="#profile"]').removeClass('disabled')
+        $('#myTab li a[href="#home"]').addClass('disabled')
+        $('#myTab li a[href="#profile"]').tab('show');
+    })
+
+    $('.gohome').on('click', function (e) {
+        e.preventDefault();
+        $('#myTab li a[href="#home"]').removeClass('disabled')
+        $('#myTab li a[href="#profile"]').addClass('disabled')
+        $('#myTab li a[href="#home"]').tab('show');
+    })
+
+    $('.gosummary').on('click', function (e) {
+        e.preventDefault();
+        setupStatus()
+        console.log(dataObj)
+        $('#myTab li a[href="#contact"]').removeClass('disabled')
+        $('#myTab li a[href="#profile"]').addClass('disabled')
+        $('#myTab li a[href="#contact"]').tab('show');
+    })
+
+    $('.gotoprofile').on('click', function (e) {
+        e.preventDefault();
+        $('#myTab li a[href="#profile"]').removeClass('disabled')
+        $('#myTab li a[href="#contact"]').addClass('disabled')
+        $('#myTab li a[href="#profile"]').tab('show');
+    })
+
+    $('.gotostatus').on('click', function (e) {
+        e.preventDefault();
+
+        let searchParams = new URLSearchParams(window.location.search)
+        let param = searchParams.get('patient_id')
+        let send_data = {
+            doctor: dataObj.doctor.id,
+            depertment: dataObj.department,
+            appointment_date: dataObj.selectedDate,
+            appointment_time: dataObj.times,
+            patient: param,
+            appointment_reason: dataObj.response
+        }
+        $.ajax({
+            url: '/api/trans/appointmentView/',
+            method: 'POST',
+            data: JSON.stringify(send_data),
+            contentType: 'application/json',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader("Authorization", 'Token ' + jQuery.cookie('Token'));
+            }
+        }).done(response=>{
+            $('.LatestStatus').html('Confirmed')
+            $('#myTab li a[href="#status"]').removeClass('disabled')
+            $('#myTab li a[href="#contact"]').addClass('disabled')
+            $('#myTab li a[href="#status"]').tab('show');
+        }).fail(err=>{
+            console.log(err)
+        })
+        
+    })
+
+    $('.gotosummarys').on('click', function (e) {
+        e.preventDefault();
+
+        $('#myTab li a[href="#contact"]').removeClass('disabled')
+        $('#myTab li a[href="#status"]').addClass('disabled')
+        $('#myTab li a[href="#contact"]').tab('show');
+    })
+
+
+    // TODO: datepicker event to get consultations slots
+    $('#selected-date').on('change', function () {
+        const dates = $(this).val()
+
+        dataObj['selectedDate'] = dates.split('-').reverse().join('-');
+        $.ajax({
+            url: '/api/trans/getConsultationSlots?id=' + dataObj.doctor.id + '&date=' + dates,
+            method: 'GET',
+            contentType: 'application/json'
+        }).done(response => {
+            const data = JSON.parse(response.data)
+            if(data.length <= 0) return
+
+            const slots = data[0].slots
+            let radioButtons = '';
+            slots.map(function (slot) {
+                radioButtons += `
+                <div class='form-group mt-1 ml-2'>
+                    <input class="times" type="radio" id="${slot}" name="gender" value="${slot}">
+                    <label class="times" for="${slot}">${slot}</label><br>
+                </div>
+                `;
+            })
+            $('.timeSlots').html(radioButtons)
+        }).fail(err => { console.log(err) })
+    })
+
+    function setupStatus(){
+        dataObj['reasons'] = $('#reasons').val()
+        dataObj['pat_name'] = $('#pat_name').val()
+        dataObj['mob'] = $('#mobile').val()
+        dataObj['email'] = $('#email').val()  
+        dataObj['times'] = $('input[name="gender"]').val()
+        dynamicSummary()
+    }
+
+    function dynamicSummary(){
+        $('.selected-date').html(dataObj.selectedDate) 
+        $('.selected-time').html(dataObj.times)
+        $('.mobile').html(dataObj.mob)
+        $('.email').html(dataObj.email)
+        $('.reasonForVisit').html(dataObj.reasons)
+    }
+    let map = {}
+    $.getJSON('/api/masters/generalTypes/?gentype=Appointment Reason', {}, function(data) {
+        if (data) {
+            var departments = []
+
+            $.each(data, function(i, item) {
+                map[item.name] = item
+                departments.push(item.name)
+            })
+            $("#reasons").autocomplete({
+                source: departments,
+                minLength: 0
+            }).focus(function() {
+                $(this).data("uiAutocomplete").search($(this).val());
+            });;
+        }
+    })
+
+
+</script>
+{% endblock %}

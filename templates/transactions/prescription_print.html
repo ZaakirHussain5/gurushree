@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        img {
+            height: 50px;
+            width: 100px;
+            object-fit: cover;
+        }
+
+        h5 {
+            font-size: 1rem;
+            font-weight: 750;
+            line-height: 0;
+
+        }
+
+        table {
+            width: 100%;
+            /* background-color: red; */
+        }
+
+        thead>tr {
+            font-weight: 700;
+        }
+
+        tr {
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
+
+        p {
+            line-height: 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="col-12" style="margin-top: 2rem;">
+        <table>
+
+            <tbody>
+                <tr>
+                    <td>Patient Name</td>
+                    <td>{{prescription.bill_header.patient.p_name}}</td>
+                    <td>printed Date</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>MRN No</td>
+                    <td>{{prescription.bill_header.patient.}} </td>
+                    <td>BillNo</td>
+                    <td>{{prescription.bill_header.BillNo }}</td>
+                </tr>
+                <tr>
+                    <td>Age / Gender</td>
+                    <td>{{prescription.bill_header.Age}}</td>
+                    <td>Bill Date</td>
+                    <td>{{prescription.bill_header.BillDateTime}}</td>
+                </tr>
+                <tr>
+                    <td>Pay Mode</td>
+                    <td></td>
+                    <td>MobileNo</td>
+                    <td>{{prescription.bill_header.mobile_number}}</td>
+                </tr>
+                <tr>
+                    <td>Consultant Dr</td>
+                    <td>{{prescription.bill_header.DrCode.professionalName}} </td>
+                    <td>Referral Dr</td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div>
+            <div class="row">
+                <div class="col">
+                    <p>Height&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; <span> {% if prescription.height %} {{prescription.height}}{% endif %}cms</span></p>
+                </div>
+                <div class="col">
+                    <p>Weight&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; <span> {% if prescription.weight %} {{prescription.weight}}{% endif %}kg</span></p>
+                </div>
+                <div class="col">
+                    <p>BMI&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; <span>{% if prescription.bmi %} {{prescription.bmi}}{% endif %}</span></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Pulse Rate&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; <span> {% if prescription.pulse_rate %} {{prescription.pulse_rate}}{% endif %}/min</span></p>
+                </div>
+                <div class="col">
+                    <p>BP&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; {% if prescription.blood_pressure %} {{prescription.blood_pressure}}{% endif %}mm of Hg</p>
+                </div>
+                <div class="col">
+                    <p>Temp&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; {% if prescription.body_temparature %} {{prescription.body_temparature}}{% endif %}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Respiratory Rate&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; {% if prescription.respiraty_rate %} {{prescription.respiraty_rate}}{% endif %}/min</p>
+                </div>
+                <div class="col">
+                    <p>Co Morbidities&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp; {% if prescription.history_and_comorbidities %} {{prescription.history_and_comorbidities}}{% endif %}-</p>
+                </div>
+            </div>
+            <div class="row">
+                <p>Cheif Complaints&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp;{% if prescription.complaints_and_duration %} {{prescription.complaints_and_duration}}{% endif %}</p>
+            </div>
+            <div class="row">
+                <p>Past History&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; </p>
+            </div>
+            <div class="row">
+                <p>Examination & Findings&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; </p>
+            </div>
+            <div class="row">
+                <p>Provisional Diagnosis&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; {% if prescription.provisional_diagnosis %} {{prescription.provisional_diagnosis}}{% endif %}</p>
+            </div>
+            <div class="row">
+                <p>Investigation&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; {% if prescription.investigation_details %} {{prescription.investigation_details}}{% endif %}</p>
+            </div>
+        </div>
+        <div class="text-center">
+            <h2><u><b>Prescription</b></u></h2>
+        </div>
+        <table class="dgGrid" cellspacing="0" rules="all" border="1" id="gvShowPDetail"
+            style="font-size:Medium;border-collapse:collapse;">
+            <tbody>
+                <tr>
+                    <th scope="col">SNo</th>
+                    <th scope="col">Particulars</th>
+                    <th scope="col">M</th>
+                    <th scope="col">A</th>
+                    <th scope="col">E</th>
+                    <th scope="col">N</th>
+                    <th scope="col">Days</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Advice</th>
+                </tr>
+                {% for medication in medications %}
+                <tr align="left">
+                    <td align="center">
+                        {{forloop.counter}}
+                    </td>
+                    <td align="left">
+
+                        <span id="TextBox1"
+                            style="display:inline-block;width:300px;margin-bottom:5px;margin-top:5px;margin-left:5px">{{medication.particular_name}}</span>
+                        <br>
+                        
+                    </td>
+                    <td align="center">
+                        <span id="TextBox3" style="display:inline-block;width:60px;">{{medication.morning}} </span>
+                    </td>
+                    <td align="center">
+                        <span id="TextBox4" style="display:inline-block;width:60px;">{{medication.lunch}}</span>
+                    </td>
+                    <td align="center">
+                        <span id="TextBox5" style="display:inline-block;width:60px;">{{medication.evening}}</span>
+                    </td>
+                    <td align="center">
+                        <span id="TextBox8" style="display:inline-block;width:60px;">{{medication.night}}</span>
+                    </td>
+                    <td align="center">
+                        <span id="TextBox6" style="display:inline-block;width:60px;">{{medication.days}}</span>
+                    </td>
+                    <td align="center">
+                        <span id="TextBox2" style="width:60px;">{{medication.qty}}</span>
+                    </td>
+                    <td align="left">
+                        <span id="TextBox7" style="display:inline-block;width:200px;">{{medication.advice}}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="row mt-5 mb-5">
+            <div class="col">
+                
+                <p>Review Date&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; {% if prescription.review_date %}{{prescription.review_date}}{% endif %}</p>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+        window.print()
+    </script>
+</body>
+
+</html>

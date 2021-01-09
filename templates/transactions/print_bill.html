@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        img{
+            height: 50px;
+            width: 100px;
+            object-fit: cover;
+        }
+        h5{
+            font-size: 1rem;
+            font-weight: 750;
+            line-height: 0;
+            
+        }
+        table{
+            width: 100%;
+            /* background-color: red; */
+        }
+        thead>tr{
+            font-weight: 700;
+        }
+        tr{
+            border-top: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+        }
+        p{
+            line-height: 15px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="col-12" style="margin-top: 2rem;">
+        <div class="row">
+            <div class="col">
+                <img src="{{hospital.get_logo}}">
+            </div>
+            <div class="col ">
+                <h5> GURUSHREE HOSPITAL</h5>
+                <p>No 1B, Bangalore - 01.</p>
+            </div>
+
+            <div class="col text-right">
+                <p>*{{bill_header.id}}*</p>
+            </div>
+        </div>
+        <h5 class="text-center mt-2"><u>OP Bill Receipt</u></h5>
+
+        <div class="row mt-3">
+            <div class="col-md-6 ">
+                <p>Patient Name	:	{{bill_header.patient.title}} {{bill_header.patient.p_name}} </p>
+                <p>Age/Gender	:	22 Y / {{bill_header.patient.gender }}</p>
+                <p>Mobile No	:	+91 {{bill_header.patient.mobile_number }}</p>
+            </div>
+            <div class="col-md-6 ">
+                <div class="mx-auto">
+                    <p>Reg No	:  {{bill_header.RegNo}}</p>		
+                    <p>Bill No	: {{bill_header.BillNo}}	</p>    	
+                    <p>Bill Date	:	{{bill_header.BillDate}} </p>
+                </div>
+                    
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td class="">Service Name</td>
+                    <td >Qty</td> 
+                    <td >Amt</td>
+                    <td class="text-right">Total Amt</td>   		
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                    {% if service.DrCode %}
+                        <tr>
+                            <!-- <td>Consultation Fee - Dr. Ashok</td> -->
+                            <td>consultant - {{service.DrCode.professionalName}} </td>
+                            <td>{{service.Qty}}</td>
+                            <td>{{service.Amount}}</td>
+                            <td class="text-right mr-1">{{service.TotalAmount}} </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <!-- <td>Consultation Fee - Dr. Ashok</td> -->
+                            <td>{{service.SerCode.ServiceName}}</td>
+                            <td>{{service.Qty}}</td>
+                            <td>{{service.Amount}}</td>
+                            <td class="text-right mr-1">{{service.TotalAmount}}</td>
+                        </tr>
+                        
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col">
+                <p>*UHID2476*</p>
+            </div>
+            <div class="ml-auto mr-3">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Total Service Amount :</td>
+                            <td>{{bill_header.TotalAmount}}</td>
+                        </tr>
+                        <tr>
+                            <td>Net Amount :</td>
+                            <td>{{bill_header.NetAmount}}</td>
+                        </tr>
+                        <tr>
+                            <td>Paid Amount :</td>
+                            <td>{{bill_header.PaidAmount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Sl.No</td>
+                    <td>Receipt No</td>
+                    <td>Receipt Date</td>
+                    <td>Receipt Amt	</td>
+                    <td>Cash</td>
+                    <td>Card</td>
+                    <td class="text-right">Others</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipt in receipts %}
+                    <tr>
+                        <td>1</td>
+                        <td>{{receipt.RecNo}}</td>
+                        <td>{{receipt.RecDateTime}}</td>
+                        <td>{{receipt.RecAmount}}	</td>
+                        <td>{{receipt.Cash}}</td>
+                        <td>{{receipt.CardTotal}}</td>
+                        <td class="text-right">{{receipt.OtherPaid}}</td>
+                    </tr>
+                {% endfor %}
+
+                <!-- total amount not come in loop -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Total Amount :	</td>
+                    <td>{{bill_details.bill_total}}</td>
+                    <td>{{bill_details.bill_cash }}</td>
+                    <td>{{ bill_details.bill_card }}</td>
+                    <td class="text-right">{{bill_details.bill_other}} </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="mt-3">Received with Thanks from {{hospital.hospitalName}}.</p>
+        <div class="row col-12 mt-5">
+            <div class="col"><p class="text-left">For {{hospital.hospitalName}}</p></div>
+            <div class="text-right"><p class="pull-right">Authorised Signatory</p></div>
+            
+        </div>
+    </div>
+    
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+    window.print()
+</script>
+</body>
+</html>

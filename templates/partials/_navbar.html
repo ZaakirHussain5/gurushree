@@ -1,0 +1,75 @@
+<ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+        <div class="sidebar-brand-icon">
+            <i class="fas fa-plus-circle"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Gurushree Hospital<sup></sup></div>
+    </a>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/dashboard">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasters" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-database"></i>
+            <span>Masters</span>
+        </a>
+        <div id="collapseMasters" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{% url 'pages:generals'%}">Generals</a>
+                <a class="collapse-item" href="{% url 'pages:departments'%}">Departments</a>
+                <a class="collapse-item" href="{% url 'pages:places'%}">Places</a>
+                <a class="collapse-item" href="{% url 'pages:regtypes'%}">Registration Types</a>
+                <a class="collapse-item" href="{% url 'pages:incomeExpenses'%}">Income & Expenses</a>
+                <a class="collapse-item" href="{% url 'pages:menus'%}">Menus</a>
+                <a class="collapse-item" href="{% url 'pages:pages'%}">Pages</a>
+                <a class="collapse-item" href="{% url 'pages:users'%}">Users</a>
+                <a class="collapse-item" href="{% url 'pages:hospitals'%}">Hospitals</a>
+                <a class="collapse-item" href="{% url 'pages:professionals' %}">Professionals</a>
+                <a class="collapse-item" href="{% url 'pages:services' %}">Services</a>
+                <a class="collapse-item" href="{% url 'pages:packagemaping' %}">Package Maping</a>
+                <a class="collapse-item" href="{% url 'pages:disctype' %}">Discount Types</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTrans" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Transactions</span>
+        </a>
+        <div id="collapseTrans" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item spl-item" href="{% url 'pages:patientReg' %}">Patient Registration</a>
+                <a class="collapse-item spl-item" href="{% url 'pages:pendingBalanceList' %}">Due Recievables</a>
+                <a class="collapse-item spl-item" href="{% url 'pages:bill_list' %}">OP Bill List</a>
+            </div>
+        </div>
+    </li>
+
+
+
+    <!-- Nav Item - Charts -->
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+
+
+</ul>
