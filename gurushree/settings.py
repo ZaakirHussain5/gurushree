@@ -133,12 +133,12 @@ USE_TZ = True
 X_FRAME_OPTIONS='SAMEORIGIN'
 
 STATIC_URL = '/static/'
-STATIC_DIRS = 'static'
+# STATIC_DIRS = 'static'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-    STATIC_DIRS
-]
+# STATICFILES_DIRS = [
+#     STATIC_DIRS
+# ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
