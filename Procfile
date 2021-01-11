@@ -1,1 +1,1 @@
-web: gunicorn gurushree.wsgi --log-file -
+web: gunicorn gurushree.wsgi 
