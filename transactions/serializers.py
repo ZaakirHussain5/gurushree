@@ -9,10 +9,13 @@ class patient_registrationSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 class billheaderSerializer(serializers.ModelSerializer):
+    # DiscountBy = serializers.CharField(required=False)
+    # DiscNote = serializers.CharField(required=False)
     class Meta:
         model=billheader
         fields='__all__'
         depth = 1
+
 class billdetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=billdetails
