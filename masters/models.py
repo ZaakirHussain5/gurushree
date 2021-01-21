@@ -303,7 +303,7 @@ class packagemapping(models.Model):
         return self.PackCode
 
     
-class ConsultantSlutMaster(models.Model):
+class ConsultantSlotMaster(models.Model):
     consultant_id = models.ForeignKey(professional, on_delete=models.CASCADE)
     day = models.CharField(max_length=20)
     time_from = models.CharField(max_length=40)

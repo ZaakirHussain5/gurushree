@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from transactions.models import patient_registration, billdetails, billheader, billreceipt, PrescriptionHeader, PrescriptionMedication
 from masters.models import professional, Department
 from django.db.models import F
-from masters.models import hospital
+from masters.models import hospital, registrationType, generalType
 
 def index(request):
     return render(request, 'auth/index.html')
@@ -78,7 +78,19 @@ def packagemap(request):
     return render(request,'masters/packagemap.html')
 
 def patientReg(request):
-    return render(request,'transactions/patientReg.html')
+    context = {}
+    
+    active_types = generalType.objects.filter(isActive=True)
+    context['registration_type'] = registrationType.objects.all()
+    context['titles'] = active_types.filter(genType='Title')
+    context['marital_status'] = active_types.filter(genType='Marital Status')
+    context['religions'] = active_types.filter(genType='Religion')
+    context['blood_groups'] =active_types.filter(genType='Blood group')
+    context['nationalitys'] = active_types.filter(genType='Nationality')
+    context['RelationTypes'] = active_types.filter(genType='Relation Type')
+    context['identifications'] = active_types.filter(genType='Identification')
+    context['occupations'] = active_types.filter(genType='Occupation')
+    return render(request,'transactions/patientReg.html', context)
 
 def op_billing(request):
     if request.GET.get('patient_id'):

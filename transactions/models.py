@@ -12,6 +12,7 @@ def genaret_mrn():
 
 class patient_registration(models.Model):
     reg_type=models.CharField(max_length=32, null=True)
+    email = models.EmailField(null=True, blank=True)
     mrn_no = models.CharField(max_length=50, default=genaret_mrn)
     title=models.CharField(max_length=32, null=True)
     gender=models.CharField(max_length=32, null=True)
@@ -19,6 +20,7 @@ class patient_registration(models.Model):
     year=models.IntegerField(null=True)
     month=models.IntegerField(null=True)
     day=models.IntegerField(null=True)
+    relationType = models.CharField(max_length=50, null=True)
     mobile_number=models.CharField(max_length=32, null=True)
     address=models.CharField(max_length=32, null=True)
     email_id=models.CharField(max_length=32, null=True)
@@ -41,7 +43,8 @@ class patient_registration(models.Model):
     Addeddate = models.DateTimeField(auto_now_add=True)
     editedby =models.CharField(max_length=32, null=True)
     editeddate = models.DateTimeField(auto_now_add=True)
-
+    IdentificationValue = models.CharField(max_length=100, null=True, blank=True)
+    IdentificationType = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.p_name
 

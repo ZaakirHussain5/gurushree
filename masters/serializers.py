@@ -6,7 +6,7 @@ import hashlib, os, binascii
 from .models import (GenType, State, City, Area, Department, SubDepartment, 
         packagemapping, generalType, registrationType, discounType, user, 
         income_expenses, hospital, professional, menu, pagemaster, service,
-        ConsultantSlutMaster
+        ConsultantSlotMaster
 )
 
 
@@ -142,7 +142,7 @@ class packagemappingSerializer(serializers.ModelSerializer):
 
 class ConsultantSlutMasterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ConsultantSlutMaster
+        model = ConsultantSlotMaster
         fields = [
                 'id',
                 'consultant_id',

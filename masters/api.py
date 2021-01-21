@@ -8,7 +8,7 @@ from .serializers import ( GenTypeSerializer, SubDepartmentsListSerializer,packa
 )
 from .models import (GenType, Department, SubDepartment, generalType,packagemapping, registrationType, packagemapping, 
         discounType, user, income_expenses, hospital, professional, menu, pagemaster, State, City, Area,service,
-        ConsultantSlutMaster
+        ConsultantSlotMaster
 )
 from rest_framework import viewsets, permissions, mixins
 from django.contrib.auth.hashers import make_password, check_password
@@ -265,7 +265,7 @@ class packagemappingViewSet(viewsets.ModelViewSet):
 
 
 class ConsultantSlutMasterViewSet(viewsets.ModelViewSet):
-    queryset = ConsultantSlutMaster.objects.all()
+    queryset = ConsultantSlotMaster.objects.all()
     permissions = [
         permissions.AllowAny
     ]
@@ -288,7 +288,7 @@ class slotsLists(viewsets.ModelViewSet):
             queryset = []
             return queryset
 
-        queryset = ConsultantSlutMaster.objects.filter(consultant_id=professionals)
+        queryset = ConsultantSlotMaster.objects.filter(consultant_id=professionals)
         return queryset
         
 

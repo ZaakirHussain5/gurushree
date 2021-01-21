@@ -40,13 +40,22 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="inputPassword">Registration Type</label>
-                                        <input type="text" class="form-control" id="reg_type" name="reg_type"
-                                            placeholder="Select Registration Type">
+                                        <select name="reg_type" class="custom-select">
+                                            {% for registration in registration_type %}
+                                                <option value="{{registration.regType}}">{{registration.regType}}</option>
+
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Title</label>
-                                        <input type="text" class="form-control" id="title" name="title"
-                                            placeholder="Select Title">
+                                        
+                                        <select name="title" id="title" class="custom-select">
+                                            {% for title in titles %}
+                                                <option value="{{title.name}}">{{title.name}}</option>
+
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Gender</label>
@@ -71,7 +80,9 @@
                                     <div class="form-group">
                                         <label for="inputPassword">Patient Name</label>
                                         <input type="text" class="form-control" id="p_name" name="p_name"
-                                            placeholder="Enter Patient Name">
+                                            placeholder="Enter Patient Name"
+                                            onkeypress="return /[A-Za-z ]/i.test(event.key)"
+                                            >
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Year Month Day</label>
@@ -92,13 +103,23 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Mobile No.</label>
-                                        <input type="text" class="form-control" id="mobile_number" name="mobile_number"
-                                            placeholder="Enter Mobile No.">
+                                        <input type="text" class="form-control" maxlength="10" id="mobile_number" name="mobile_number"
+                                            placeholder="Enter Mobile No."  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputPassword">Alternamte Contact</label>
-                                        <input type="text" class="form-control" id="alternateContact"
-                                            name="alternateContact" placeholder="Enter Alternamte Contact">
+                                        <label for="inputPassword">Alternate Contact</label>
+                                        <input type="text" class="form-control" id="alternateContact" maxlength="10" 
+                                            name="alternateContact" placeholder="Enter Alternamte Contact"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword">Occupation</label>
+                                        <select name='occupation' class="custom-select">
+                                            {% for occupation in occupations %}
+                                            <option value="{{occupation.name}}">{{occupation.name}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
 
 
@@ -125,25 +146,72 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="inputPassword">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="Enter Your Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="inputPassword">Pincode</label>
-                                                <input type="text" class="form-control" id="pincode" name="pincode"
-                                                    placeholder="Enter Pincode">
+                                                <input type="text" 
+                                                    class="form-control" 
+                                                    maxlength="6"
+                                                    id="pincode" name="pincode"
+                                                    placeholder="Enter Pincode"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                >
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="inputPassword">Marital Status</label>
+                                                <!-- <input type="text" class="form-control" id="marital" name="marital"
+                                                    placeholder="Enter Maital Status"> -->
+                                                <select class="custom-select" name="marital" id="marital">
+                                                    {% for status in marital_status %}
+                                                    <option value="{{status.name}}">{{status.name}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="inputPassword">Marital Status</label>
-                                                <input type="text" class="form-control" id="marital" name="marital"
-                                                    placeholder="Enter Maital Status">
+                                                <label for="inputPassword">Relation Type</label>
+                                                <select class="custom-select" name="relationType" id="relationType">
+                                                    {% for RelationType in RelationTypes %}
+                                                    <option value="{{RelationType.name}}">{{RelationType.name}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Father's/Spouse Name</label>
-                                                <input type="text" class="form-control" id="father_name"
-                                                    name="father_name" placeholder="Enter Father's/Spouse Name">
+                                                <input type="text" class="form-control" placeholder="Enter Your Spouse Name"
+                                                name="father_name" onkeypress="return /[A-Za-z ]/i.test(event.key)"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="inputPassword">Identification Type</label>
+                                                <select class="custom-select" name="IdentificationType" id="IdentificationType">
+                                                    {% for identification in identifications %}
+                                                    <option value="{{identification.name}}">{{identification.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="inputPassword">Identification</label>
+                                                <input type="text" class="form-control" placeholder="Enter Your Spouse Name"
+                                                name="IdentificationValue" 
+                                                >
                                             </div>
                                         </div>
                                     </div>
@@ -158,8 +226,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Blood Group</label>
-                                                <input type="text" class="form-control" id="blood_group"
-                                                    name="blood_group" placeholder="Enter Blood Group">
+                                                <!-- <input type="text" class="form-control" id="blood_group"
+                                                    name="blood_group" placeholder="Enter Blood Group"> -->
+                                                <select class="custom-select" id="blood_group"  name="blood_group">
+                                                    {% for blood in blood_groups %}
+                                                    <option value="{{blood.name}}">{{ blood.name }}</option>
+
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -167,15 +241,23 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Religion</label>
-                                                <input type="text" class="form-control" id="religion" name="religion"
-                                                    placeholder="Enter Religion">
+                                                <!-- <input type="text" class="form-control" id="religion" name="religion"
+                                                    placeholder="Enter Religion"> -->
+                                                <select class="form-control" name="religion" id="religion">
+                                                    {% for religion in religions %}
+                                                    <option value="{{religion.name}}">{{religion.name}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Nationality</label>
-                                                <input type="text" class="form-control" id="nationality"
-                                                    name="nationality" placeholder="Enter Nationality">
+                                                <select class="custom-select" id="nationality" name="nationality">
+                                                    {% for nationality in nationalitys %}
+                                                    <option value="{{nationality.name}}">{{nationality.name}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -310,42 +392,7 @@
 <script>
     $(document).ready(function () {
         $('#sidebarToggle').trigger('click');
-        $("#reg_type").autocomplete({
-            source: ['Normal'],
-            minLength: 0
-        }).focus(function () {
-            $(this).data("uiAutocomplete").search($(this).val());
-        });
-
-        $("#marital").autocomplete({
-            source: ['Married', 'Single', 'Widow'],
-            minLength: 0
-        }).focus(function () {
-            $(this).data("uiAutocomplete").search($(this).val());
-        });
-
-        $("#religion").autocomplete({
-            source: ['Hindu', 'Muslim', 'Cristian', 'Sikh', 'Buddhist', 'Jain', 'Other'],
-            minLength: 0
-        }).focus(function () {
-            $(this).data("uiAutocomplete").search($(this).val());
-        });
-
-
-        $("#blood_group").autocomplete({
-            source: ['A+', 'B+', 'O+', 'AB*', 'A-', 'B-', 'O-', 'AB-'],
-            minLength: 0
-        }).focus(function () {
-            $(this).data("uiAutocomplete").search($(this).val());
-        });
-
-        $("#title").autocomplete({
-            source: ['Mr', 'Ms', 'Master'],
-            minLength: 0
-        }).focus(function () {
-            $(this).data("uiAutocomplete").search($(this).val());
-        });
-
+       
         var table = $('#patientsList').DataTable({
             ajax: {
                 url: '/api/trans/patient_registration',
@@ -432,14 +479,22 @@
         $('#PatientForm').submit(function (e) {
             e.preventDefault()
             e.stopImmediatePropagation()
-            var data = new FormData(this)
+            var data = new FormData(document.getElementById('PatientForm'))
             var action = 'POST'
             var url = '/api/trans/patient_registration/'
             var successMessage = 'User Added Successfully'
             if ($('#submitUser').html() == 'Update Patient') {
                 if (document.getElementById('image1').files.length == 0)
                     data.delete('photo')
-                action = 'PUT'
+                action = 'PATCH'
+                let image1 = document.getElementById('image1')
+                if(image1.value.length <=0){
+                    data.delete('image1')
+                }
+                let image2 = document.getElementById('image2')
+                if(image2.value.length <=0){
+                    data.delete('image2')
+                }
                 url = `/api/trans/patient_registration/${$('#UserId').val()}/`
                 successMessage = 'User Updated Successfully'
             }

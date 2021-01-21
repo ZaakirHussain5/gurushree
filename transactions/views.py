@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from masters.models import professional, ConsultantSlutMaster
+from masters.models import professional, ConsultantSlotMaster
 import datetime
 import json
 # Create your views here.
@@ -17,7 +17,7 @@ def getConsultationSlots(request):
         queryset = []
         return JsonResponse({"data": []})
 
-    queryset = ConsultantSlutMaster.objects.filter(consultant_id=professionals, day__icontains=day_name)
+    queryset = ConsultantSlotMaster.objects.filter(consultant_id=professionals, day__icontains=day_name)
     data = []
     for consultant in queryset:
         obj = {}
