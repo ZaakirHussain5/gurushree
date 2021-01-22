@@ -41,6 +41,7 @@
                                     <div class="form-group">
                                         <label for="inputPassword">Registration Type</label>
                                         <select name="reg_type" class="custom-select form-control">
+                                            <option >--- Select Registration Type ---</option>
                                             {% for registration in registration_type %}
                                                 <option value="{{registration.regType}}">{{registration.regType}}</option>
                                             {% endfor %}
@@ -50,6 +51,7 @@
                                         <label for="inputPassword">Title</label>
                                         
                                         <select name="title" id="title" class="custom-select form-control">
+                                            <option > --- Select Title ---</option>
                                             {% for title in titles %}
                                                 <option value="{{title.name}}">{{title.name}}</option>
 
@@ -160,6 +162,7 @@
                                                 <!-- <input type="text" class="form-control" id="marital" name="marital"
                                                     placeholder="Enter Maital Status"> -->
                                                 <select class="custom-select form-control" name="marital" id="marital">
+                                                    <option >---- Select Marital Status ----</option>
                                                     {% for status in marital_status %}
                                                     <option value="{{status.name}}">{{status.name}}</option>
                                                     {% endfor %}
@@ -172,6 +175,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Relation Type</label>
                                                 <select class="custom-select form-control" name="relationType" id="relationType">
+                                                    <option>---Select Relation Type---</option>
                                                     {% for RelationType in RelationTypes %}
                                                     <option value="{{RelationType.name}}">{{RelationType.name}}</option>
                                                     {% endfor %}
@@ -190,6 +194,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Identification Type</label>
                                                 <select class="custom-select form-control" name="IdentificationType" id="IdentificationType">
+                                                    <option>---Select Identification Type ---</option>
                                                     {% for identification in identifications %}
                                                     <option value="{{identification.name}}">{{identification.name}}</option>
                                                     {% endfor %}
@@ -210,6 +215,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Occupation</label>
                                                 <select name='occupation' class="custom-select form-control">
+                                                    <option >---Select Occupation---</option>
                                                     {% for occupation in occupations %}
                                                     <option value="{{occupation.name}}">{{occupation.name}}</option>
                                                     {% endfor %}
@@ -222,6 +228,7 @@
                                                 <!-- <input type="text" class="form-control" id="blood_group"
                                                     name="blood_group" placeholder="Enter Blood Group"> -->
                                                 <select class="custom-select form-control" id="blood_group"  name="blood_group">
+                                                    <option>---Select Blood Group---</option>
                                                     {% for blood in blood_groups %}
                                                     <option value="{{blood.name}}">{{ blood.name }}</option>
 
@@ -237,6 +244,7 @@
                                                 <!-- <input type="text" class="form-control" id="religion" name="religion"
                                                     placeholder="Enter Religion"> -->
                                                 <select class="form-control custom-select" name="religion" id="religion">
+                                                    <option>--- Select Religion ---</option>
                                                     {% for religion in religions %}
                                                     <option value="{{religion.name}}">{{religion.name}}</option>
                                                     {% endfor %}
@@ -247,6 +255,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Nationality</label>
                                                 <select class="custom-select form-control" id="nationality" name="nationality">
+                                                    <option>---Select Nationality --- </option>
                                                     {% for nationality in nationalitys %}
                                                     <option value="{{nationality.name}}">{{nationality.name}}</option>
                                                     {% endfor %}
