@@ -85,7 +85,7 @@ def patientReg(request):
     context['titles'] = active_types.filter(genType='Title')
     context['marital_status'] = active_types.filter(genType='Marital Status')
     context['religions'] = active_types.filter(genType='Religion')
-    context['blood_groups'] =active_types.filter(genType='Blood group')
+    context['blood_groups'] =active_types.filter(genType='Blood Group')
     context['nationalitys'] = active_types.filter(genType='Nationality')
     context['RelationTypes'] = active_types.filter(genType='Relation Type')
     context['identifications'] = active_types.filter(genType='Identification')
