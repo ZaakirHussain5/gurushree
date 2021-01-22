@@ -40,17 +40,16 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="inputPassword">Registration Type</label>
-                                        <select name="reg_type" class="custom-select">
+                                        <select name="reg_type" class="custom-select form-control">
                                             {% for registration in registration_type %}
                                                 <option value="{{registration.regType}}">{{registration.regType}}</option>
-
                                             {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Title</label>
                                         
-                                        <select name="title" id="title" class="custom-select">
+                                        <select name="title" id="title" class="custom-select form-control">
                                             {% for title in titles %}
                                                 <option value="{{title.name}}">{{title.name}}</option>
 
@@ -101,6 +100,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                   
+                                    <div class="form-group mt-1">
+                                        <label for="inputPassword">Address</label>
+                                        <textarea name="address" id="address" class="form-control" rows="5" placeholder="Enter Patient Address1"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword">Address2</label>
+                                        <textarea name="address2" id="address2" class="form-control" rows="4" placeholder="Enter Patient Address2"></textarea>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="inputPassword">Mobile No.</label>
                                         <input type="text" class="form-control" maxlength="10" id="mobile_number" name="mobile_number"
@@ -112,22 +125,6 @@
                                             name="alternateContact" placeholder="Enter Alternamte Contact"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                             >
-                                    </div>
-                                    
-
-
-                                </div>
-
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="inputPassword">Address</label>
-                                        <input type="text" class="form-control" id="address" name="address"
-                                            placeholder="Enter Address">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputPassword">Address2</label>
-                                        <input type="text" class="form-control" id="address2" name="address2"
-                                            placeholder="Enter Address2">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -162,7 +159,7 @@
                                                 <label for="inputPassword">Marital Status</label>
                                                 <!-- <input type="text" class="form-control" id="marital" name="marital"
                                                     placeholder="Enter Maital Status"> -->
-                                                <select class="custom-select" name="marital" id="marital">
+                                                <select class="custom-select form-control" name="marital" id="marital">
                                                     {% for status in marital_status %}
                                                     <option value="{{status.name}}">{{status.name}}</option>
                                                     {% endfor %}
@@ -174,7 +171,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Relation Type</label>
-                                                <select class="custom-select" name="relationType" id="relationType">
+                                                <select class="custom-select form-control" name="relationType" id="relationType">
                                                     {% for RelationType in RelationTypes %}
                                                     <option value="{{RelationType.name}}">{{RelationType.name}}</option>
                                                     {% endfor %}
@@ -192,7 +189,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Identification Type</label>
-                                                <select class="custom-select" name="IdentificationType" id="IdentificationType">
+                                                <select class="custom-select form-control" name="IdentificationType" id="IdentificationType">
                                                     {% for identification in identifications %}
                                                     <option value="{{identification.name}}">{{identification.name}}</option>
                                                     {% endfor %}
@@ -201,7 +198,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="inputPassword">Identification</label>
+                                                <label for="inputPassword">Identification No.</label>
                                                 <input type="text" class="form-control" placeholder="Enter Your Spouse Name"
                                                 name="IdentificationValue" 
                                                 >
@@ -212,7 +209,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Occupation</label>
-                                                <select name='occupation' class="custom-select">
+                                                <select name='occupation' class="custom-select form-control">
                                                     {% for occupation in occupations %}
                                                     <option value="{{occupation.name}}">{{occupation.name}}</option>
                                                     {% endfor %}
@@ -224,7 +221,7 @@
                                                 <label for="inputPassword">Blood Group</label>
                                                 <!-- <input type="text" class="form-control" id="blood_group"
                                                     name="blood_group" placeholder="Enter Blood Group"> -->
-                                                <select class="custom-select" id="blood_group"  name="blood_group">
+                                                <select class="custom-select form-control" id="blood_group"  name="blood_group">
                                                     {% for blood in blood_groups %}
                                                     <option value="{{blood.name}}">{{ blood.name }}</option>
 
@@ -239,7 +236,7 @@
                                                 <label for="inputPassword">Religion</label>
                                                 <!-- <input type="text" class="form-control" id="religion" name="religion"
                                                     placeholder="Enter Religion"> -->
-                                                <select class="form-control" name="religion" id="religion">
+                                                <select class="form-control custom-select" name="religion" id="religion">
                                                     {% for religion in religions %}
                                                     <option value="{{religion.name}}">{{religion.name}}</option>
                                                     {% endfor %}
@@ -249,7 +246,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Nationality</label>
-                                                <select class="custom-select" id="nationality" name="nationality">
+                                                <select class="custom-select form-control" id="nationality" name="nationality">
                                                     {% for nationality in nationalitys %}
                                                     <option value="{{nationality.name}}">{{nationality.name}}</option>
                                                     {% endfor %}
