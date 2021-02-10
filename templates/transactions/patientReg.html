@@ -40,21 +40,24 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="inputPassword">Registration Type</label>
-                                        <select name="reg_type" class="custom-select form-control">
-                                            <option >--- Select Registration Type ---</option>
+                                        <select name="reg_type" class="custom-select form-control" required>
+                                            <!-- <option >--- Select Registration Type ---</option> -->
                                             {% for registration in registration_type %}
+                                                {% if registration.regType == 'Normal' %}
+                                                <option value="{{registration.regType}}" selected>{{registration.regType}}</option>
+                                                {% else %}
                                                 <option value="{{registration.regType}}">{{registration.regType}}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Title</label>
                                         
-                                        <select name="title" id="title" class="custom-select form-control">
-                                            <option > --- Select Title ---</option>
+                                        <select name="title" id="title" class="custom-select form-control" required>
+                                            <option > --- Select Title --- </option>
                                             {% for title in titles %}
                                                 <option value="{{title.name}}">{{title.name}}</option>
-
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -80,7 +83,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Patient Name</label>
-                                        <input type="text" class="form-control" id="p_name" name="p_name"
+                                        <input type="text" class="form-control" required id="p_name" name="p_name"
                                             placeholder="Enter Patient Name"
                                             onkeypress="return /[A-Za-z ]/i.test(event.key)"
                                             >
@@ -90,15 +93,15 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" id="year" name="year"
-                                                    placeholder="Year">
+                                                    placeholder="Year" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" id="month" name="month"
-                                                    placeholder="Month">
+                                                    placeholder="Month" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <input type="text" class="form-control" id="day" name="day"
-                                                    placeholder="Day">
+                                                    placeholder="Day" required>
                                             </div>
                                         </div>
                                     </div>
@@ -255,9 +258,13 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Nationality</label>
                                                 <select class="custom-select form-control" id="nationality" name="nationality">
-                                                    <option>---Select Nationality --- </option>
+                                                    <!-- <option>---Select Nationality --- </option> -->
                                                     {% for nationality in nationalitys %}
-                                                    <option value="{{nationality.name}}">{{nationality.name}}</option>
+                                                        {% if nationality.name == 'Indian'  %}
+                                                            <option value="{{nationality.name}}" selected>{{nationality.name}}</option>
+                                                        {% else %}
+                                                            <option value="{{nationality.name}}" selected>{{nationality.name}}</option>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -331,39 +338,39 @@
                             <tbody>
                                 <tr>
                                     <th>Registration Type </th>
-                                    <td>Normal</td>
+                                    <td id="patientsList_registration_type"></td>
                                 </tr>
                                 <tr>
                                     <th>Name </th>
-                                    <td>Mr. Kushal</td>
+                                    <td id="patientsList_registration_name"></td>
                                 </tr>
                                 <tr>
                                     <th>Gender</th>
-                                    <td>Male</td>
+                                    <td id="patientsList_registration_gender"></td>
                                 </tr>
                                 <tr>
                                     <th>Age</th>
-                                    <td>20 Years,11 Months</td>
+                                    <td id="patientsList_registration_age">20 Years,11 Months</td>
                                 </tr>
                                 <tr>
                                     <th>Address</th>
-                                    <td>Mysuru</td>
+                                    <td id="patientsList_registration_address">Mysuru</td>
                                 </tr>
                                 <tr>
                                     <th>Marital Status</th>
-                                    <td>Single</td>
+                                    <td id="patientsList_registration_status">Single</td>
                                 </tr>
                                 <tr>
                                     <th>Father's/Spouse Name</th>
-                                    <td>Muthuraja</td>
+                                    <td id="patientsList_registration_spouse">Muthuraja</td>
                                 </tr>
                                 <tr>
                                     <th>Religion</th>
-                                    <td>Hindu</td>
+                                    <td id="patientsList_registration_religion">Hindu</td>
                                 </tr>
                                 <tr>
                                     <th>Nationality</th>
-                                    <td>Indian</td>
+                                    <td id="patientsList_registration_nationality">Indian</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -420,9 +427,9 @@
             }, {
                 data: 'id',
                 render: function (data, type, row) {
-                    return '<button type="button" class ="btn btn-info btn-sm view" data-patient-id ="' + data + '"> <i class ="fas fa-tasks"></i></button >' +
-                        "<button type ='button' class ='btn btn-primary btn-sm edit' data-patient ='" + JSON.stringify(row) + "' > <i class ='fas fa-edit' > </i></button >" +
-                        '<button type ="button" class ="btn btn-info btn-sm delete" data-patient-id ="' + data + '" > <i class ="fas fa-trash" > </i></button >'
+                    return `<button type="button" class ="btn btn-info btn-sm view" data-patients ='${JSON.stringify(row)}' data-patient-id ="${data}"> <i class ="fas fa-tasks"></i></button >
+                        <button type ='button' class ='btn btn-primary btn-sm edit' data-patient ='${JSON.stringify(row)}' > <i class='fas fa-edit' > </i></button >
+                        <button type ="button" class ="btn btn-info btn-sm delete" data-patient-id ="${data}" > <i class ="fas fa-trash" > </i></button >`
                 }
             }],
             language: {
@@ -433,14 +440,46 @@
                 return nRow;
             }
         })
-
+        
         $('#patientsList').on('click', '.view', function () {
-            var id = $(this).attr('data-patient-id')
+            var id = $(this).attr('data-patient-id');
+            const datas = JSON.parse($(this).attr('data-patients'));
+            console.log(datas)
+            $('#patientsList_registration_type').text(datas.reg_type)
+            $('#patientsList_registration_name').text(datas.p_name)
+            $('#patientsList_registration_gender').text(datas.gender)
+            $('#patientsList_registration_age').text(ageCalculator(datas.year, datas.month, datas.day))
+            $('#patientsList_registration_address').text(datas.address)
+            $('#patientsList_registration_status').text(datas.marital)
+            $('#patientsList_registration_spouse').text(datas.father_name)
+            $('#patientsList_registration_religion').text(datas.religion)
+            $('#patientsList_registration_nationality').text(datas.nationality)
             $('#billingLink').attr('href', '/trans/op_billing?patient_id=' + id)
             $('#appointment').attr('href', '/trans/appointments?patient_id=' + id)
             $('#Prescription').attr('href', '/trans/prescription?patient_id=' + id)
             $('#PatientDetails').modal('show')
         })
+        function ageCalculator(year, month, day) {
+            console.log(month+"/" + day + "/" + year)
+            var dob = new Date(month+"/" + day + "/" + year);
+            //calculate month difference from current date in time
+            var month_diff = Date.now() - dob.getTime();
+            
+            //convert the calculated difference in date format
+            var age_dt = new Date(month_diff); 
+            
+            //extract year from date    
+            var year = age_dt.getUTCFullYear();
+            // document.write("year is: " + year+ " years <br>")
+            //now calculate the age of the user
+            var age = Math.abs(year - 1970);
+            return age
+        }
+        // $('#PatientDetails').on('show.bs.modal', function (event) {
+        //     var button = $(event.relatedTarget).data('patients'); // Button that triggered the modal
+            
+        //     console.log(button)
+        // })
 
         $('#patientsList').on('click', '.edit', function () {
             var button = $(this)
