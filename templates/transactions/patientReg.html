@@ -1,4 +1,16 @@
 {% extends 'admin_layout.html' %} {% block content %}
+<style>
+    input.error{
+        border: 0.2px solid #d30303 !important;
+    }
+    select.error {
+        
+        border: 0.2px solid #d30303 !important;
+    }
+    label.error{
+        color: #d30303;
+    }
+</style>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"></h1>
 </div>
@@ -83,7 +95,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputPassword">Patient Name</label>
-                                        <input type="text" class="form-control" required id="p_name" name="p_name"
+                                        <input type="text" class="form-control" id="p_name" name="p_name"
                                             placeholder="Enter Patient Name"
                                             onkeypress="return /[A-Za-z ]/i.test(event.key)"
                                             >
@@ -178,7 +190,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Relation Type</label>
                                                 <select class="custom-select form-control" name="relationType" id="relationType">
-                                                    <option>---Select Relation Type---</option>
+                                                    <option value="">---Select Relation Type---</option>
                                                     {% for RelationType in RelationTypes %}
                                                     <option value="{{RelationType.name}}">{{RelationType.name}}</option>
                                                     {% endfor %}
@@ -197,7 +209,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Identification Type</label>
                                                 <select class="custom-select form-control" name="IdentificationType" id="IdentificationType">
-                                                    <option>---Select Identification Type ---</option>
+                                                    <option value="" selected>---Select Identification Type ---</option>
                                                     {% for identification in identifications %}
                                                     <option value="{{identification.name}}">{{identification.name}}</option>
                                                     {% endfor %}
@@ -208,7 +220,7 @@
                                             <div class="form-group">
                                                 <label for="inputPassword">Identification No.</label>
                                                 <input type="text" class="form-control" placeholder="Enter Your Spouse Name"
-                                                name="IdentificationValue" 
+                                                name="IdentificationValue" id="IdentificationValue" 
                                                 >
                                             </div>
                                         </div>
@@ -217,8 +229,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="inputPassword">Occupation</label>
-                                                <select name='occupation' class="custom-select form-control">
-                                                    <option >---Select Occupation---</option>
+                                                <select name='occupation' id="occupation" class="custom-select form-control">
+                                                    <option value="" selected>---Select Occupation---</option>
                                                     {% for occupation in occupations %}
                                                     <option value="{{occupation.name}}">{{occupation.name}}</option>
                                                     {% endfor %}
@@ -523,11 +535,118 @@
                     })
                 })
         })
+        jQuery.validator.addMethod("validYear", function(value, element) {
+                // allow any non-whitespace characters as the host part
+                console.log('my method', value)
+                console.log('my element', element)
+                if(parseInt(value) >150){
+                    return false
+                }
+                return true
+        }, 'Please enter a valid year');
 
-        $('#PatientForm').submit(function (e) {
-            e.preventDefault()
-            e.stopImmediatePropagation()
-            var data = new FormData(document.getElementById('PatientForm'))
+        jQuery.validator.addMethod("validMonth", function(value, element) {
+                
+                if(value >12 || value <0){
+                    return false
+                }
+                return true
+        }, 'Please enter a valid month');
+
+        jQuery.validator.addMethod("validDay", function(value, element) {
+                if(value >31 || value < 0){
+                    return false
+                }
+                return true
+        }, 'Please enter a valid day');
+        $('#PatientForm').validate({
+            rules: {
+                reg_type: "required",
+                email: {
+                required: true,
+                email: true
+                },
+                p_name: "required",
+                mobile_number: {
+                    required: true,
+                    minlength: 10
+                },
+                father_name: {
+                    required: function(){
+                        const val = $('#relationType').value;
+                        console.log(val == 'default')
+                        return val != ''
+                    },
+                    minlength: 2
+                },
+                IdentificationValue:{
+                    required: function(){
+                        const val = $('#IdentificationType').val();
+                        console.log(val != '')
+                        return val != ''
+                    },
+                    minlength: 3
+                },
+                nationality: "required",
+                reg_type: "required",
+                year: {
+                    required : function(){
+                        let month = $('#month').val();
+                        let day = $('#day').val();
+                        if(month == '' && day == ''){return true}
+                        return false
+                    },
+                    maxlength: 3,
+                    validYear: true
+                },
+                month: {
+                    required : function(){
+                        let year = $('#year').val();
+                        let day = $('#day').val();
+                        if(year == '' && day == ''){return true}
+                        return false
+                    },
+                    maxlength: 2,
+                    validMonth: true
+                },
+                day: {
+                    required : function(){
+                        let year = $('#year').val();
+                        let month = $('#month').val();
+                        if(month == '' && year == ''){return true}
+                        return false
+                    },
+                    maxlength: 2,
+                    validDay: true
+                },
+                address:{
+                    maxlength: 32
+                },
+                address2:{
+                    maxlength: 32
+                }
+            },
+            messages: {
+                address: "Not more than 32 characters",
+                address2: "Not more than 32 characters",
+                reg_type: "Please select your registration type",
+                email: {
+                required: "We need your email address to contact you",
+                email: "Your email address must be in the format of name@domain.com"
+                },
+                p_name: "Provide patient  name",
+                mobile_number: "Need a mobile number",
+                father_name: 'Write your spouse name',
+                IdentificationValue: "Provide your identification",
+                nationality: "Select your nationality",
+                // year: "Provide patient's age in year",
+                // day: "Provide patient's age in day",
+                // month: "Provide patient's age in month"
+            },
+            submitHandler: function(form) {
+                // do other things for a valid form
+                // form.submit();
+                var data = new FormData(document.getElementById('PatientForm'))
             var action = 'POST'
             var url = '/api/trans/patient_registration/'
             var successMessage = 'User Added Successfully'
@@ -568,7 +687,53 @@
                     })
                 }
             })
+            }
         })
+        // $('#PatientForm').submit(function (e) {
+        //     e.preventDefault()
+        //     e.stopImmediatePropagation()
+        //     var data = new FormData(document.getElementById('PatientForm'))
+        //     var action = 'POST'
+        //     var url = '/api/trans/patient_registration/'
+        //     var successMessage = 'User Added Successfully'
+        //     if ($('#submitUser').html() == 'Update Patient') {
+        //         if (document.getElementById('image1').files.length == 0)
+        //             data.delete('photo')
+        //         action = 'PATCH'
+        //         let image1 = document.getElementById('image1')
+        //         if(image1.value.length <=0){
+        //             data.delete('image1')
+        //         }
+        //         let image2 = document.getElementById('image2')
+        //         if(image2.value.length <=0){
+        //             data.delete('image2')
+        //         }
+        //         url = `/api/trans/patient_registration/${$('#UserId').val()}/`
+        //         successMessage = 'User Updated Successfully'
+        //     }
+        //     $.ajax({
+        //         url: url,
+        //         data: data,
+        //         method: action,
+        //         contentType: false,
+        //         processData: false,
+        //         success: function () {
+        //             table.ajax.reload()
+        //             $('#PatientForm').trigger('reset')
+        //             $('#userTableTab').trigger('click')
+        //             toastr.success(successMessage, "Done", {
+        //                 positionClass: "toast-top-center"
+        //             })
+        //         },
+        //         error: function (err) {
+        //             console.log(err)
+        //             $('#PatientForm').trigger('reset')
+        //             toastr.error("Operation Failed", 'Error', {
+        //                 positionClass: "toast-top-center"
+        //             })
+        //         }
+        //     })
+        // })
 
         function formDeserialize(form, data) {
             const entries = (new URLSearchParams(data)).entries();
