@@ -4,7 +4,7 @@ app_name = 'pages'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login', views.login, name='login'),
+    path('login/', views.login, name='login'),
     path('dashboard', views.dashboard, name='register'),
     path('masters/departments', views.departments, name='departments'),
     path('masters/Places', views.places, name='places'),

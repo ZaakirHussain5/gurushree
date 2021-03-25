@@ -1312,7 +1312,7 @@
                                 data: JSON.stringify(data),
                                 contentType: 'application/json',
                                 beforeSend: function(xhr){
-                                    xhr.setRequestHeader("Authorization", 'Token ' + jQuery.cookie('Token'));
+                                    xhr.setRequestHeader("Authorization", 'Token ' + localStorage.getItem('Token'));
                                 }
                             })
                                 .done(res => {

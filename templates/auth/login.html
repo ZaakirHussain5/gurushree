@@ -68,7 +68,7 @@
                 url: '/api/auth/user',
                 method: 'GET',
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Token " + $.cookie('Token'));
+                    xhr.setRequestHeader("Authorization", "Token " + localStorage.getItem('Token'));
                 },
             }).done((response) => {
                 setTimeout(() => {
@@ -97,6 +97,7 @@
                     $.cookie('Token', response.token, {
                         expires: 1
                     })
+                    localStorage.setItem('Token',response.token)
                     window.location.href = '/dashboard'
                 }).fail((err, error, wrong) => {
                     console.log(err)

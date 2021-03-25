@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="{% static 'admin/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         img{
@@ -32,10 +34,24 @@
         p{
             line-height: 15px;
         }
+        @media print{
+        .print-header{
+            display:none;
+        }
+    }
     </style>
 
 </head>
 <body>
+    <div class="card print-header">
+        <div class="card-body m-0 pt-0 pb-0 pr-2">
+          <button class="btn btn-primary float-right " onclick="window.print()"><i class="fa fa-print"></i>
+            Print</button>
+            <a href="/trans/prescription?patient_id={{bill_header.patient.id}}" class="btn btn-info float-right mr-3">
+            <i class="fa fa-file"></i> Prescription
+            </a>
+        </div>
+      </div>
     <div class="col-12" style="margin-top: 2rem;">
         <div class="row">
             <div class="col">
@@ -175,8 +191,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<script>
-    window.print()
-</script>
 </body>
 </html>
