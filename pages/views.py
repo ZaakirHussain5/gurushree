@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from transactions.models import patient_registration, billdetails, billheader, billreceipt, PrescriptionHeader, PrescriptionMedication
 from masters.models import professional, Department
 from django.db.models import F
-from masters.models import hospital, registrationType, generalType
+from masters.models import hospital, registrationType, generalType,SubDepartment
 
 def index(request):
     return render(request, 'auth/index.html')
@@ -85,7 +85,7 @@ def patientReg(request):
     context['titles'] = active_types.filter(genType='Title')
     context['marital_status'] = active_types.filter(genType='Marital Status')
     context['religions'] = active_types.filter(genType='Religion')
-    context['blood_groups'] =active_types.filter(genType='Blood Group')
+    context['blood_groups'] =active_types.filter(genType='Blood group')
     context['nationalitys'] = active_types.filter(genType='Nationality')
     context['RelationTypes'] = active_types.filter(genType='Relation Type')
     context['identifications'] = active_types.filter(genType='Identification')
@@ -100,7 +100,8 @@ def op_billing(request):
         return render(request,'transactions/op_billing.html',{
             "patient":patient,
             "consultants":consultants,
-            "refferals":Refferals
+            "refferals":Refferals,
+            "history":billheader.objects.filter(patient__id=request.GET.get('patient_id'))
         })
     else:
         return redirect('/trans/patientReg')
@@ -157,7 +158,7 @@ def appointments(request):
             return redirect('index')
     else:
         return redirect('/')
-    departments = Department.objects.all()
+    departments = SubDepartment.objects.all()
     context['departmetns'] = departments
     return render(request, 'transactions/newAppointments.html', context)
 

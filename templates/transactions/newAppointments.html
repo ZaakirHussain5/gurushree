@@ -48,7 +48,7 @@
                             <select id="department" class="bg-info text-light custom-select" required>
                                 <option>Select Department</option>
                                 {% for department in departmetns %}
-                                <option value="{{department.name}}">{{ department.name }}</option>
+                                <option value="{{department.department.name}},{{department.subDepartment}}">{{department.department.name}},{{department.subDepartment}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -324,7 +324,7 @@
             data: JSON.stringify(send_data),
             contentType: 'application/json',
             beforeSend: function(xhr){
-                xhr.setRequestHeader("Authorization", 'Token ' + jQuery.cookie('Token'));
+                xhr.setRequestHeader("Authorization", 'Token ' + localStorage.getItem("Token"));
             }
         }).done(response=>{
             $('.LatestStatus').html('Confirmed')
